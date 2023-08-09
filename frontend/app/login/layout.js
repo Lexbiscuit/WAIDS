@@ -4,6 +4,8 @@ export const metadata = {
   description: "Login Page for the WAIDS Web Application.",
 };
 
+export const fetchCache = "force-no-store";
+
 export default function LoginLayout({ children }) {
   return <>{children}</>;
 }

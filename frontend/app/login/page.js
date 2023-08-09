@@ -1,97 +1,91 @@
 "use client";
 
-import { Container, Box, Typography, TextField, Button } from "@mui/material";
+import { Container, Typography, TextField, Button } from "@mui/material";
 import styles from "./styles.module.css";
+import { useForm } from "react-hook-form";
+import axios from "axios";
 import { useState } from "react";
-import { Formik } from "formik";
-
-const LoginForm = () => (
-  <Container className={styles.root}>
-    <Formik
-      initialValues={{ email: "", password: "" }}
-      validate={(values) => {
-        const errors = {};
-        if (!values.email) {
-          errors.email = "Required";
-        } else if (
-          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-        ) {
-          errors.email = "Invalid email address";
-        }
-
-        if (!values.password) {
-          errors.password = "Required";
-        } else if (values.password.length < 8) {
-          errors.password = "Password must be at least 8 characters";
-        }
-        return errors;
-      }}
-      onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
-      }}
-    >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        isSubmitting,
-        /* and other goodies */
-      }) => (
-        <Container sx={{ textAlign: "center" }}>
-          <Typography variant="h3" color="initial">
-            Login Page
-          </Typography>
-          <form
-            onSubmit={handleSubmit}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              rowGap: "2rem",
-              marginTop: "2rem",
-            }}
-          >
-            <TextField
-              id="emailField"
-              label="Email Address"
-              variant="outlined"
-              type="email"
-              name="email"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.email}
-            />
-            {errors.email && touched.email && errors.email}
-            <TextField
-              id="passwordField"
-              label="Password"
-              variant="outlined"
-              type="password"
-              name="password"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.password}
-            ></TextField>
-            {errors.password && touched.password && errors.password}
-            <Button variant="contained" type="submit" disabled={isSubmitting}>
-              Submit
-            </Button>
-          </form>
-        </Container>
-      )}
-    </Formik>
-  </Container>
-);
+import NavBar from "@/app/components/NavBar.js";
+const submitForm = async (data) => {
+  try {
+    const response = await axios.post("http://localhost:5000/login", {
+      email: `${data.email}`,
+      password: `${data.password}`,
+    });
+    console.log(response.data);
+  } catch (error) {
+    // console.error(error);
+  }
+};
 
 export default function Login() {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    control,
+    formState: { errors },
+  } = useForm();
+
+  const [submitStatus, setSubmitStatus] = useState(false);
+
+  const onSubmit = (data) => {
+    setSubmitStatus(true);
+    submitForm(data);
+    setSubmitStatus(false);
+  };
+
   return (
-    <Container className={styles.root}>
-      <LoginForm />
-    </Container>
+    <>
+      <NavBar />
+      <Container className={styles.root}>
+        <Typography variant="h4">Login</Typography>
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+          <TextField
+            variant="outlined"
+            label="Email Address"
+            type="text"
+            {...register("email", {
+              required: true,
+              pattern: /^\S+@\S+\.\S{2,}$/i,
+            })}
+          />
+          {errors.email?.type === "required" && (
+            <span>This field is required</span>
+          )}
+          {errors.email?.type === "pattern" && (
+            <span>Invalid email address</span>
+          )}
+
+          <TextField
+            variant="outlined"
+            label="Password"
+            type="password"
+            {...register("password", { required: true, minLength: 8 })}
+          />
+          {errors.password?.type === "required" && (
+            <span>This field is required</span>
+          )}
+          {errors.password?.type === "minLength" && (
+            <span>Password must be at least 8 characters</span>
+          )}
+
+          <Button
+            variant="outlined"
+            type="submit"
+            disabled={submitStatus == true}
+          >
+            Submit
+          </Button>
+          <Button
+            variant="outlined"
+            type="reset"
+            disabled={submitStatus == true}
+          >
+            Reset
+          </Button>
+        </form>
+      </Container>
+    </>
   );
 }
