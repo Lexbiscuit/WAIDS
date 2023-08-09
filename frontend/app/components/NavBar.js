@@ -27,7 +27,7 @@ export default function NavBar() {
   const handleCloseUserMenu = () => setAnchorElUser(null);
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* If the screen size >= xs and < md, the Android Icon won't show. */}

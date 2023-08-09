@@ -1,7 +1,7 @@
 "use client";
 
 import { Container, Typography, TextField, Button } from "@mui/material";
-import styles from "./styles.module.css";
+import styles from "./login.module.css";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useState } from "react";
