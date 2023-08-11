@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useState } from "react";
 import NavBar from "@/app/components/NavBar.js";
+
 const submitForm = async (data) => {
   try {
     const response = await axios.post("http://localhost:5000/login", {
