@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import Topbar from "./components/Topbar";
-import SideBar from "@/app/global/Sidebar";
 import { ColorModeContext, useMode } from "@/app/theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 
