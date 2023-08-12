@@ -1,11 +1,11 @@
 "use client";
 import { useState } from "react";
-import Topbar from "./components/Topbar";
+import Topbar from "@/app/global/Topbar";
 import SideBar from "@/app/global/Sidebar";
 import { ColorModeContext, useMode } from "@/app/theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 
-export default function Home() {
+export default function Dashboard() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
 
@@ -14,8 +14,9 @@ export default function Home() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
+          <SideBar isSidebar={isSidebar} />
           <main className="content">
-            <Topbar />
+            <Topbar setIsSidebar={setIsSidebar} />
           </main>
         </div>
       </ThemeProvider>
