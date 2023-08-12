@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Topbar from "@/app/global/Topbar";
-import SideBar from "@/app/global/Sidebar";
+import SideBar from "@/app/global/ProSidebar";
 import { ColorModeContext, useMode } from "@/app/theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 
