@@ -4,7 +4,7 @@ import { useMediaQuery } from "@mui/material";
 import Topbar from "@/app/components/Topbar";
 import ProSidebar from "@/app/components/ProSidebar";
 import { ColorModeContext, useMode } from "@/app/theme";
-import FormikForm from "@/app/components/FormikForm";
+import FormikForm from "@/app/login/components/FormikForm";
 
 export default function Login() {
   const [theme, colorMode] = useMode();
