@@ -10,6 +10,10 @@ body,
   font-family: "Source Sans 3", sans-serif;
 }
 
+.content {
+  overflow-x: hidden;
+}
+
 .app {
   display: flex;
   position: relative;

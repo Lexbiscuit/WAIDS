@@ -23,6 +23,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.4",
+    "react-infinite-scroller": "^1.2.6",
     "react-pro-sidebar": "^1.1.0-alpha.1",
     "yup": "^1.2.0"
   }
