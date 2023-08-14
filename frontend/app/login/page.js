@@ -18,7 +18,7 @@ export default function Login() {
           {isDesktop == false && <ProSidebar />}
           <main className="content">
             <Topbar />
-            <FormikForm />{" "}
+            <FormikForm />
           </main>
         </div>
       </ThemeProvider>

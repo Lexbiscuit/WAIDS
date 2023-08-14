@@ -5,5 +5,5 @@ export const metadata = {
 };
 
 export default function DashboardLayout({ children }) {
-  return { children };
+  return <>{children}</>;
 }
