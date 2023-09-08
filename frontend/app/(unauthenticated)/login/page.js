@@ -1,9 +1,10 @@
 "use client";
-import ResponsiveAppBar from "./components/ResponsiveAppBar";
-import { ColorModeContext, useMode } from "@/app/theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import ResponsiveAppBar from "@/app/components/ResponsiveAppBar";
+import { ColorModeContext, useMode } from "@/app/theme";
+import FormikForm from "./components/FormikForm";
 
-export default function Home() {
+export default function Login() {
   const [theme, colorMode] = useMode();
 
   return (
@@ -13,6 +14,7 @@ export default function Home() {
         <div className="app">
           <main className="content">
             <ResponsiveAppBar />
+            <FormikForm />
           </main>
         </div>
       </ThemeProvider>

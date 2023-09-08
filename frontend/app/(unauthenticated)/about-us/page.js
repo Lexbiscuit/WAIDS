@@ -1,9 +1,9 @@
 "use client";
-import ResponsiveAppBar from "./components/ResponsiveAppBar";
-import { ColorModeContext, useMode } from "@/app/theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import ResponsiveAppBar from "@/app/components/ResponsiveAppBar";
+import { ColorModeContext, useMode } from "@/app/theme";
 
-export default function Home() {
+export default function AboutUs() {
   const [theme, colorMode] = useMode();
 
   return (
@@ -13,6 +13,7 @@ export default function Home() {
         <div className="app">
           <main className="content">
             <ResponsiveAppBar />
+            {/* Code goes here */}
           </main>
         </div>
       </ThemeProvider>

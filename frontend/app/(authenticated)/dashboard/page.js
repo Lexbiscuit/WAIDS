@@ -1,5 +1,4 @@
 "use client";
-import InfiniteScroll from "react-infinite-scroller";
 import { useState } from "react";
 import {
   CssBaseline,
@@ -8,24 +7,20 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import FakeData from "@/app/global/FakeData";
-import Topbar from "@/app/global/Topbar";
-import SideBar from "@/app/global/ProSidebar";
 import { ColorModeContext, useMode } from "@/app/theme";
 import Header from "@/app/global/Header";
+import ResponsiveAppBar from "@/app/(authenticated)/components/ResponsiveAppBar";
 
 export default function Dashboard() {
   const [theme, colorMode] = useMode();
-  const [isSidebar, setIsSidebar] = useState(true);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
-          <SideBar isSidebar={isSidebar} />
           <main className="content">
-            <Topbar setIsSidebar={setIsSidebar} />
+            <ResponsiveAppBar />
             <>
               <Box m="20px">
                 {/* HEADER */}
@@ -69,29 +64,6 @@ export default function Dashboard() {
                     <Typography variant="h1" color="initial">
                       Live Data
                     </Typography>
-                    <InfiniteScroll
-                      pageStart={0}
-                      hasMore={false}
-                      initialLoad={true}
-                      loader={
-                        <div className="loader" key={0}>
-                          Loading ...
-                        </div>
-                      }
-                    >
-                      {FakeData.map((item, index) => (
-                        <li key={index}>
-                          <a
-                            href="/"
-                            target="_blank"
-                            rel="noopener"
-                            style={{ textDecoration: "none" }}
-                          >
-                            {item.title}
-                          </a>
-                        </li>
-                      ))}
-                    </InfiniteScroll>
                   </Box>
                 </Box>
               </Box>

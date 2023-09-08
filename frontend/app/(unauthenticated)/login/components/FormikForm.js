@@ -3,6 +3,8 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "@/app/global/Header";
+import { tokens } from "@/app/theme";
+import useTheme from "@mui/material/styles/useTheme";
 
 async function login({ email, password }) {
   try {
@@ -22,6 +24,9 @@ async function login({ email, password }) {
 }
 
 const FormikForm = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const handleFormSubmit = (values) => {
@@ -40,7 +45,7 @@ const FormikForm = () => {
         alignItems: "center",
       }}
     >
-      <Box width="50%" my="2rem">
+      <Box sx={{width: {xs: "80%", md: "70%"}, my: "2rem"}}>
         <Header title="Login" subtitle="Log into your WAIDS account" />
 
         <Formik
@@ -93,7 +98,7 @@ const FormikForm = () => {
                 />
               </Box>
               <Box display="flex" justifyContent="end" mt="20px">
-                <Button type="submit" color="secondary" variant="contained">
+                <Button type="submit" variant="outlined" sx={{width: "100%", color: colors.primary[100], borderColor: colors.primary[100]}}>
                   Login
                 </Button>
               </Box>

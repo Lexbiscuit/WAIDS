@@ -1,7 +1,7 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "🥵💦WAIDS Marketing Page",
+  title: "WAIDS Marketing Page",
   description: "The home page for the WAIDS project.",
 };
 
