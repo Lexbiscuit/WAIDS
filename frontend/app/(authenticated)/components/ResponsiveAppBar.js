@@ -27,7 +27,9 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
-const pages = ["Products", "Pricing", "Blog"];
+
+
+const pages = ["Log Viewer", "IDS Management", "Team Management"];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 export default function ResponsiveAppBar() {
@@ -61,26 +63,10 @@ export default function ResponsiveAppBar() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+        {pages.map((text) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
+            <ListItemButton href={`dashboard/${text.replace(" ", "").toLowerCase()}`}>
+              <Typography variant="body1" color="inherit">{text}</Typography>
             </ListItemButton>
           </ListItem>
         ))}
@@ -89,7 +75,7 @@ export default function ResponsiveAppBar() {
   );
 
   return (
-    <AppBar position="static" color="transparent">
+    <AppBar position="sticky" color="default">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* Desktop: WAIDS Logo and Title */}
@@ -98,7 +84,7 @@ export default function ResponsiveAppBar() {
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            href="/dashboard"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -106,11 +92,11 @@ export default function ResponsiveAppBar() {
               fontWeight: 700,
               letterSpacing: ".3rem",
               // color: 'inherit',
-              color: colors.primary[100],
+              color: colors.grey[100],
               textDecoration: "none",
             }}
           >
-            LOGO
+            WAIDS
           </Typography>
 
           {/* Mobile: Navigation Menu */}
@@ -141,7 +127,7 @@ export default function ResponsiveAppBar() {
             variant="h5"
             noWrap
             component="a"
-            href="/"
+            href="/dashboard"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -149,11 +135,11 @@ export default function ResponsiveAppBar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
+              color: colors.grey[100],
               textDecoration: "none",
             }}
           >
-            LOGO
+            WAIDS
           </Typography>
 
           {/* Desktop: Navigation Menu */}
@@ -162,9 +148,10 @@ export default function ResponsiveAppBar() {
               <Button
                 key={page}
                 // onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: colors.primary[100], display: "block" }}
+                href={`dashboard/${page.replace(" ", "").toLowerCase()}`}
+                sx={{ my: 2, display: "block" }}
               >
-                {page}
+                <Typography variant="body1" color={colors.grey[100]} textTransform="none">{page}</Typography>
               </Button>
             ))}
           </Box>
@@ -183,7 +170,7 @@ export default function ResponsiveAppBar() {
             </IconButton>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Gigachad" src="https://dudeproducts.com/cdn/shop/articles/gigachad_1068x.jpg?v=1667928905" />
               </IconButton>
             </Tooltip>
             <Menu

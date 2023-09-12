@@ -8,12 +8,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import AdbIcon from "@mui/icons-material/Adb";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import { useContext } from "react";
 import { ColorModeContext, tokens } from "@/app/theme";
 import useTheme from "@mui/material/styles/useTheme";
 import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
@@ -21,7 +19,6 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import { usePathname } from "next/navigation";
-
 
 
 const pages = ["About Us", "Support", "Contact Us"];
@@ -54,13 +51,14 @@ export default function ResponsiveAppBar() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {pages.map((text, index) => (
+        {pages.map((text) => (
           <ListItem key={text} disablePadding>
             <ListItemButton href={`/${text.toLowerCase().replace(" ", "-")}`}>
               {/* <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
               </ListItemIcon> */}
-              <ListItemText primary={text} />
+              {/* <ListItemText primary={text} /> */}
+              <Typography variant="body1" color={colors.grey[100]}>{text}</Typography>
             </ListItemButton>
           </ListItem>
         ))}
@@ -69,7 +67,7 @@ export default function ResponsiveAppBar() {
   );
 
   return (
-    <AppBar position="static" color="transparent">
+    <AppBar position="sticky" color="default">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
 
@@ -146,9 +144,7 @@ export default function ResponsiveAppBar() {
                 href={`/${page.toLowerCase().replace(" ", "-")}`}
                 sx={{ my: 2, color: colors.primary[100], display: "block" }}
               >
-                <Typography variant="body1" textTransform="none">
-                  {page}
-                </Typography>
+              <Typography variant="body1" color={colors.grey[100]}>{page}</Typography>
               </Button>
             ))}
           </Box>
