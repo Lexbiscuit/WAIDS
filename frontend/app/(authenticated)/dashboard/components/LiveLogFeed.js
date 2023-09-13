@@ -2,7 +2,7 @@ import { List, ListItem, Typography, Box } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export async function fetchLogs() {
-  const res = await fetch("http://localhost:5000/fetchAllLogs");
+  const res = await fetch("http://localhost:5000/fetchAllLogs?skip=0&limit=10");
   const data = await res.json();
   return data;
 }
@@ -36,13 +36,14 @@ export default function LiveLogFeed() {
 
   return (
     <List>
-      {Logs.map((myLog, i) => (
-        <ListItem key={i}>
+      {Logs.map((myLog, i) =>  {
+        const date = new Date(myLog.time["$date"]);
+        return (<ListItem key={i}>
           <Typography variant="body1" color="inherit">
-            {myLog.time["$date"]} - {myLog.classification}
+            {date.toDateString()} - {myLog.classification}
           </Typography>
-        </ListItem>
-      ))}
+        </ListItem>)
+})}
     </List>
   );
 }

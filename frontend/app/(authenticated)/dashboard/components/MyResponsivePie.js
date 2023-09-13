@@ -2,6 +2,7 @@
 import { ResponsivePie } from "@nivo/pie";
 import { useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
+import { ColorModeContext, useMode } from "@/app/theme";
 
 async function getCategories(category) {
   const res = await fetch(
@@ -12,6 +13,7 @@ async function getCategories(category) {
 }
 
 const MyResponsivePie = (props) => {
+  const [theme, colorMode] = useMode();  
   const [logData, setLogData] = useState(null);
 
   useEffect(() => {
@@ -45,6 +47,7 @@ const MyResponsivePie = (props) => {
   }
   return (
       <ResponsivePie
+        theme={theme}
         data={logData}
         margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
         innerRadius={0.5}

@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "create-next-app": "^13.4.13"
+    "create-next-app": "^13.4.13",
+    "next-themes": "^0.2.1"
   }
 }

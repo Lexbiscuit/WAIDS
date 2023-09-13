@@ -37,8 +37,8 @@ export default function Dashboard() {
               </Box>
               <Box display="flex">
                 <Grid container spacing={2} sx={{ textAlign: "center" }}>
-                  {viewsList.map((view) => (
-                    <Grid item xs={12} md={6} lg={4}>
+                  {viewsList.map((view, index) => (
+                    <Grid item xs={12} md={6} lg={4} key={index}>
                       <Box height={"20rem"} border={"1px solid"}>
                         <Typography variant="h1" color="inherit">
                           {view}

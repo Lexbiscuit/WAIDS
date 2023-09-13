@@ -8,7 +8,7 @@ cors = CORS(app)
 app.config["CORS_HEADERS"] = "Content-Type"
 app.config["Access-Control-Allow-Origin"] = "*"
 
-client = MongoClient('192.168.1.3', 27017)
+client = MongoClient('localhost', 27017)
 db = client.WAIDS
 suricata = db.Suricata
 snort = db.Snort
@@ -20,10 +20,20 @@ def hello_world():
 @app.route("/fetchAllLogs", methods=["GET"])
 @cross_origin()
 def fetchAllLogs():
-    # language = request.args.get('language')
-    suricataData = list(suricata.find({}).limit(10))
-    response = Response(response=dumps(suricataData), status=200, mimetype='application/json')
+    skip = request.args.get('skip')
+    limit = request.args.get('limit')
+    suricataData = list(suricata.find({}).skip(int(skip)).limit(int(limit)))
+    response = Response(response = dumps(suricataData), status=200, mimetype='application/json')
     return response
+
+@app.route("/fetchDocumentCount", methods=["GET"])
+@cross_origin()
+def fetchDocumentCount():
+    return Response(response = dumps(suricata.aggregate(
+        [{
+            "$group": {"_id": "null", "count": {"$sum" : 1}} 
+            }]
+        )), status=200, mimetype="application/json")
 
 @app.route("/fetchCategory", methods=["GET"])
 @cross_origin()
