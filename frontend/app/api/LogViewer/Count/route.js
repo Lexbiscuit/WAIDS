@@ -8,6 +8,9 @@ export async function GET() {
     {
       "$group": { "_id": "null", "count": { "$sum": 1 } },
     },
-  ]);
-  return NextResponse.json({ data });
+  ]);  
+  const response = NextResponse.json({ data });
+  response.headers.append('Access-Control-Allow-Origin', '*');
+  return response;
+
 }

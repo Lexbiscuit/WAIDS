@@ -14,5 +14,7 @@ export async function GET(request) {
         "$project": {"_id": 0, "id": "$_id", "value": "$count", "label": "$_id"}
     }
 ]);
-  return NextResponse.json({ data });
+  const response = NextResponse.json({ data });
+  response.headers.append('Access-Control-Allow-Origin', '*');
+  return response;
 }

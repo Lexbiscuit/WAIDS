@@ -3,7 +3,7 @@ import { React, useEffect, useState } from "react";
 
 const getLogs = async () => {
   try {
-    const res = await fetch("http://localhost:3000/api/LiveLogFeed", {
+    const res = await fetch("http://127.0.0.1:3000/api/Dashboard/LiveLogFeed", {
       cache: "no-store",
     });
 
@@ -44,7 +44,7 @@ export default function LiveLogFeed() {
   return (
     <List>
       {Logs.map((myLog, i) =>  {
-        const date = new Date(myLog.time);
+        const date = new Date(myLog.timestamp);
         return (<ListItem key={i}>
           <Typography variant="body1" color="inherit">
             {date.toDateString()} - {myLog.classification}

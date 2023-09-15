@@ -90,7 +90,7 @@ TablePaginationActions.propTypes = {
 const fetchTableData = async (skip, limit) => {
   try {
     const res = await fetch(
-      `http://localhost:3000/api/LogViewer/TableData?skip=${skip}&limit=${limit}`,
+      `http://127.0.0.1:3000/api/LogViewer/TableData?skip=${skip}&limit=${limit}`,
       {
         cache: "no-store",
       }
@@ -106,7 +106,7 @@ const fetchTableData = async (skip, limit) => {
 
 const fetchDocumentCount = async () => {
   try {
-    const res = await fetch("http://localhost:3000/api/LogViewer/Count", {
+    const res = await fetch("http://127.0.0.1:3000/api/LogViewer/Count", {
       cache: "no-store",
     });
 
@@ -171,7 +171,7 @@ export default function CustomPaginationActionsTable({ setCurrentData }) {
             //     : data
             //   )
             data.map((row, index) => {
-              const row_date = new Date(row.time);
+              const row_date = new Date(row.timestamp);
 
               return (
                 <TableRow

@@ -5,7 +5,7 @@ import { Box, Typography } from "@mui/material";
 
 const getCategories = async (id) => {
   try {
-    const res = await fetch("http://localhost:3000/api/MyResponsivePie?id=" + id, {
+    const res = await fetch("http://127.0.0.1:3000/api/Dashboard/MyResponsivePie?id=" + id, {
       cache: "no-store",
     });
 

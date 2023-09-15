@@ -7,6 +7,7 @@ import {
   Typography,
   CardActions,
   Button,
+  TextField
 } from "@mui/material";
 import Header from "@/app/global/Header";
 import ResponsiveAppBar from "@/app/(authenticated)/components/ResponsiveAppBar";
@@ -31,6 +32,16 @@ export default function LogView() {
           </Box>
 
           {/* MAIN BODY */}
+          <Box width="50%">
+            <Grid container height="100%" width="100%">
+              <Grid item xs={10}>
+                <TextField id="filled-basic" label="Search bar" variant="filled" sx={{width: "100%"}}/>
+              </Grid>      
+              <Grid item xs={2}>
+                <Button variant="contained" sx={{width: "100%", height: "100%"}}>Search</Button>
+              </Grid>
+            </Grid>
+          </Box>
           <Grid container height="100%" width="100%">
             <Grid item xs={12} md={6}>
               {/* <DenseTable /> */}
@@ -40,7 +51,7 @@ export default function LogView() {
               {!currentData ? (
                 <></>
               ) : (
-                <Card padding="20px">
+                <Card padding="20px" sx={{position: "absolute", right: 20, minWidth: "45%"}}>
                   <CardContent>
                     <Typography variant="body1" color="inherit">
                       Signature ID: {currentData.signature_id}
