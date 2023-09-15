@@ -22,9 +22,7 @@ def hello_world():
 def fetchAllLogs():
     skip = request.args.get('skip')
     limit = request.args.get('limit')
-    suricataData = list(suricata.find({}).skip(int(skip)).limit(int(limit)))
-    response = Response(response = dumps(suricataData), status=200, mimetype='application/json')
-    return response
+    return Response(list(suricata.find({}).skip(int(skip)).limit(int(limit))))
 
 @app.route("/fetchDocumentCount", methods=["GET"])
 @cross_origin()
@@ -39,7 +37,6 @@ def fetchDocumentCount():
 @cross_origin()
 def fetchLogs():
     category = request.args.get('category')
-    print(category)
     return Response(response=dumps(suricata.aggregate(
         [{"$group": {
             "_id": f"${category}", "count": {"$count": {}},

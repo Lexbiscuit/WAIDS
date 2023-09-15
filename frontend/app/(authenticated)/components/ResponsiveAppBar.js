@@ -8,26 +8,15 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import AdbIcon from "@mui/icons-material/Adb";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import { useContext } from "react";
-import { ColorModeContext, tokens } from "@/app/theme";
-import useTheme from "@mui/material/styles/useTheme";
 import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-
-
+import ThemeChanger from "@/app/global/ThemeChanger";
 
 const pages = ["Log Viewer", "IDS Management", "Team Management"];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -38,10 +27,6 @@ export default function ResponsiveAppBar() {
 
   const handleOpenUserMenu = (event) => setAnchorElUser(event.currentTarget);
   const handleCloseUserMenu = () => setAnchorElUser(null);
-
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const colorMode = useContext(ColorModeContext);
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -91,8 +76,7 @@ export default function ResponsiveAppBar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              // color: 'inherit',
-              color: colors.grey[100],
+              color: 'inherit',
               textDecoration: "none",
             }}
           >
@@ -135,7 +119,7 @@ export default function ResponsiveAppBar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: colors.grey[100],
+              colors: 'inherit',
               textDecoration: "none",
             }}
           >
@@ -151,7 +135,7 @@ export default function ResponsiveAppBar() {
                 href={`dashboard/${page.replace(" ", "").toLowerCase()}`}
                 sx={{ my: 2, display: "block" }}
               >
-                <Typography variant="body1" color={colors.grey[100]} textTransform="none">{page}</Typography>
+                <Typography variant="body1" color='inherit' textTransform="none">{page}</Typography>
               </Button>
             ))}
           </Box>
@@ -160,13 +144,9 @@ export default function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <IconButton
               disableRipple={true}
-              onClick={colorMode.toggleColorMode}
+              // onClick={}
             >
-              {theme.palette.mode === "dark" ? (
-                <DarkModeOutlinedIcon />
-              ) : (
-                <LightModeOutlinedIcon />
-              )}
+              <ThemeChanger />
             </IconButton>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

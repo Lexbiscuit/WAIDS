@@ -1,52 +1,84 @@
 "use client";
 import {
-  CssBaseline,
-  ThemeProvider,
   Box,
-  Grid
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  CardActions,
+  Button,
 } from "@mui/material";
-import { ColorModeContext, useMode } from "@/app/theme";
 import Header from "@/app/global/Header";
 import ResponsiveAppBar from "@/app/(authenticated)/components/ResponsiveAppBar";
 import CustomPaginationActionsTable from "./components/CustomPaginationActionsTable";
+import { React, useState } from "react";
 
 export default function LogView() {
-  const [theme, colorMode] = useMode();
+  const [currentData, setCurrentData] = useState(null);
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <div className="app">
-          <main className="content">
-            <ResponsiveAppBar />
-            <Box m="20px" sx={{ height: "100%" }}>
-              {/* HEADER */}
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Header title="LOG VIEW" subtitle="View NIDS Log Data" />
-              </Box>
+    <div className="app">
+      <main className="content">
+        <ResponsiveAppBar />
+        <Box m="20px">
+          {/* HEADER */}
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Header title="LOG VIEW" subtitle="View NIDS Log Data" />
+          </Box>
 
-              {/* MAIN BODY */}
-              <Grid container height="100%" width="100%">
-                <Grid item xs={12} md={6}>
-                  {/* <DenseTable /> */}
-                  <CustomPaginationActionsTable />
-                </Grid>
-                <Grid
-                  item
-                  md={6}
-                  display={{ xs: "none", md: "block" }}
-                  bgcolor="blue"
-                ></Grid>
-              </Grid>
-            </Box>
-          </main>
-        </div>
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+          {/* MAIN BODY */}
+          <Grid container height="100%" width="100%">
+            <Grid item xs={12} md={6}>
+              {/* <DenseTable /> */}
+              <CustomPaginationActionsTable setCurrentData={setCurrentData} />
+            </Grid>
+            <Grid item md={6} display={{ xs: "none", md: "block" }}>
+              {!currentData ? (
+                <></>
+              ) : (
+                <Card padding="20px">
+                  <CardContent>
+                    <Typography variant="body1" color="inherit">
+                      Signature ID: {currentData.signature_id}
+                    </Typography>
+                    <Typography variant="body1" color="inherit">
+                      Signature Rev ID: {currentData.signature_rev_id}
+                    </Typography>
+                    <Typography variant="body1" color="inherit">
+                      Description: {currentData.description}
+                    </Typography>
+                    <Typography variant="body1" color="inherit">
+                      Classification: {currentData.classification}
+                    </Typography>
+                    <Typography variant="body1" color="inherit">
+                      Priority: {currentData.priority}
+                    </Typography>
+                    <Typography variant="body1" color="inherit">
+                      Protocol: {currentData.protocol}
+                    </Typography>
+                    <Typography variant="body1" color="inherit">
+                      Source Address: {currentData.src_addr}
+                    </Typography>
+                    <Typography variant="body1" color="inherit">
+                      Source Port: {currentData.src_port}
+                    </Typography>
+                    <Typography variant="body1" color="inherit">
+                      Destination Address: {currentData.dst_addr}
+                    </Typography>
+                    <Typography variant="body1" color="inherit">
+                      Destination Port: {currentData.dst_port}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              )}
+            </Grid>
+          </Grid>
+        </Box>
+      </main>
+    </div>
   );
 }

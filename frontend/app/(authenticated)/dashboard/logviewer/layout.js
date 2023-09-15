@@ -1,3 +1,5 @@
+import {React} from "react";
+
 export const metadata = {
   title: "Log Viewer",
   //   Description for Login Page

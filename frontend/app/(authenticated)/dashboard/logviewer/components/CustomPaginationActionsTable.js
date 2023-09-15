@@ -1,22 +1,22 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableHead from '@mui/material/TableHead';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableFooter from '@mui/material/TableFooter';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import LastPageIcon from '@mui/icons-material/LastPage';
-import {useEffect} from "react";
+import * as React from "react";
+import PropTypes from "prop-types";
+import { useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableFooter from "@mui/material/TableFooter";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import IconButton from "@mui/material/IconButton";
+import FirstPageIcon from "@mui/icons-material/FirstPage";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import LastPageIcon from "@mui/icons-material/LastPage";
+import { useEffect } from "react";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -45,28 +45,36 @@ function TablePaginationActions(props) {
         disabled={page === 0}
         aria-label="first page"
       >
-        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+        {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
       </IconButton>
       <IconButton
         onClick={handleBackButtonClick}
         disabled={page === 0}
         aria-label="previous page"
       >
-        {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowRight />
+        ) : (
+          <KeyboardArrowLeft />
+        )}
       </IconButton>
       <IconButton
         onClick={handleNextButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
         aria-label="next page"
       >
-        {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowLeft />
+        ) : (
+          <KeyboardArrowRight />
+        )}
       </IconButton>
       <IconButton
         onClick={handleLastPageButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
         aria-label="last page"
       >
-        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+        {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
       </IconButton>
     </Box>
   );
@@ -79,19 +87,38 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-async function fetchData(skip, limit) {
-    const res = await fetch(`http://localhost:5000/fetchAllLogs?skip=${skip}&limit=${limit}`);
-    const data = await res.json();
-    return data;
-  }  
+const fetchTableData = async (skip, limit) => {
+  try {
+    const res = await fetch(
+      `http://localhost:3000/api/LogViewer/TableData?skip=${skip}&limit=${limit}`,
+      {
+        cache: "no-store",
+      }
+    );
 
-async function fetchDocumentCount() {
-    const res = await fetch(`http://localhost:5000/fetchDocumentCount`);
-    const data = await res.json();
-    return data;
-}
+    if (!res.ok) throw new Error("Failed to fetch logs.");
 
-export default function CustomPaginationActionsTable() {
+    return res.json();
+  } catch (error) {
+    console.log("Error getting logs: ", error);
+  }
+};
+
+const fetchDocumentCount = async () => {
+  try {
+    const res = await fetch("http://localhost:3000/api/LogViewer/Count", {
+      cache: "no-store",
+    });
+
+    if (!res.ok) throw new Error("Failed to fetch logs.");
+
+    return res.json();
+  } catch (error) {
+    console.log("Error getting logs: ", error);
+  }
+};
+
+export default function CustomPaginationActionsTable({ setCurrentData }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [data, setData] = React.useState([]);
@@ -101,14 +128,13 @@ export default function CustomPaginationActionsTable() {
     // skip = page * rowsPerPage
     // limit = skip + rowsPerPage
     setData([]);
-    fetchData(page*rowsPerPage, rowsPerPage)
-    .then((queryData) => {
-      setData(queryData);
+    fetchTableData(page * rowsPerPage, rowsPerPage).then((queryData) => {
+      setData(queryData.data);
+      setCurrentData(data[0]);
     });
 
-    fetchDocumentCount()
-    .then((queryData) => {
-        setDocumentCount(queryData[0].count);
+    fetchDocumentCount().then((queryData) => {
+      setDocumentCount(queryData.data[0].count);
     });
   }, [page, rowsPerPage]);
 
@@ -129,47 +155,54 @@ export default function CustomPaginationActionsTable() {
     <TableContainer component={Paper}>
       <Table aria-label="custom pagination table">
         <TableHead>
-            <TableRow>
-                <TableCell align="left">Date</TableCell>
-                <TableCell align="left">Time</TableCell>
-                <TableCell align="left">Signature ID</TableCell>
-                <TableCell align="left">Priority</TableCell>
-                <TableCell align="left">Protocol</TableCell>
-            </TableRow>
-            </TableHead>
+          <TableRow>
+            <TableCell align="left">Date</TableCell>
+            <TableCell align="left">Time</TableCell>
+            <TableCell align="left">Signature ID</TableCell>
+            <TableCell align="left">Priority</TableCell>
+            <TableCell align="left">Protocol</TableCell>
+          </TableRow>
+        </TableHead>
 
         <TableBody>
           {
-        //   (rowsPerPage > 0
-        //     ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-        //     : data
-        //   )
-          data.map((row, index) => {
-            const row_date = new Date(row.time["$date"]);
-            
-            return (
-            <TableRow key={index}>
-              <TableCell align="left">
-              {`${String(row_date.getDate()).padStart(2,'0')}
-                  -
-                  ${String(row_date.getMonth() + 1).padStart(2,'0')}
-                  -
-                  ${row_date.getFullYear()}`}
-              </TableCell>
-              <TableCell align="left">
-              {`${row_date.toLocaleTimeString()}`}
-              </TableCell>
-              <TableCell align="left">
-              {`${row.signature_id}`}
-              </TableCell>
-              <TableCell align="left">
-              {`${row.priority}`}
-              </TableCell>
-              <TableCell align="left">
-              {`${row.protocol}`}
-              </TableCell>
-            </TableRow>
-          )})}
+            //   (rowsPerPage > 0
+            //     ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            //     : data
+            //   )
+            data.map((row, index) => {
+              const row_date = new Date(row.time);
+
+              return (
+                <TableRow
+                  key={index}
+                  sx={{
+                    cursor: "pointer",
+                    "&:hover": {
+                      border: "1px solid transparent",
+                      color: "gray",
+                      backgroundColor: "lightblue",
+                    },
+                  }}
+                  onClick={() => {
+                    setCurrentData(row);
+                  }}
+                >
+                  <TableCell align="left">
+                    {`${String(row_date.getDate()).padStart(2, "0")}-${String(
+                      row_date.getMonth() + 1
+                    ).padStart(2, "0")}-${row_date.getFullYear()}`}
+                  </TableCell>
+                  <TableCell align="left">
+                    {`${row_date.toLocaleTimeString()}`}
+                  </TableCell>
+                  <TableCell align="left">{`${row.signature_id}`}</TableCell>
+                  <TableCell align="left">{`${row.priority}`}</TableCell>
+                  <TableCell align="left">{`${row.protocol}`}</TableCell>
+                </TableRow>
+              );
+            })
+          }
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
               <TableCell colSpan={6} />
@@ -186,7 +219,7 @@ export default function CustomPaginationActionsTable() {
               page={page}
               SelectProps={{
                 inputProps: {
-                  'aria-label': 'rows per page',
+                  "aria-label": "rows per page",
                 },
                 native: true,
               }}

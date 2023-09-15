@@ -8,28 +8,18 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import AdbIcon from "@mui/icons-material/Adb";
-import { useContext } from "react";
-import { ColorModeContext, tokens } from "@/app/theme";
-import useTheme from "@mui/material/styles/useTheme";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import { usePathname } from "next/navigation";
-
+import ThemeChanger from "../global/ThemeChanger";
 
 const pages = ["About Us", "Support", "Contact Us"];
 
 export default function ResponsiveAppBar() {
   const [state, setState] = React.useState({ left: false });
   const pathname = usePathname();
-
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const colorMode = useContext(ColorModeContext);
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -54,11 +44,7 @@ export default function ResponsiveAppBar() {
         {pages.map((text) => (
           <ListItem key={text} disablePadding>
             <ListItemButton href={`/${text.toLowerCase().replace(" ", "-")}`}>
-              {/* <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon> */}
-              {/* <ListItemText primary={text} /> */}
-              <Typography variant="body1" color={colors.grey[100]}>{text}</Typography>
+              <Typography variant="body1" color="inherit">{text}</Typography>
             </ListItemButton>
           </ListItem>
         ))}
@@ -67,7 +53,7 @@ export default function ResponsiveAppBar() {
   );
 
   return (
-    <AppBar position="sticky" color="default">
+    <AppBar position="sticky" enableColorOnDark="true">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
 
@@ -84,8 +70,7 @@ export default function ResponsiveAppBar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              // color: 'inherit',
-              color: colors.primary[100],
+              color: 'inherit',
               textDecoration: "none",
             }}
           >
@@ -142,32 +127,23 @@ export default function ResponsiveAppBar() {
                 key={page}
                 // onClick={handleCloseNavMenu}
                 href={`/${page.toLowerCase().replace(" ", "-")}`}
-                sx={{ my: 2, color: colors.primary[100], display: "block" }}
+                sx={{ my: 2, color: "inherit", display: "block" }}
               >
-              <Typography variant="body1" color={colors.grey[100]}>{page}</Typography>
+              <Typography variant="body1" color="inherit">{page}</Typography>
               </Button>
             ))}
           </Box>
 
           {/* Mobile and Desktop: Settings Menu */}
           <Box sx={{ flexGrow: 0 }}>
-            <IconButton
-              disableRipple={true}
-              onClick={colorMode.toggleColorMode}
-            >
-              {theme.palette.mode === "dark" ? (
-                <DarkModeOutlinedIcon />
-              ) : (
-                <LightModeOutlinedIcon />
-              )}
-            </IconButton>
+<ThemeChanger />
 
             {pathname == "/login" ? null : (
               <Button
                 variant="outlined"
                 sx={{
-                  color: colors.primary[100],
-                  borderColor: colors.primary[100],
+                  color: "inherit",
+                  borderColor: "inherit",
                 }}
                 href="/login"
               >

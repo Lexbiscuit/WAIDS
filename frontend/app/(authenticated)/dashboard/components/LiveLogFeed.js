@@ -1,20 +1,27 @@
 import { List, ListItem, Typography, Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import { React, useEffect, useState } from "react";
 
-export async function fetchLogs() {
-  const res = await fetch("http://localhost:5000/fetchAllLogs?skip=0&limit=10");
-  const data = await res.json();
-  return data;
-}
+const getLogs = async () => {
+  try {
+    const res = await fetch("http://localhost:3000/api/LiveLogFeed", {
+      cache: "no-store",
+    });
+
+    if (!res.ok) throw new Error("Failed to fetch logs.");
+
+    return res.json();
+  } catch (error) {
+    console.log("Error getting logs: ", error);
+  }
+};
 
 export default function LiveLogFeed() {
   const [Logs, setLogs] = useState(null);
 
   useEffect(() => {
-    setInterval(() => {
-      fetchLogs().then((data) => {
-        setLogs(data);
-      });
+    setInterval( async () => {
+      const { data } = await getLogs();
+      setLogs(data);
     }, 5000);
   }, []);
 
@@ -37,7 +44,7 @@ export default function LiveLogFeed() {
   return (
     <List>
       {Logs.map((myLog, i) =>  {
-        const date = new Date(myLog.time["$date"]);
+        const date = new Date(myLog.time);
         return (<ListItem key={i}>
           <Typography variant="body1" color="inherit">
             {date.toDateString()} - {myLog.classification}

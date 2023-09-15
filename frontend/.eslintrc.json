@@ -1,3 +1,19 @@
 {
-  "extends": "@next/next/recommended"
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "mongo": true
+  },
+  "extends": ["plugin:react/recommended", "prettier"],
+  "plugins": ["react"],
+  "rules": {},
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": true,
+    "requireConfigFile": false,
+    "babelOptions": {
+      "presets": ["@babel/preset-react"]
+    }
+  }
 }

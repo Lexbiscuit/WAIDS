@@ -1,74 +1,67 @@
 "use client";
-import {
-  CssBaseline,
-  ThemeProvider,
-  Box,
-  Grid,
-  Typography,
-} from "@mui/material";
-import { ColorModeContext, useMode } from "@/app/theme";
+import React  from 'react';
+import { Box, Grid, Typography } from "@mui/material";
 import Header from "@/app/global/Header";
 import ResponsiveAppBar from "@/app/(authenticated)/components/ResponsiveAppBar";
 import LiveLogFeed from "./components/LiveLogFeed";
 import MyResponsivePie from "./components/MyResponsivePie";
 
 export default function Dashboard() {
-  const [theme, colorMode] = useMode();
-  const viewsList = ["protocol", "priority", "classification", "protocol", "priority", "classification"];
+  
+  const viewsList = [
+    "protocol",
+    "priority",
+    "classification",
+    "protocol",
+    "priority",
+    "classification",
+  ];
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <div className="app">
-          <main className="content">
-            <ResponsiveAppBar />
-            <Box m="20px">
-              {/* HEADER */}
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Header
-                  title="DASHBOARD"
-                  subtitle="Welcome to your dashboard"
-                />
-              </Box>
-              <Box display="flex">
-                <Grid container spacing={2} sx={{ textAlign: "center" }}>
-                  {viewsList.map((view, index) => (
-                    <Grid item xs={12} md={6} lg={4} key={index}>
-                      <Box height={"20rem"} border={"1px solid"}>
-                        <Typography variant="h1" color="inherit">
-                          {view}
-                        </Typography>
-                        <MyResponsivePie category={view} />
-                      </Box>
-                    </Grid>
-                  ))}
+    <div className="app">
+      <main className="content">
+        <ResponsiveAppBar />
+        <Box m="20px">
+          {/* HEADER */}
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
+          </Box>
+          <Box display="flex">
+            <Grid container spacing={2} sx={{ textAlign: "center" }}>
+              {viewsList.map((view, index) => (
+                <Grid item xs={12} md={6} lg={4} key={index}>
+                  <Box height={"20rem"} border={"1px solid"}>
+                    <Typography variant="h3" color="inherit">
+                      {`${view}`.charAt(0).toUpperCase() + `${view}`.slice(1)}
+                    </Typography>
+                    <MyResponsivePie id={view} />
+                  </Box>
                 </Grid>
+              ))}
+            </Grid>
 
-                <Box
-                  width="20%"
-                  ml="20px"
-                  borderColor={"white"}
-                  border={"1px solid"}
-                >
-                  <Typography
-                    variant="h1"
-                    color="inherited"
-                    sx={{ textAlign: "center" }}
-                  >
-                    Live Data
-                  </Typography>
-                  <LiveLogFeed />
-                </Box>
-              </Box>
+            <Box
+              width="20%"
+              ml="20px"
+              borderColor={"white"}
+              border={"1px solid"}
+            >
+              <Typography
+                variant="h3"
+                color="inherited"
+                sx={{ textAlign: "center" }}
+              >
+                Live Data
+              </Typography>
+              <LiveLogFeed />
             </Box>
-          </main>
-        </div>
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+          </Box>
+        </Box>
+      </main>
+    </div>
   );
 }

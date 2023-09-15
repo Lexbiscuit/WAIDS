@@ -3,8 +3,6 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "@/app/global/Header";
-import { tokens } from "@/app/theme";
-import useTheme from "@mui/material/styles/useTheme";
 
 async function login({ email, password }) {
   try {
@@ -24,9 +22,6 @@ async function login({ email, password }) {
 }
 
 const FormikForm = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const handleFormSubmit = (values) => {
@@ -98,7 +93,7 @@ const FormikForm = () => {
                 />
               </Box>
               <Box display="flex" justifyContent="end" mt="20px">
-                <Button type="submit" variant="outlined" sx={{width: "100%", color: colors.primary[100], borderColor: colors.primary[100]}}>
+                <Button type="submit" variant="outlined" sx={{width: "100%", color: "inherit", borderColor: "inherit"}}>
                   Login
                 </Button>
               </Box>

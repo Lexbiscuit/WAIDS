@@ -1,25 +1,29 @@
 "use client";
 import { ResponsivePie } from "@nivo/pie";
-import { useState, useEffect } from "react";
+import { React, useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
-import { ColorModeContext, useMode } from "@/app/theme";
 
-async function getCategories(category) {
-  const res = await fetch(
-    "http://localhost:5000/fetchCategory?category=" + category
-  );
-  const data = await res.json();
-  return data;
-}
+const getCategories = async (id) => {
+  try {
+    const res = await fetch("http://localhost:3000/api/MyResponsivePie?id=" + id, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) throw new Error("Failed to fetch logs.");
+
+    return res.json();
+  } catch (error) {
+    console.log("Error getting logs: ", error);
+  }
+};
 
 const MyResponsivePie = (props) => {
-  const [theme, colorMode] = useMode();  
   const [logData, setLogData] = useState(null);
 
   useEffect(() => {
     setInterval(() => {
-      getCategories(props.category).then((data) => {
-        setLogData(data);
+      getCategories(props.id).then((data) => {
+        setLogData(data.data);
       });
     }, 5000);
   }, []);
@@ -45,9 +49,9 @@ const MyResponsivePie = (props) => {
       </Box>
     );
   }
+
   return (
       <ResponsivePie
-        theme={theme}
         data={logData}
         margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
         innerRadius={0.5}
