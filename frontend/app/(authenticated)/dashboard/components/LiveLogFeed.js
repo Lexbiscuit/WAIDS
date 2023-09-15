@@ -1,5 +1,6 @@
 import { List, ListItem, Typography, Box } from "@mui/material";
 import { React, useEffect, useState } from "react";
+import Image from 'next/image';
 
 const getLogs = async () => {
   try {
@@ -31,13 +32,6 @@ export default function LiveLogFeed() {
         <Typography variant="body1" color="inherit" textAlign="center">
           Loading...
         </Typography>
-        <Box
-          component="img"
-          src="https://media.tenor.com/x1HJnh8484gAAAAC/anime-jump.gif"
-          sx={{
-            width: "80%",
-          }}
-        ></Box>
       </Box>
     );
 

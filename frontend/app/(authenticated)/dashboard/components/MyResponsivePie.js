@@ -39,13 +39,6 @@ const MyResponsivePie = (props) => {
         <Typography variant="body1" color="inherit" textAlign="center">
           Loading...
         </Typography>
-        <Box
-          component="img"
-          src="https://media.tenor.com/x1HJnh8484gAAAAC/anime-jump.gif"
-          sx={{
-            width: "40%",
-          }}
-        ></Box>
       </Box>
     );
   }
