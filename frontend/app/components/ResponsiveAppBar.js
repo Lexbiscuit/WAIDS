@@ -13,7 +13,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { usePathname } from "next/navigation";
-import ThemeChanger from "../global/ThemeChanger";
+import ThemeChanger from "./ThemeChanger";
 
 const pages = ["About Us", "Support", "Contact Us"];
 

@@ -16,10 +16,12 @@ import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import ThemeChanger from "@/app/global/ThemeChanger";
+import ThemeChanger from "@/app/components/ThemeChanger";
+import { signOut } from "next-auth/react";
 
 const pages = ["Log Viewer", "IDS Management", "Team Management"];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const BASE_URL = "http://localhost:3000/dashboard/"
 
 export default function ResponsiveAppBar() {
   const [state, setState] = React.useState({ left: false });
@@ -50,7 +52,7 @@ export default function ResponsiveAppBar() {
       <List>
         {pages.map((text) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton href={`dashboard/${text.replace(" ", "").toLowerCase()}`}>
+            <ListItemButton href={`${BASE_URL}${text.replace(" ", "").toLowerCase()}`}>
               <Typography variant="body1" color="inherit">{text}</Typography>
             </ListItemButton>
           </ListItem>
@@ -119,7 +121,7 @@ export default function ResponsiveAppBar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              colors: 'inherit',
+              color: 'black',
               textDecoration: "none",
             }}
           >
@@ -132,10 +134,10 @@ export default function ResponsiveAppBar() {
               <Button
                 key={page}
                 // onClick={handleCloseNavMenu}
-                href={`dashboard/${page.replace(" ", "").toLowerCase()}`}
+                href={`${BASE_URL}${page.replace(" ", "").toLowerCase()}`}
                 sx={{ my: 2, display: "block" }}
               >
-                <Typography variant="body1" color='inherit' textTransform="none">{page}</Typography>
+                <Typography variant="body1" color='black' textTransform="none">{page}</Typography>
               </Button>
             ))}
           </Box>
@@ -171,7 +173,11 @@ export default function ResponsiveAppBar() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                  <Typography textAlign="center" onClick={()=>{
+                    if (setting === 'Logout') {
+                      signOut();
+                    }
+                  }}>{setting}</Typography>
                 </MenuItem>
               ))}
             </Menu>

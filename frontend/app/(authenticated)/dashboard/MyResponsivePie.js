@@ -7,7 +7,7 @@ import { useTheme } from "next-themes";
 const getCategories = async (id) => {
   try {
     const res = await fetch(
-      "http://127.0.0.1:3000/api/Dashboard/MyResponsivePie?id=" + id,
+      "http://127.0.0.1:3000/api/dashboard/MyResponsivePie?id=" + id,
       {
         cache: "no-store",
       }
@@ -22,7 +22,6 @@ const getCategories = async (id) => {
 };
 
 const MyResponsivePie = (props) => {
-  const { theme, setTheme } = useTheme();
   const [logData, setLogData] = useState(null);
 
   useEffect(() => {
@@ -35,16 +34,9 @@ const MyResponsivePie = (props) => {
 
   if (!logData) {
     return (
-      <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-      >
         <Typography variant="body1" color="inherit" textAlign="center">
           Loading...
         </Typography>
-      </Box>
     );
   }
 
@@ -52,7 +44,8 @@ const MyResponsivePie = (props) => {
     <ResponsivePie
       data={logData}
       colors={{ scheme: "category10" }}
-      margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+      margin={{ top: 40, right: 0, bottom: 80, left: 0 }}
+      
       innerRadius={0.5}
       padAngle={0.7}
       cornerRadius={3}
