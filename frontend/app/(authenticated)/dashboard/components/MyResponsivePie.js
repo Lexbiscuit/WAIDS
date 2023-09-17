@@ -2,13 +2,16 @@
 import { ResponsivePie } from "@nivo/pie";
 import { React, useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
-import { useTheme } from 'next-themes';
+import { useTheme } from "next-themes";
 
 const getCategories = async (id) => {
   try {
-    const res = await fetch("http://127.0.0.1:3000/api/Dashboard/MyResponsivePie?id=" + id, {
-      cache: "no-store",
-    });
+    const res = await fetch(
+      "http://127.0.0.1:3000/api/Dashboard/MyResponsivePie?id=" + id,
+      {
+        cache: "no-store",
+      }
+    );
 
     if (!res.ok) throw new Error("Failed to fetch logs.");
 
@@ -56,27 +59,17 @@ const MyResponsivePie = (props) => {
       activeOuterRadiusOffset={8}
       borderWidth={1}
       borderColor={{
-        from: 'color',
-        modifiers: [
-          [
-            'darker',
-            0.2
-          ]
-        ]
+        from: "color",
+        modifiers: [["darker", 0.2]],
       }}
       arcLinkLabelsSkipAngle={10}
       arcLinkLabelsTextColor="#333333"
       arcLinkLabelsThickness={2}
-      arcLinkLabelsColor={{ from: 'color' }}
+      arcLinkLabelsColor={{ from: "color" }}
       arcLabelsSkipAngle={10}
       arcLabelsTextColor={{
-        from: 'color',
-        modifiers: [
-          [
-            'darker',
-            2
-          ]
-        ]
+        from: "color",
+        modifiers: [["darker", 2]],
       }}
     />
   );
