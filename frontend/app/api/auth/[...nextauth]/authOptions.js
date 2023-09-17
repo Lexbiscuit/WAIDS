@@ -6,7 +6,7 @@ export const authOptions = {
   providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. 'Sign in with...')
-      name: "Credentials",
+      name: "Sign in",
       // The credentials is used to generate a suitable form on the sign in page.
       // You can specify whatever fields you are expecting to be submitted.
       // e.g. domain, username, password, 2FA token, etc.
@@ -15,27 +15,46 @@ export const authOptions = {
         email: {
           label: "Email",
           type: "email",
-          placeholder: "jsmith@email.com",
+          placeholder: "example@email.com",
         },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
+
         const res = await fetch("http://localhost:3000/api/auth/login", {
           method: "POST",
-          body: JSON.stringify(credentials),
+          body: JSON.stringify(
+            { email: credentials.email, password: credentials.password },
+          ),
           headers: { "Content-Type": "application/json" },
         });
 
-        const user = await res.json();
-        console.log(user);
-        // If no error and we have user data, return it
-        if (res.ok && user) {
-          return user;
+        const { data } = await res.json();
+
+        if (data) {
+          return data;
+        } else {
+          return null;
         }
-        // Return null if user data could not be retrieved
-        return true;
       },
     }),
   ],
+  pages: {
+    signIn: "/login",
+  },
+  strategy: "jwt",
+  callbacks: {
+    session: ({ session, token }) => {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+          randomKey: token.randomKey,
+        },
+      };
+    },
+
+  },
 };
 export default NextAuth(authOptions);

@@ -1,4 +1,7 @@
-import { Providers } from "./providers";
+import { Providers as ThemeProviders } from "./providers";
+import Providers from "@/app/components/Providers";
+import React from "react";
+import PropTypes from 'prop-types';
 import "./globals.css";
 
 export const metadata = {
@@ -11,8 +14,14 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <ThemeProviders>{children}</ThemeProviders>
+        </Providers>
       </body>
     </html>
   );
 }
+
+RootLayout.propTypes = {
+    children: PropTypes.node.isRequired,
+};
