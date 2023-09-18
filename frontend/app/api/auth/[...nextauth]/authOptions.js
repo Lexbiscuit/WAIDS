@@ -35,7 +35,7 @@ export const authOptions = {
         if (bcrypt.compare(credentials.password, data.password)) {
           return data;
         } else {
-          return true;
+          return null;
         }
       },
     }),
@@ -55,9 +55,9 @@ export const authOptions = {
       };
     },
   },
-  session: {
-    strategy: "jwt",
-    maxAge: 2 * 60 * 60, // 2 hours
-  }
+  // session: {
+  //   strategy: "jwt",
+  //   maxAge: 2 * 60 * 60, // 2 hours
+  // }
 };
 export default NextAuth(authOptions);
