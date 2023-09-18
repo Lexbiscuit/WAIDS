@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from 'bcrypt';
 
 export const authOptions = {
   // Configure one or more authentication providers
@@ -24,17 +25,17 @@ export const authOptions = {
         const res = await fetch("http://localhost:3000/api/auth/login", {
           method: "POST",
           body: JSON.stringify(
-            { email: credentials.email, password: credentials.password },
+            { email: credentials.email },
           ),
           headers: { "Content-Type": "application/json" },
         });
 
         const { data } = await res.json();
 
-        if (data) {
+        if (bcrypt.compare(credentials.password, data.password)) {
           return data;
         } else {
-          return null;
+          return true;
         }
       },
     }),
@@ -42,7 +43,6 @@ export const authOptions = {
   pages: {
     signIn: "/login",
   },
-  strategy: "jwt",
   callbacks: {
     session: ({ session, token }) => {
       return {
@@ -54,7 +54,10 @@ export const authOptions = {
         },
       };
     },
-
   },
+  session: {
+    strategy: "jwt",
+    maxAge: 2 * 60 * 60, // 2 hours
+  }
 };
 export default NextAuth(authOptions);

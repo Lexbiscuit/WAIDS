@@ -21,12 +21,12 @@ const getCategories = async (id) => {
   }
 };
 
-const MyResponsivePie = (props) => {
+const MyResponsivePie = ({id}) => {
   const [logData, setLogData] = useState(null);
 
   useEffect(() => {
     setInterval(() => {
-      getCategories(props.id).then((data) => {
+      getCategories(id).then((data) => {
         setLogData(data.data);
       });
     }, 5000);
