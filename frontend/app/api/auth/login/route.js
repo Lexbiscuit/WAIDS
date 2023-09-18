@@ -7,16 +7,14 @@ export async function POST(request) {
 
   if (
     !credentials ||
-    credentials.email == null ||
-    credentials.password == null
+    credentials.email == null
   ) {
-    return NextResponse.json({ authentication: "FAILED" });
+    return null;
   }
 
   await connectMongoDB();
   const data = await User.find({
-    email: `${credentials.email}`,
-    password: `${credentials.password}`,
+    email: `${credentials.email}`
   });
 
   if (data.length == 1) {
