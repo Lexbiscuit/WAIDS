@@ -15,7 +15,7 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { usePathname } from "next/navigation";
 import ThemeChanger from "./ThemeChanger";
 
-const pages = ["About Us", "Support", "Contact Us"];
+const pages = ["About Us", "Support", "Get Quote"];
 
 export default function ResponsiveAppBar() {
   const [state, setState] = React.useState({ left: false });
