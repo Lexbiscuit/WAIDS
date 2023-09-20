@@ -9,14 +9,15 @@ const ThemeChanger = () => {
   const { theme, setTheme } = useTheme();
 
   return (
-    <IconButton
-      disableRipple={true}
-      onClick={() => {
-        setTheme(theme === "light" ? "dark" : "light");
-      }}
-    >
-      {theme === "dark" ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />}
-    </IconButton>
+    <></>
+    // <IconButton
+    //   disableRipple={true}
+    //   onClick={() => {
+    //     setTheme(theme === "light" ? "dark" : "light");
+    //   }}
+    // >
+    //   {theme === "dark" ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />}
+    // </IconButton>
   );
 };
 

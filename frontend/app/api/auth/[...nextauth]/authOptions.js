@@ -1,63 +1,67 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
+import clientPromise from "@/libs/mongodb";
+import { MongoDBAdapter } from "@auth/mongodb-adapter"
 
 export const authOptions = {
-  // Configure one or more authentication providers
+  adapter: MongoDBAdapter(clientPromise),
   providers: [
     CredentialsProvider({
-      // The name to display on the sign in form (e.g. 'Sign in with...')
-      name: "Sign in",
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
-      credentials: {
-        email: {
-          label: "Email",
-          type: "email",
-          placeholder: "example@email.com",
-        },
-        password: { label: "Password", type: "password" },
-      },
+      // name: "credentials",
+      // credentials: {
+      //   email: {
+      //     label: "Email",
+      //     type: "email",
+      //     placeholder: "example@email.com",
+      //   },
+      //   password: { label: "Password", type: "password" },
+      // },
       async authorize(credentials) {
-
         const res = await fetch("http://localhost:3000/api/auth/login", {
           method: "POST",
-          body: JSON.stringify(
-            { email: credentials.email },
-          ),
+          body: JSON.stringify({ email: credentials.email }),
           headers: { "Content-Type": "application/json" },
         });
 
-        const { data } = await res.json();
+        const data = await res.json();
+        const user = data.user[0];
 
-        if (bcrypt.compare(credentials.password, data.password)) {
-          return data;
+        if (!user) {
+          return null;
+        }
+
+        const match = await bcrypt.compare(credentials.password, user.password);
+
+        if (match) {
+          return { _id: user._id, email: user.email, name: user.name};
         } else {
           return null;
         }
       },
     }),
   ],
+  session: {
+    strategy: "jwt",
+    maxAge: 2 * 60 * 60, // 2 hours
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+  debug: process.env.NODE_ENV === "development",
+  callbacks: {
+    async jwt({token, user, session}) {
+      if (user) {
+        token.user = { _id: user._id, email: user.email, name: user.name};
+      }
+      return token;
+  },
+  async session({session, token, user}) {
+    session.user = token.user;
+      return session;
+  },
+},
   pages: {
     signIn: "/login",
-  },
-  callbacks: {
-    session: ({ session, token }) => {
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: token.id,
-          randomKey: token.randomKey,
-        },
-      };
-    },
-  },
-  // session: {
-  //   strategy: "jwt",
-  //   maxAge: 2 * 60 * 60, // 2 hours
-  // }
+  }
 };
+
 export default NextAuth(authOptions);

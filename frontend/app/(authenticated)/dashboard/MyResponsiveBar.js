@@ -1,56 +1,55 @@
 import { ResponsiveBar } from '@nivo/bar'
+import * as React from 'react';
+import { Typography } from "@mui/material";
 
-const getIdData = async (id) => {
-    try {
-      const res = await fetch(
-        "http://127.0.0.1:3000/api/dashboard/MyResponsiveBar/id?id=" + id,
-        {
-          cache: "no-store",
-        }
-      );
-  
-      if (!res.ok) throw new Error("Failed to fetch logs.");
-  
-      return res.json();
-    } catch (error) {
-      console.log("Error getting logs: ", error);
-    }
-  };
+const getLogData = async (id) => {
+  try {
+    const res = await fetch(
+      "http://127.0.0.1:3000/api/dashboard/MyResponsiveBar?id=" + id,
+      {
+        cache: "no-store",
+      }
+    );
 
-  const getKeyData = async (key) => {
-    try {
-      const res = await fetch(
-        "http://127.0.0.1:3000/api/dashboard/MyResponsiveBar/key?key=" + key,
-        {
-          cache: "no-store",
-        }
-      );
-  
-      if (!res.ok) throw new Error("Failed to fetch logs.");
-  
-      return res.json();
-    } catch (error) {
-      console.log("Error getting logs: ", error);
-    }
-  };
+    if (!res.ok) throw new Error("Failed to fetch logs.");
 
+    return res.json();
+  } catch (error) {
+    console.log("Error getting logs: ", error);
+  }
+};
 
-const MyResponsiveBar = ({ id, keys }) => {
-
+const MyResponsiveBar = ({id}) => {
     const [logData, setLogData] = React.useState(null);
-    const [idData, setIdData] = React.useState(null);
-    const [keyData, setKeyData] = React.useState(null);
 
+    React.useEffect(() => {
+      setInterval(async () => {
+        getLogData(id).then(({data}) => {
+          setLogData(data);
+        });
+      }, 5000);
+    }, []);
+
+    if (!logData) {
+      return (
+       <Typography variant="body1" color="inherit" textAlign="center">
+         Loading...
+       </Typography>
+     );
+   }
+ 
     return (
     <ResponsiveBar
         data={logData}
-        keys={keys}
+        groupMode="grouped"
         indexBy="id"
-        margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+        margin={{ top: 30, right: 70, bottom: 70, left: 70 }}
         padding={0.3}
         valueScale={{ type: 'linear' }}
         indexScale={{ type: 'band', round: true }}
-        colors={{ scheme: 'nivo' }}
+        colors={{ scheme: 'category10' }}
+        colorBy='indexValue'
+        axisBottom={false}
         borderColor={{
             from: 'color',
             modifiers: [
@@ -62,3 +61,5 @@ const MyResponsiveBar = ({ id, keys }) => {
         }}
     />
 )}
+
+export default MyResponsiveBar;

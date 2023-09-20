@@ -44,8 +44,7 @@ const MyResponsivePie = ({id}) => {
     <ResponsivePie
       data={logData}
       colors={{ scheme: "category10" }}
-      margin={{ top: 40, right: 0, bottom: 80, left: 0 }}
-      
+      margin={{ top: 30, right: 70, bottom: 70, left: 70 }}
       innerRadius={0.5}
       padAngle={0.7}
       cornerRadius={3}
@@ -64,6 +63,7 @@ const MyResponsivePie = ({id}) => {
         from: "color",
         modifiers: [["darker", 2]],
       }}
+      fit={true}
     />
   );
 };
