@@ -25,18 +25,22 @@ function TablePaginationActions(props) {
   const { count, page, rowsPerPage, onPageChange } = props;
 
   const handleFirstPageButtonClick = (event) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     onPageChange(event, 0);
   };
 
   const handleBackButtonClick = (event) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     onPageChange(event, page - 1);
   };
 
   const handleNextButtonClick = (event) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     onPageChange(event, page + 1);
   };
 
   const handleLastPageButtonClick = (event) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
 
@@ -127,7 +131,7 @@ export default function CollapsibleTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const emptyRows =
-  page > 0 ? Math.max(0, (1 + page) * rowsPerPage - count) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - count) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -171,23 +175,22 @@ export default function CollapsibleTable() {
         </TableBody>
       </Table>
       <TablePagination
-              component="div"
-              rowsPerPageOptions={[5, 10, 15]}
-              colSpan={3}
-              count={count}
-              page={page}
-              onPageChange={handleChangePage}
-              rowsPerPage={rowsPerPage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              SelectProps={{
-                inputProps: {
-                  'aria-label': 'rows per page',
-                },
-                native: true,
-              }}
-              ActionsComponent={TablePaginationActions}
-            />
-
+        component="div"
+        rowsPerPageOptions={[5, 10, 15]}
+        colSpan={3}
+        count={count}
+        page={page}
+        onPageChange={handleChangePage}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        SelectProps={{
+          inputProps: {
+            "aria-label": "rows per page",
+          },
+          native: true,
+        }}
+        ActionsComponent={TablePaginationActions}
+      />
     </TableContainer>
   );
 }

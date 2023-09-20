@@ -17,7 +17,7 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import ThemeChanger from "@/app/components/ThemeChanger";
-import { signOut } from "next-auth/react";
+import SettingsMenu from "./SettingsMenu";
 
 const pages = ["Log Viewer", "IDS Management", "Team Management"];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -144,43 +144,11 @@ export default function ResponsiveAppBar() {
 
           {/* Mobile and Desktop: Settings Menu */}
           <Box sx={{ flexGrow: 0 }}>
-            <IconButton
-              disableRipple={true}
-              // onClick={}
-            >
-              <ThemeChanger />
-            </IconButton>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Gigachad" src="https://dudeproducts.com/cdn/shop/articles/gigachad_1068x.jpg?v=1667928905" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={()=>{
-                    if (setting === 'Logout') {
-                      signOut();
-                    }
-                  }}>{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            <SettingsMenu 
+            handleOpenUserMenu={handleOpenUserMenu} 
+            anchorElUser={anchorElUser} 
+            handleCloseUserMenu={handleCloseUserMenu}
+            settings={settings} />
           </Box>
         </Toolbar>
       </Container>

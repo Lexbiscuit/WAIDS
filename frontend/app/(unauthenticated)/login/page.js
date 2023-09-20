@@ -15,6 +15,7 @@ import {
   Link,
 } from "@mui/material";
 import {signIn, signOut, useSession} from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const validationSchema = yup.object({
   email: yup
@@ -25,6 +26,12 @@ const validationSchema = yup.object({
 });
 
 export default function Login() {
+  const {data: session, status} = useSession();
+  if (session) {
+    useRouter().push("/dashboard");
+  }
+
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -35,9 +42,10 @@ export default function Login() {
       const result = await signIn("credentials", {
         email: values.email,
         password: values.password,
-        redirect: true,
-        callbackUrl: "/dashboard"
+        redirect: false,
       });
+      if (result.error){ alert("Login failed");} 
+      else { router.push("/dashboard"); }
     },
   });
 

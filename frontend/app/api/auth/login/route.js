@@ -3,22 +3,20 @@ import User from "@/models/user";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
-  const credentials = await request.json();
+  const body = await request.json();
+  const { email } = body;
 
-  if (
-    !credentials ||
-    credentials.email == null
-  ) {
+  if ( !email ) {
     return null;
   }
 
   await connectMongoDB();
-  const data = await User.find({
-    email: `${credentials.email}`
+  const user = await User.find({
+    email: `${email}`
   });
 
-  if (data.length == 1) {
-    return NextResponse.json({ data });
+  if (user.length == 1) {
+    return NextResponse.json({ user });
   } else {
     return null;
   }

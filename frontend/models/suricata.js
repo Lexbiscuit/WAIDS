@@ -1,18 +1,18 @@
 import mongoose, { Schema } from "mongoose";
 
 const suricataSchema = new Schema({
-  generator_id: String,
-  signature_id: String,
-  signature_rev_id: String,
+  generator_id: Number,
+  signature_id: Number,
+  signature_rev_id: Number,
   description: String,
   classification: String,
-  priority: String,
-  protocol: String,
+  priority: Number,
+  protocol: Number,
   src_addr: String,
-  src_port: String,
+  src_port: Number,
   dest_addr: String,
-  dest_port: String,
-  time: Date,
+  dest_port: Number,
+  timestamp: Date,
 },
 {
   collection: "Suricata",

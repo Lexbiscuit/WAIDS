@@ -4,14 +4,14 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { getToken } from "next-auth/jwt";
 
-export async function GET(req) {
+export async function GET(request) {
   // const session = await getServerSession();
   // if (!session) {
   //   return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   // }
 
-  await connectMongoDB();
-  const data = await Suricata.find().sort({ timestamp: -1 }).limit(10);
+  await connectMongoDB(request);
+  const data = await Suricata.find({"priority": 3}).count();
   const response = NextResponse.json({ data });
   response.headers.append("Access-Control-Allow-Origin", "*");
   return response;

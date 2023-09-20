@@ -1,5 +1,5 @@
-import { Providers as ThemeProviders } from "./providers";
-import Providers from "@/app/components/Providers";
+import { ThemeProvider } from "./components/ThemeProvider";
+import SessionProvider from "@/app/components/SessionProvider";
 import React from "react";
 import PropTypes from 'prop-types';
 import "./globals.css";
@@ -14,9 +14,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <body>
-        <Providers>
-          <ThemeProviders>{children}</ThemeProviders>
-        </Providers>
+        <SessionProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   );

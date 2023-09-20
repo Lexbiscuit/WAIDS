@@ -3,10 +3,13 @@ import Suricata from "@/models/suricata";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 
-export async function GET(request) {  
+export async function GET(request) {
   const session = await getServerSession();
   if (!session) {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 
   const skip = request.nextUrl.searchParams.get("skip");
@@ -14,9 +17,10 @@ export async function GET(request) {
 
   await connectMongoDB();
   const data = await Suricata.find()
+    .sort({ timestamp: -1 })
     .skip(parseInt(skip))
     .limit(parseInt(limit));
   const response = NextResponse.json({ data });
-  response.headers.append('Access-Control-Allow-Origin', '*');
+  response.headers.append("Access-Control-Allow-Origin", "*");
   return response;
 }
