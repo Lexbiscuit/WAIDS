@@ -23,11 +23,10 @@ const subscriptionOptions = [
   { value: "basic", label: "Basic" },
   { value: "advanced", label: "Advanced" },
   { value: "premium", label: "Premium" },
-  
 ];
 
 const tierColors = {
-  basic: "#CD7F32",   // Example color for Basic tier
+  basic: "#CD7F32", // Example color for Basic tier
   advanced: "#C0C0C0", // Example color for Advance tier
   premium: "#FFD700", // Example color for Premium tier
 };
@@ -52,12 +51,14 @@ const getTierCard = (tier) => {
   switch (tier) {
     case "basic":
       return (
-        <Card style = {cardStyle}>
+        <Card style={cardStyle}>
           <CardContent>
             {/* Add content for the Basic tier card */}
             <Grid container rowSpacing={2} textAlign="center">
               <Grid item xs={12}>
-                <Typography variant="h5" fontWeight="bold">[Basic]</Typography>
+                <Typography variant="h5" fontWeight="bold">
+                  [Basic]
+                </Typography>
               </Grid>
 
               <Grid item xs={12}>
@@ -73,29 +74,37 @@ const getTierCard = (tier) => {
               </Grid>
 
               <Grid item xs={12}>
-                <Typography variant="body1">✓ Access to Log Input Plugins</Typography>
+                <Typography variant="body1">
+                  ✓ Access to Log Input Plugins
+                </Typography>
               </Grid>
 
               <Grid item xs={12}>
-                <Typography variant="body1">✓ Ticket and Chat Support</Typography>
+                <Typography variant="body1">
+                  ✓ Ticket and Chat Support
+                </Typography>
               </Grid>
 
               <Grid item xs={12}>
-                <Typography variant="body1">✓ Basic Authentication <br />+<br/>Access Control</Typography>
+                <Typography variant="body1">
+                  ✓ Basic Authentication <br />+<br />
+                  Access Control
+                </Typography>
               </Grid>
-
             </Grid>
-         </CardContent>
+          </CardContent>
         </Card>
       );
     case "advanced":
       return (
-        <Card style = {cardStyle}>
+        <Card style={cardStyle}>
           <CardContent>
             {/* Add content for the Basic tier card */}
             <Grid container rowSpacing={2} textAlign="center">
               <Grid item xs={12}>
-                <Typography variant="h5" fontWeight="bold">[Advanced]</Typography>
+                <Typography variant="h5" fontWeight="bold">
+                  [Advanced]
+                </Typography>
               </Grid>
 
               <Grid item xs={12}>
@@ -103,39 +112,48 @@ const getTierCard = (tier) => {
               </Grid>
 
               <Grid item xs={12}>
-                <Typography variant="body1">✓ 5TB Cloud Storage
-</Typography>
+                <Typography variant="body1">✓ 5TB Cloud Storage</Typography>
               </Grid>
 
               <Grid item xs={12}>
-                <Typography variant="body1">✓ 20 Protected Endpoints</Typography>
+                <Typography variant="body1">
+                  ✓ 20 Protected Endpoints
+                </Typography>
               </Grid>
 
               <Grid item xs={12}>
-                <Typography variant="body1">✓ Access to Log Input Plugins</Typography>
+                <Typography variant="body1">
+                  ✓ Access to Log Input Plugins
+                </Typography>
               </Grid>
 
               <Grid item xs={12}>
-                <Typography variant="body1">✓ Ticket, Chat and Call Support</Typography>
+                <Typography variant="body1">
+                  ✓ Ticket, Chat and Call Support
+                </Typography>
               </Grid>
 
               <Grid item xs={12}>
-                <Typography variant="body1">✓ Custom Authentication<br />+<br/ >Role-based Access Control</Typography>
+                <Typography variant="body1">
+                  ✓ Custom Authentication
+                  <br />+<br />
+                  Role-based Access Control
+                </Typography>
               </Grid>
-
             </Grid>
-         </CardContent>
+          </CardContent>
         </Card>
       );
     case "premium":
       return (
-
-        <Card style = {cardStyle}>
+        <Card style={cardStyle}>
           <CardContent>
             {/* Add content for the Basic tier card */}
             <Grid container rowSpacing={2} textAlign="center">
               <Grid item xs={12}>
-                <Typography variant="h5" fontWeight="bold">[Premium]</Typography>
+                <Typography variant="h5" fontWeight="bold">
+                  [Premium]
+                </Typography>
               </Grid>
 
               <Grid item xs={12}>
@@ -147,23 +165,34 @@ const getTierCard = (tier) => {
               </Grid>
 
               <Grid item xs={12}>
-                <Typography variant="body1">✓ 100+ Protected Endpoints</Typography>
+                <Typography variant="body1">
+                  ✓ 100+ Protected Endpoints
+                </Typography>
               </Grid>
 
               <Grid item xs={12}>
-                <Typography variant="body1">✓ Access to Log Input Plugins<br />+<br />Custom made plugins</Typography>
+                <Typography variant="body1">
+                  ✓ Access to Log Input Plugins
+                  <br />+<br />
+                  Custom made plugins
+                </Typography>
               </Grid>
 
               <Grid item xs={12}>
-                <Typography variant="body1">✓ Ticket and Chat Support</Typography>
+                <Typography variant="body1">
+                  ✓ Ticket and Chat Support
+                </Typography>
               </Grid>
 
               <Grid item xs={12}>
-                <Typography variant="body1">✓ Custom Authentication<br />+<br />Role-based Access Control</Typography>
+                <Typography variant="body1">
+                  ✓ Custom Authentication
+                  <br />+<br />
+                  Role-based Access Control
+                </Typography>
               </Grid>
-
             </Grid>
-         </CardContent>
+          </CardContent>
         </Card>
       );
     default:
@@ -171,20 +200,27 @@ const getTierCard = (tier) => {
   }
 };
 
-
 const validationSchema = yup.object({
   email: yup
     .string("Enter your email")
     .email("Enter a valid email")
     .required("Email is required"),
 
-  subscription: yup.string().required().oneOf(["basic", "advanced", "premium"]).label("Selected Subscription"),
+  subscription: yup
+    .string()
+    .required()
+    .oneOf(["basic", "advanced", "premium"])
+    .label("Selected Subscription"),
 
-  phone: yup.string("Enter your phone number").required("Phone number is required").matches(/^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/, "Please enter a valid phone number"),
+  phone: yup
+    .string("Enter your phone number")
+    .required("Phone number is required")
+    .matches(
+      /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/,
+      "Please enter a valid phone number"
+    ),
 
-  name: yup
-    .string("Enter your name")
-    .required("Name is required"),
+  name: yup.string("Enter your name").required("Name is required"),
 
   accounts: yup
     .number("Enter the number of accounts")
@@ -200,10 +236,27 @@ export default function GetQuote() {
       subscription: "",
       name: "",
       accounts: "",
-
+      phone: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {},
+    onSubmit: async (values) => {
+      await fetch("http://localhost:3000/api/getquote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      }).then((res) => {
+        res.json().then((data) => {
+          const {message} = data;
+          if (message == "success") {
+            alert(
+              "Thank you for your interest. We will get back to you as soon as possible."
+            );
+          } else {
+            alert("Something went wrong. Please try again later.");
+          }
+        });
+      });
+    },
   });
 
   return (
@@ -221,15 +274,22 @@ export default function GetQuote() {
           <Typography variant="h5" mb={3}>
             Get Quote
           </Typography>
-          <Paper elevation={3} style={{ padding: "20px", borderRadius: "20px", textAlign:"center" }}>
+          <Paper
+            elevation={3}
+            style={{
+              padding: "20px",
+              borderRadius: "20px",
+              textAlign: "center",
+            }}
+          >
             {/* Content inside the curved rectangle */}
             <Typography variant="body1">
-            Please fill-up the form to get a personalized quote, that bests suits your requirements.
-            
-            Our sales reprensetative will get back to you as soon as possible.
+              Please fill-up the form to get a personalized quote, that bests
+              suits your requirements. Our sales reprensetative will get back to
+              you as soon as possible.
             </Typography>
-            </Paper>
-          
+          </Paper>
+
           <Box component="form" sx={{ mt: 1 }} onSubmit={formik.handleSubmit}>
             <TextField
               margin="normal"
@@ -275,30 +335,32 @@ export default function GetQuote() {
               error={formik.touched.phone && Boolean(formik.errors.phone)}
               helperText={formik.touched.phone && formik.errors.phone}
             />
-            
+
             {/* Radio button group for tier list subscription */}
-            <Typography variant="subtitle1" mt={2} >
-            Select Subscription Tier:
+            <Typography variant="subtitle1" mt={2}>
+              Select Subscription Tier:
             </Typography>
             <Grid container spacing={2}>
-            {subscriptionOptions.map((option) => (
-              <Grid item xs={4} key={option.value}>
-                <Tooltip title={getTierTooltip(option.value)}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={formik.values.subscription === option.value}
-                        onChange={() => formik.setFieldValue("subscription", option.value)}
-                      />
-                    }
-                    label={option.label}
-                  />
-                </Tooltip>
-                {getTierCard(option.value)}
-              </Grid>
-            ))}
-          </Grid>
-          
+              {subscriptionOptions.map((option) => (
+                <Grid item xs={4} key={option.value}>
+                  <Tooltip title={getTierTooltip(option.value)}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={formik.values.subscription === option.value}
+                          onChange={() =>
+                            formik.setFieldValue("subscription", option.value)
+                          }
+                        />
+                      }
+                      label={option.label}
+                    />
+                  </Tooltip>
+                  {getTierCard(option.value)}
+                </Grid>
+              ))}
+            </Grid>
+
             <TextField
               margin="normal"
               required
@@ -321,7 +383,7 @@ export default function GetQuote() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-            Get Quote
+              Get Quote
             </Button>
           </Box>
         </Box>
