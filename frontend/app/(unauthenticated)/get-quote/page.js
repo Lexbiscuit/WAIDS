@@ -342,7 +342,7 @@ export default function GetQuote() {
             </Typography>
             <Grid container spacing={2}>
               {subscriptionOptions.map((option) => (
-                <Grid item xs={4} key={option.value}>
+                <Grid item xs={12} sm={4} key={option.value}>
                   <Tooltip title={getTierTooltip(option.value)}>
                     <FormControlLabel
                       control={
