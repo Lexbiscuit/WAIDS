@@ -1,4 +1,4 @@
-import { ThemeProvider } from "./components/ThemeProvider";
+// import { ThemeProvider } from "./components/ThemeProvider";
 import SessionProvider from "@/app/components/SessionProvider";
 import React from "react";
 import PropTypes from 'prop-types';
@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <body>
         <SessionProvider>
-          <ThemeProvider>{children}</ThemeProvider>
+          {children}
         </SessionProvider>
       </body>
     </html>

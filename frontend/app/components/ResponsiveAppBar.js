@@ -53,7 +53,7 @@ export default function ResponsiveAppBar() {
   );
 
   return (
-    <AppBar position="sticky" enableColorOnDark="true">
+    <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
 

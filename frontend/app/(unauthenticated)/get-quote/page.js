@@ -14,7 +14,6 @@ import {
   Grid,
   Link,
   Paper,
-  TextareaAutosize,
   Tooltip,
   Card,
   CardContent,
@@ -38,7 +37,7 @@ const getTierTooltip = (tier) => {
     case "basic":
       return "Basic Tier: Basic features with a small fee.";
     case "advanced":
-      return "Advance Tier: Advance features for advance users.";
+      return "Advanced Tier: Advanced features for advance users.";
     case "premium":
       return "Premium Tier: Premium features for full control and customisations.";
     default:
@@ -56,92 +55,115 @@ const getTierCard = (tier) => {
         <Card style = {cardStyle}>
           <CardContent>
             {/* Add content for the Basic tier card */}
-            <div style = {{textAlign: "center"}} >
-            <strong style={{ fontSize: "24px" }}>[Basic]</strong>
-            <br></br>
-            <br></br>
-            ✓ 1 user account
-            <br></br>
-            <br></br>
-            ✓ 100GB of cloud storage
-            <br></br>
-            <br></br>
-            ✓ 2 protected endpoints
-            <br></br>
-            <br></br>
-            ✓ Access to collection of log input plugins
-            <br></br>
-            <br></br>
-            ✓ Ticket and chat support
-            <br></br>
-            <br></br>
-            ✓ Basic Authentication and Access Control
-            </div>
-          </CardContent>
+            <Grid container rowSpacing={2} textAlign="center">
+              <Grid item xs={12}>
+                <Typography variant="h5" fontWeight="bold">[Basic]</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body1">✓ 1 User Accounts</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body1">✓ 100GB Cloud Storage</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body1">✓ 2 Protected Endpoints</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body1">✓ Access to Log Input Plugins</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body1">✓ Ticket and Chat Support</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body1">✓ Basic Authentication <br />+<br/>Access Control</Typography>
+              </Grid>
+
+            </Grid>
+         </CardContent>
         </Card>
       );
     case "advanced":
       return (
         <Card style = {cardStyle}>
           <CardContent>
-            {/* Add content for the Advance tier card */}
-            <div style = {{textAlign: "center"}} >
-            <strong style={{ fontSize: "24px" }}>[Advanced]</strong>
-            <br></br>
-            <br></br>
-            ✓ 100 user accounts
-            <br></br>
-            <br></br>
-            ✓ 5TB of cloud storage
-            <br></br>
-            <br></br>
-            ✓ 20 protected endpoints
-            <br></br>
-            <br></br>
-            ✓ Access to collection of log input plugins
-            <br></br>
-            <br></br>
-            ✓ Ticket, chat and call support
-            <br></br>
-            <br></br>
-            ✓ Custom Authentication and 
-            <br></br>
-            <br></br>
-            Role-based Access Control
-            </div>
-          </CardContent>
+            {/* Add content for the Basic tier card */}
+            <Grid container rowSpacing={2} textAlign="center">
+              <Grid item xs={12}>
+                <Typography variant="h5" fontWeight="bold">[Advanced]</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body1">✓ 100 User Accounts</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body1">✓ 5TB Cloud Storage
+</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body1">✓ 20 Protected Endpoints</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body1">✓ Access to Log Input Plugins</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body1">✓ Ticket, Chat and Call Support</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body1">✓ Custom Authentication<br />+<br/ >Role-based Access Control</Typography>
+              </Grid>
+
+            </Grid>
+         </CardContent>
         </Card>
       );
     case "premium":
       return (
+
         <Card style = {cardStyle}>
           <CardContent>
-            {/* Add content for the Premium tier card */}
-            <div style = {{textAlign: "center"}} >
-            <strong style={{ fontSize: "24px" }}>[Premium]</strong>
-            <br></br>
-            <br></br>
-            ✓ 1000+ user accounts
-            <br></br>
-            <br></br>
-            ✓ 10TB+ of cloud storage
-            <br></br>
-            <br></br>
-            ✓ 100+ protected endpoints
-            <br></br>
-            <br></br>
-            ✓ Access to collection of log input plugins + custom made plugins
-            <br></br>
-            <br></br>
-            ✓ Ticket, chat and call support
-            <br></br>
-            <br></br>
-            ✓ Custom Authentication and 
-            <br></br>
-            <br></br>
-            Role-based Access Control
-            </div>
-          </CardContent>
+            {/* Add content for the Basic tier card */}
+            <Grid container rowSpacing={2} textAlign="center">
+              <Grid item xs={12}>
+                <Typography variant="h5" fontWeight="bold">[Premium]</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body1">✓ 1000+ User Accounts</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body1">✓ 10TB+ Cloud Storage</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body1">✓ 100+ Protected Endpoints</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body1">✓ Access to Log Input Plugins<br />+<br />Custom made plugins</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body1">✓ Ticket and Chat Support</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body1">✓ Custom Authentication<br />+<br />Role-based Access Control</Typography>
+              </Grid>
+
+            </Grid>
+         </CardContent>
         </Card>
       );
     default:
@@ -155,10 +177,15 @@ const validationSchema = yup.object({
     .string("Enter your email")
     .email("Enter a valid email")
     .required("Email is required"),
-  message: yup.string("Enter your message").required("Message is required"),
+
+  subscription: yup.string().required().oneOf(["basic", "advanced", "premium"]).label("Selected Subscription"),
+
+  phone: yup.string("Enter your phone number").required("Phone number is required").matches(/^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/, "Please enter a valid phone number"),
+
   name: yup
     .string("Enter your name")
     .required("Name is required"),
+
   accounts: yup
     .number("Enter the number of accounts")
     .positive("Number of accounts must be greater than 0")
@@ -170,17 +197,13 @@ export default function GetQuote() {
   const formik = useFormik({
     initialValues: {
       email: "",
-      message: "",
+      subscription: "",
+      name: "",
+      accounts: "",
+
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
-      const result = await signIn("credentials", {
-        email: values.email,
-        message: values.message,
-        redirect: true,
-        callbackUrl: "/dashboard"
-      });
-    },
+    onSubmit: async (values) => {},
   });
 
   return (
@@ -189,25 +212,24 @@ export default function GetQuote() {
       <Container maxWidth="lg">
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 4,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
-          <Typography component="h1" variant="h5">
+          <Typography variant="h5" mb={3}>
             Get Quote
           </Typography>
-          <br></br>
           <Paper elevation={3} style={{ padding: "20px", borderRadius: "20px", textAlign:"center" }}>
             {/* Content inside the curved rectangle */}
             <Typography variant="body1">
             Please fill-up the form to get a personalized quote, that bests suits your requirements.
-            <br></br>
+            
             Our sales reprensetative will get back to you as soon as possible.
             </Typography>
             </Paper>
-          <br></br>
+          
           <Box component="form" sx={{ mt: 1 }} onSubmit={formik.handleSubmit}>
             <TextField
               margin="normal"
@@ -222,10 +244,8 @@ export default function GetQuote() {
               onBlur={formik.handleBlur}
               error={formik.touched.name && Boolean(formik.errors.name)}
               helperText={formik.touched.name && formik.errors.name}
-              autoFocus
             />
 
-            <Box component="form" sx={{ mt: 1 }} onSubmit={formik.handleSubmit}>
             <TextField
               margin="normal"
               required
@@ -239,10 +259,8 @@ export default function GetQuote() {
               onBlur={formik.handleBlur}
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
-              autoFocus
             />
 
-            <Box component="form" sx={{ mt: 1 }} onSubmit={formik.handleSubmit}>
             <TextField
               margin="normal"
               required
@@ -256,13 +274,10 @@ export default function GetQuote() {
               onBlur={formik.handleBlur}
               error={formik.touched.phone && Boolean(formik.errors.phone)}
               helperText={formik.touched.phone && formik.errors.phone}
-              autoFocus
             />
-            <br></br>
-            <br></br>
-
+            
             {/* Radio button group for tier list subscription */}
-            <Typography component="h2" variant="subtitle1">
+            <Typography variant="subtitle1" mt={2} >
             Select Subscription Tier:
             </Typography>
             <Grid container spacing={2}>
@@ -284,7 +299,6 @@ export default function GetQuote() {
             ))}
           </Grid>
           
-          <Box component="form" sx={{ mt: 1 }} onSubmit={formik.handleSubmit}>
             <TextField
               margin="normal"
               required
@@ -299,11 +313,7 @@ export default function GetQuote() {
               onBlur={formik.handleBlur}
               error={formik.touched.accounts && Boolean(formik.errors.accounts)}
               helperText={formik.touched.accounts && formik.errors.accounts}
-              autoFocus
             />
-            <br></br>
-            <br></br>
-            <br></br>
 
             <Button
               type="submit"
@@ -313,12 +323,6 @@ export default function GetQuote() {
             >
             Get Quote
             </Button>
-            <br></br>
-            <br></br>
-            <br></br>
-            </Box>
-            </Box>
-            </Box>
           </Box>
         </Box>
       </Container>
