@@ -14,50 +14,46 @@ import {
   Grid,
   Link,
   Paper,
-  TextareaAutosize,
 } from "@mui/material";
+import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 
 const validationSchema = yup.object({
+  name: yup
+    .string("Enter your name")
+    .required("Name is required"),
   email: yup
     .string("Enter your email")
     .email("Enter a valid email")
     .required("Email is required"),
   message: yup.string("Enter your message").required("Message is required"),
-  name: yup
-    .string("Enter your name")
-    .required("Name is required"),
 });
 
 export default function Support() {
   const formik = useFormik({
     initialValues: {
+      name: "",
       email: "",
       message: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
-      const result = await signIn("credentials", {
-        email: values.email,
-        message: values.message,
-        redirect: true,
-        callbackUrl: "/dashboard"
-      });
-    },
+    onSubmit: async (values) => {},
   });
 
   return (
     <Box component="main" height="100vh" overflow="auto">
       <ResponsiveAppBar />
       <Container maxWidth="lg">
+        <Typography component="h1" variant="h3" mt={4} textAlign="center">Got a question?</Typography>
+        <Typography component="h1" variant="h3" textAlign="center">We'd love to hear from you.</Typography>
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 4,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
-          <Typography component="h1" variant="h5">
+          <Typography component="h5" variant="h5">
             Support
           </Typography>
           <Box component="form" sx={{ mt: 1 }} onSubmit={formik.handleSubmit}>
@@ -74,10 +70,8 @@ export default function Support() {
               onBlur={formik.handleBlur}
               error={formik.touched.name && Boolean(formik.errors.name)}
               helperText={formik.touched.name && formik.errors.name}
-              autoFocus
             />
 
-            <Box component="form" sx={{ mt: 1 }} onSubmit={formik.handleSubmit}>
             <TextField
               margin="normal"
               required
@@ -91,24 +85,23 @@ export default function Support() {
               onBlur={formik.handleBlur}
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
-              autoFocus
             />
 
-            <textarea
-              rows={5} // Set the number of rows
-              cols={40} // Set the number of columns
-              placeholder="Type your message here..."
-              style={{
-                width: "100%",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-                padding: "10px",
-                fontSize: "16px",
-                margin: "16px 0",
-                boxSizing: "border-box",
-                fontFamily: 'Roboto, Arial, sans-serif',
-                overflowY: "auto", // Add a vertical scrollbar when content exceeds the limit
-              }}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              multiline
+              rows={4}
+              id="message"
+              label="Message"
+              name="message"
+              autoComplete="message"
+              value={formik.values.message}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.message && Boolean(formik.errors.message)}
+              helperText={formik.touched.message && formik.errors.message}
             />
 
             <Button
@@ -121,7 +114,6 @@ export default function Support() {
             </Button>
             </Box>
           </Box>
-        </Box>
       </Container>
     </Box>
   );
