@@ -108,7 +108,7 @@ export default function AboutUs() {
           </Typography>
         </Paper>
 
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{mb: 4}}>
         <Grid container rowSpacing={3}>
           {TeamMembers.map((member) => <MemberGridItem member={member} />
           )}
