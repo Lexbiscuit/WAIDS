@@ -16,20 +16,28 @@ import {
   Paper,
   TextareaAutosize,
   Tooltip,
+  Card,
+  CardContent,
 } from "@mui/material";
 
 const subscriptionOptions = [
   { value: "basic", label: "Basic" },
-  { value: "advance", label: "Advance" },
+  { value: "advanced", label: "Advanced" },
   { value: "premium", label: "Premium" },
   
 ];
+
+const tierColors = {
+  basic: "#CD7F32",   // Example color for Basic tier
+  advanced: "#C0C0C0", // Example color for Advance tier
+  premium: "#FFD700", // Example color for Premium tier
+};
 
 const getTierTooltip = (tier) => {
   switch (tier) {
     case "basic":
       return "Basic Tier: Basic features with a small fee.";
-    case "advance":
+    case "advanced":
       return "Advance Tier: Advance features for advance users.";
     case "premium":
       return "Premium Tier: Premium features for full control and customisations.";
@@ -37,6 +45,110 @@ const getTierTooltip = (tier) => {
       return "";
   }
 };
+
+const getTierCard = (tier) => {
+  const cardStyle = {
+    backgroundColor: tierColors[tier], // Use the color from the color scheme
+  };
+  switch (tier) {
+    case "basic":
+      return (
+        <Card style = {cardStyle}>
+          <CardContent>
+            {/* Add content for the Basic tier card */}
+            <div style = {{textAlign: "center"}} >
+            <strong style={{ fontSize: "24px" }}>[Basic]</strong>
+            <br></br>
+            <br></br>
+            ✓ 1 user account
+            <br></br>
+            <br></br>
+            ✓ 100GB of cloud storage
+            <br></br>
+            <br></br>
+            ✓ 2 protected endpoints
+            <br></br>
+            <br></br>
+            ✓ Access to collection of log input plugins
+            <br></br>
+            <br></br>
+            ✓ Ticket and chat support
+            <br></br>
+            <br></br>
+            ✓ Basic Authentication and Access Control
+            </div>
+          </CardContent>
+        </Card>
+      );
+    case "advanced":
+      return (
+        <Card style = {cardStyle}>
+          <CardContent>
+            {/* Add content for the Advance tier card */}
+            <div style = {{textAlign: "center"}} >
+            <strong style={{ fontSize: "24px" }}>[Advanced]</strong>
+            <br></br>
+            <br></br>
+            ✓ 100 user accounts
+            <br></br>
+            <br></br>
+            ✓ 5TB of cloud storage
+            <br></br>
+            <br></br>
+            ✓ 20 protected endpoints
+            <br></br>
+            <br></br>
+            ✓ Access to collection of log input plugins
+            <br></br>
+            <br></br>
+            ✓ Ticket, chat and call support
+            <br></br>
+            <br></br>
+            ✓ Custom Authentication and 
+            <br></br>
+            <br></br>
+            Role-based Access Control
+            </div>
+          </CardContent>
+        </Card>
+      );
+    case "premium":
+      return (
+        <Card style = {cardStyle}>
+          <CardContent>
+            {/* Add content for the Premium tier card */}
+            <div style = {{textAlign: "center"}} >
+            <strong style={{ fontSize: "24px" }}>[Premium]</strong>
+            <br></br>
+            <br></br>
+            ✓ 1000+ user accounts
+            <br></br>
+            <br></br>
+            ✓ 10TB+ of cloud storage
+            <br></br>
+            <br></br>
+            ✓ 100+ protected endpoints
+            <br></br>
+            <br></br>
+            ✓ Access to collection of log input plugins + custom made plugins
+            <br></br>
+            <br></br>
+            ✓ Ticket, chat and call support
+            <br></br>
+            <br></br>
+            ✓ Custom Authentication and 
+            <br></br>
+            <br></br>
+            Role-based Access Control
+            </div>
+          </CardContent>
+        </Card>
+      );
+    default:
+      return null; // Return null if no tier is selected
+  }
+};
+
 
 const validationSchema = yup.object({
   email: yup
@@ -86,6 +198,16 @@ export default function GetQuote() {
           <Typography component="h1" variant="h5">
             Get Quote
           </Typography>
+          <br></br>
+          <Paper elevation={3} style={{ padding: "20px", borderRadius: "20px", textAlign:"center" }}>
+            {/* Content inside the curved rectangle */}
+            <Typography variant="body1">
+            Please fill-up the form to get a personalized quote, that bests suits your requirements.
+            <br></br>
+            Our sales reprensetative will get back to you as soon as possible.
+            </Typography>
+            </Paper>
+          <br></br>
           <Box component="form" sx={{ mt: 1 }} onSubmit={formik.handleSubmit}>
             <TextField
               margin="normal"
@@ -138,6 +260,7 @@ export default function GetQuote() {
             />
             <br></br>
             <br></br>
+
             {/* Radio button group for tier list subscription */}
             <Typography component="h2" variant="subtitle1">
             Select Subscription Tier:
@@ -156,6 +279,7 @@ export default function GetQuote() {
                     label={option.label}
                   />
                 </Tooltip>
+                {getTierCard(option.value)}
               </Grid>
             ))}
           </Grid>
@@ -177,6 +301,9 @@ export default function GetQuote() {
               helperText={formik.touched.accounts && formik.errors.accounts}
               autoFocus
             />
+            <br></br>
+            <br></br>
+            <br></br>
 
             <Button
               type="submit"
@@ -184,8 +311,11 @@ export default function GetQuote() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Send
+            Get Quote
             </Button>
+            <br></br>
+            <br></br>
+            <br></br>
             </Box>
             </Box>
             </Box>
