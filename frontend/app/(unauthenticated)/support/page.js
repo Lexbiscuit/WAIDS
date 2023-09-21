@@ -36,7 +36,24 @@ export default function Support() {
       message: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {},
+    onSubmit: async (values) => {
+      await fetch("http://localhost:3000/api/support", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      }).then((res) => {
+        res.json().then((data) => {
+          const {message} = data;
+          if (message == "success") {
+            alert(
+              "Thank you for your response. We will get back to you as soon as possible."
+            );
+          } else {
+            alert("Something went wrong. Please try again later.");
+          }
+        });
+      });
+    },
   });
 
   return (
