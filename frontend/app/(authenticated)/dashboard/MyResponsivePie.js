@@ -7,7 +7,7 @@ import { useTheme } from "next-themes";
 const getCategories = async (id) => {
   try {
     const res = await fetch(
-      "http://127.0.0.1:3000/api/dashboard/MyResponsivePie?id=" + id,
+      "http://localhost:3000/api/dashboard/MyResponsivePie?id=" + id,
       {
         cache: "no-store",
       }

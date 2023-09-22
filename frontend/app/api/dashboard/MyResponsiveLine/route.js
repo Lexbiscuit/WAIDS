@@ -3,11 +3,11 @@ import Suricata from "@/models/suricata";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 
-export async function GET(request, res) {
-  // const session = await getServerSession(request, res, authOptions);
-  // if (!session) {
-  //   return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
-  // }
+export async function GET(request) {
+  const session = await getServerSession();
+  if (!session) {
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
 
   const id = request.nextUrl.searchParams.get("id");
     let data = null;
@@ -16,8 +16,12 @@ export async function GET(request, res) {
   if (id == "month") {
      data = await Suricata.aggregate([
       {
+        $match: { $expr: {$eq: [{$year: "$timestamp"}, 2023]} }
+      }, 
+      {
         $group: { _id: { $month: "$timestamp" }, y: { $sum: 1 } },
-      }, {
+      }, 
+      {
         $sort: {_id: 1}
       },
       {

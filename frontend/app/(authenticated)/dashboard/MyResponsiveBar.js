@@ -5,7 +5,7 @@ import { Typography } from "@mui/material";
 const getLogData = async (id) => {
   try {
     const res = await fetch(
-      "http://127.0.0.1:3000/api/dashboard/MyResponsiveBar?id=" + id,
+      "http://localhost:3000/api/dashboard/MyResponsiveBar?id=" + id,
       {
         cache: "no-store",
       }

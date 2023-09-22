@@ -4,13 +4,11 @@ import * as React from "react";
 const getEventOverviewCount = async () => {
   try {
     const res = await fetch(
-      "http://127.0.0.1:3000/api/dashboard/EventOverview/Count",
+      "http://localhost:3000/api/dashboard/EventOverview/Count",
       {
         cache: "no-store",
       }
     );
-
-    if (!res.ok) throw new Error("Failed to fetch logs.");
 
     return res.json();
   } catch (error) {
@@ -21,14 +19,12 @@ const getEventOverviewCount = async () => {
 const getEventOverviewUnique = async () => {
     try {
       const res = await fetch(
-        "http://127.0.0.1:3000/api/dashboard/EventOverview/Unique",
+        "http://localhost:3000/api/dashboard/EventOverview/Unique",
         {
           cache: "no-store",
         }
       );
-  
-      if (!res.ok) throw new Error("Failed to fetch logs.");
-  
+    
       return res.json();
     } catch (error) {
       console.log("Error getting logs: ", error);
@@ -38,14 +34,12 @@ const getEventOverviewUnique = async () => {
   const getEventOverviewCritical = async () => {
     try {
       const res = await fetch(
-        "http://127.0.0.1:3000/api/dashboard/EventOverview/Critical",
+        "http://localhost:3000/api/dashboard/EventOverview/Critical",
         {
           cache: "no-store",
         }
       );
-  
-      if (!res.ok) throw new Error("Failed to fetch logs.");
-  
+    
       return res.json();
     } catch (error) {
       console.log("Error getting logs: ", error);

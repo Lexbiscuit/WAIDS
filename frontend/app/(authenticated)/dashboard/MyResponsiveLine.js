@@ -5,7 +5,7 @@ import { Typography } from "@mui/material";
 const getTimeData = async (id) => {
   try {
     const res = await fetch(
-      "http://127.0.0.1:3000/api/dashboard/MyResponsiveLine?id=" + id,
+      "http://localhost:3000/api/dashboard/MyResponsiveLine?id=" + id,
       {
         cache: "no-store",
       }
@@ -19,7 +19,7 @@ const getTimeData = async (id) => {
   }
 };
 
-const MyResponsiveLine = ({ id }) => {
+const MyResponsiveLine = ({ id, time }) => {
   const [logData, setLogData] = React.useState(null);
 
   React.useEffect(() => {
@@ -58,7 +58,7 @@ const MyResponsiveLine = ({ id }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: "month",
+        legend: `${time}`,
         legendOffset: 36,
         legendPosition: "middle",
       }}

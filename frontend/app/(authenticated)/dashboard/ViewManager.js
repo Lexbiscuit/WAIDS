@@ -115,7 +115,7 @@ function ViewManagerList({ views, setViews }) {
         component: (
           <ChartItem>
             <Title>{chartTitle}</Title>
-            <MyResponsiveLine id={category} />
+            <MyResponsiveLine id={category} time={category} />
           </ChartItem>
         ),
       });
@@ -283,7 +283,7 @@ function FullScreenDialog({
               ].map((item) => item)
             ) : chartType == "line" ? (
               [
-                <MenuItem value="month">Intrusion/month</MenuItem>,
+                <MenuItem value="month">Intrusion/month (recent year)</MenuItem>,
                 <MenuItem value="year">Intrusion/year</MenuItem>,
               ].map((item) => item)
             ) : chartType == "bar" ? (
