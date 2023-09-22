@@ -4,7 +4,7 @@ import Title from "./Title";
 
 const getLogs = async () => {
   try {
-    const res = await fetch("http://127.0.0.1:3000/api/dashboard/LiveLogFeed", {
+    const res = await fetch("http://localhost:3000/api/dashboard/LiveLogFeed", {
       cache: "no-store",
     });
 

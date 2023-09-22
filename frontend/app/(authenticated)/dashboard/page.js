@@ -32,11 +32,11 @@ export default function Dashboard() {
       ),
     },
     {
-      title: "Intrusion/month",
+      title: "Intrusion/month (recent year)",
       component: (
         <ChartItem>
-          <Title>Intrusion/month</Title>
-          <MyResponsiveLine id="month" />
+          <Title>Intrusion/month (recent year)</Title>
+          <MyResponsiveLine id="month" time="month" />
         </ChartItem>
       ),
     },
@@ -45,7 +45,7 @@ export default function Dashboard() {
       component: (
         <ChartItem>
           <Title>Intrusion/year</Title>
-          <MyResponsiveLine id="year" />
+          <MyResponsiveLine id="year" time="year" />
         </ChartItem>
       ),
     },
