@@ -1,51 +1,5 @@
 import { Container, Paper, Grid, Card, Typography } from "@mui/material";
-import * as React from "react";
-
-const getEventOverviewCount = async () => {
-  try {
-    const res = await fetch(
-      "http://localhost:3000/api/dashboard/EventOverview/Count",
-      {
-        cache: "no-store",
-      }
-    );
-
-    return res.json();
-  } catch (error) {
-    console.log("Error getting logs: ", error);
-  }
-};
-
-const getEventOverviewUnique = async () => {
-    try {
-      const res = await fetch(
-        "http://localhost:3000/api/dashboard/EventOverview/Unique",
-        {
-          cache: "no-store",
-        }
-      );
-    
-      return res.json();
-    } catch (error) {
-      console.log("Error getting logs: ", error);
-    }
-  };
-
-  const getEventOverviewCritical = async () => {
-    try {
-      const res = await fetch(
-        "http://localhost:3000/api/dashboard/EventOverview/Critical",
-        {
-          cache: "no-store",
-        }
-      );
-    
-      return res.json();
-    } catch (error) {
-      console.log("Error getting logs: ", error);
-    }
-  };
-  
+import React, { useState, useEffect } from "react";
 
 const CardComponent = ({ children }) => {
   return (
@@ -56,25 +10,26 @@ const CardComponent = ({ children }) => {
 };
 
 export default function EventOverview() {
-  const [eventOverviewTotal, setEventOverviewTotal] = React.useState(null);
-  const [eventOverviewCritical, setEventOverviewCritical] =
-    React.useState(null);
-  const [eventOverviewUniqueSrc, setEventOverviewUniqueSrc] =
-    React.useState(null);
+  const [eventOverview, setEventOverview] = React.useState(null);
 
-  React.useEffect(() => {
-    setInterval(async () => {
-      getEventOverviewCount().then((data) => {
-        setEventOverviewTotal(data.data);
-      });
-
-      getEventOverviewCritical().then((data) => {
-        setEventOverviewCritical(data.data);
-      });
-
-      getEventOverviewUnique().then((data) => {
-        setEventOverviewUniqueSrc(data.data[0].count);
-      });
+  useEffect(() => {
+    setInterval(() => {
+      async function fetchData() {
+        await Promise.all([
+          fetch("http://localhost:3000/api/dashboard/EventOverview/Count", {
+            cache: "no-store",
+          }),
+          fetch("http://localhost:3000/api/dashboard/EventOverview/Unique", {
+            cache: "no-store",
+          }),
+          fetch("http://localhost:3000/api/dashboard/EventOverview/Critical", {
+            cache: "no-store",
+          }),
+        ])
+          .then((res) => Promise.all(res.map((r) => r.json())))
+          .then((res) => setEventOverview(res));
+      }
+      fetchData();
     }, 5000);
   }, []);
 
@@ -87,7 +42,7 @@ export default function EventOverview() {
               All Events
             </Typography>
             <Typography variant="h3" color="inherit">
-              {eventOverviewTotal ? eventOverviewTotal : "Loading ..."}
+              {eventOverview ? eventOverview[0] : "Loading ..."}
             </Typography>
           </CardComponent>
         </Grid>
@@ -97,7 +52,7 @@ export default function EventOverview() {
               Critical Events
             </Typography>
             <Typography variant="h3" color="inherit">
-              {eventOverviewCritical ? eventOverviewCritical : "Loading ..."}
+              {eventOverview ? eventOverview[1].length : "Loading ..."}
             </Typography>
           </CardComponent>
         </Grid>
@@ -107,7 +62,7 @@ export default function EventOverview() {
               Unique Source IP
             </Typography>
             <Typography variant="h3" color="inherit">
-              {eventOverviewUniqueSrc ? eventOverviewUniqueSrc : "Loading ..."}
+              {eventOverview ? eventOverview[2] : "Loading ..."}
             </Typography>
           </CardComponent>
         </Grid>
