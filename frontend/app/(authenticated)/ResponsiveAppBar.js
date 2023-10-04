@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,20 +12,26 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import Menu from '@mui/material/Menu';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
+import Menu from "@mui/material/Menu";
+import Avatar from "@mui/material/Avatar";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
 import ThemeChanger from "@/app/components/ThemeChanger";
 import SettingsMenu from "./SettingsMenu";
 
-const pages = ["Log Viewer", "IDS Management", "Team Management"];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-const BASE_URL = "http://localhost:3000/dashboard/"
+const pages = [
+  "Log Viewer",
+  "IDS Sources",
+  "Investigations",
+  "Users",
+  "Alerts",
+];
+const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const BASE_URL = "http://localhost:3000/dashboard/";
 
 export default function ResponsiveAppBar() {
-  const [state, setState] = React.useState({ left: false });
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [state, setState] = useState({ left: false });
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenUserMenu = (event) => setAnchorElUser(event.currentTarget);
   const handleCloseUserMenu = () => setAnchorElUser(null);
@@ -52,8 +58,12 @@ export default function ResponsiveAppBar() {
       <List>
         {pages.map((text) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton href={`${BASE_URL}${text.replace(" ", "").toLowerCase()}`}>
-              <Typography variant="body1" color="inherit">{text}</Typography>
+            <ListItemButton
+              href={`${BASE_URL}${text.replace(" ", "").toLowerCase()}`}
+            >
+              <Typography variant="body1" color="inherit">
+                {text}
+              </Typography>
             </ListItemButton>
           </ListItem>
         ))}
@@ -78,7 +88,7 @@ export default function ResponsiveAppBar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: 'inherit',
+              color: "inherit",
               textDecoration: "none",
             }}
           >
@@ -121,7 +131,7 @@ export default function ResponsiveAppBar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: 'black',
+              color: "black",
               textDecoration: "none",
             }}
           >
@@ -135,20 +145,23 @@ export default function ResponsiveAppBar() {
                 key={page}
                 // onClick={handleCloseNavMenu}
                 href={`${BASE_URL}${page.replace(" ", "").toLowerCase()}`}
-                sx={{ my: 2, display: "block" }}
+                sx={{ my: 2, mx: 1.5, display: "block" }}
               >
-                <Typography variant="body1" color='black' textTransform="none">{page}</Typography>
+                <Typography variant="body1" color="black" textTransform="none">
+                  {page}
+                </Typography>
               </Button>
             ))}
           </Box>
 
           {/* Mobile and Desktop: Settings Menu */}
           <Box sx={{ flexGrow: 0 }}>
-            <SettingsMenu 
-            handleOpenUserMenu={handleOpenUserMenu} 
-            anchorElUser={anchorElUser} 
-            handleCloseUserMenu={handleCloseUserMenu}
-            settings={settings} />
+            <SettingsMenu
+              handleOpenUserMenu={handleOpenUserMenu}
+              anchorElUser={anchorElUser}
+              handleCloseUserMenu={handleCloseUserMenu}
+              settings={settings}
+            />
           </Box>
         </Toolbar>
       </Container>
