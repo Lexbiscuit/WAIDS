@@ -17,8 +17,7 @@ export async function GET() {
     { $group: { _id: "$src_addr" } },
     { $count: "count" },
   ]);
-
-  const response = NextResponse.json(data);
+  const response = NextResponse.json(data[0]);
   response.headers.append("Access-Control-Allow-Origin", "*");
   return response;
 }

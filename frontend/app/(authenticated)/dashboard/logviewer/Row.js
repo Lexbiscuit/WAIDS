@@ -5,8 +5,10 @@ import {
   IconButton,
   Collapse,
   Box,
-  Typography, CardContent,
-  Card, Grid
+  Typography,
+  CardContent,
+  Card,
+  Grid,
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -42,9 +44,10 @@ export default function Row(props) {
         <TableCell component="th" scope="row">
           {getDateString(row.timestamp) + " " + getTimeString(row.timestamp)}
         </TableCell>
-        <TableCell align="left">{row.description}</TableCell>
-        <TableCell align="left">{row.protocol}</TableCell>
-        <TableCell align="left">{row.priority}</TableCell>
+        <TableCell align="left">{row.flow_id}</TableCell>
+        <TableCell align="left">{row.alert.signature}</TableCell>
+        <TableCell align="left">{row.alert.severity}</TableCell>
+        <TableCell align="left">{row.proto}</TableCell>
       </TableRow>
 
       <TableRow>
@@ -57,71 +60,11 @@ export default function Row(props) {
                     Details
                   </Typography>
                   <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <Typography variant="body1">
-                        Date: {getDateString(row.timestamp)}
+                    {row && (
+                      <Typography>
+                        <pre>{JSON.stringify(row, null, 2)}</pre>
                       </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography variant="body1">
-                        Time: {getTimeString(row.timestamp)}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={3}>
-                      <Typography variant="body1">
-                        Generator ID: {row.generator_id}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={3}>
-                      <Typography variant="body1">
-                        Signature ID: {row.signature_id}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={3}>
-                      <Typography variant="body1">
-                        Signature REV ID:{row.signature_rev_id}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={3}>
-                      <Typography variant="body1">
-                        Priority: {row.priority}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography variant="body1">
-                        Description: {row.description}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography variant="body1">
-                        Classification: {row.classification}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography variant="body1">
-                        Protocol: {row.protocol}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography variant="body1">
-                        Source Address: {row.src_addr}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography variant="body1">
-                        Source Port: {row.src_port}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography variant="body1">
-                        Destination Address: {row.dst_addr}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography variant="body1">
-                        Destination Port: {row.dst_port}
-                      </Typography>
-                    </Grid>
+                    )}
                   </Grid>
                 </CardContent>
                 {/* <CardActions>

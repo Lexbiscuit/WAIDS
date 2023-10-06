@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import ResponsiveAppBar from "@/app/components/ResponsiveAppBar";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -14,7 +14,7 @@ import {
   Grid,
   Link,
 } from "@mui/material";
-import {signIn, signOut, useSession} from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const validationSchema = yup.object({
@@ -26,10 +26,15 @@ const validationSchema = yup.object({
 });
 
 export default function Login() {
-  const {data: session, status} = useSession();
+  const { data: session, status } = useSession();
+
   if (session) {
     useRouter().push("/dashboard");
   }
+
+  const [submitting, setSubmitting] = useState(false);
+
+  const toggleSubmitting = () => setSubmitting(!submitting);
 
   const router = useRouter();
   const formik = useFormik({
@@ -39,13 +44,19 @@ export default function Login() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
+      toggleSubmitting();
       const result = await signIn("credentials", {
         email: values.email,
         password: values.password,
         redirect: false,
       });
-      if (result.error){ alert("Login failed");} 
-      else { router.push("/dashboard"); }
+
+      if (result.error) {
+        alert("Login failed");
+        toggleSubmitting();
+      } else {
+        router.push("/dashboard");
+      }
     },
   });
 
@@ -101,6 +112,7 @@ export default function Login() {
               type="submit"
               fullWidth
               variant="contained"
+              disabled={submitting}
               sx={{ mt: 3, mb: 2 }}
             >
               Sign In

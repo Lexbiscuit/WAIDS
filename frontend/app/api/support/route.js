@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export async function POST(request) {
   const body = await request.json();
   const { name, email, message } = body;
-  
+  let response;
   try {
     await connectMongoDB();
     await Support.create({
@@ -13,15 +13,14 @@ export async function POST(request) {
       email: email,
       message: message,
     }).then();
-    const response = NextResponse.json({ message: "success" }, { status: 200 });
-    response.headers.append("Access-Control-Allow-Origin", "*");
+    response = NextResponse.json({ message: "success" }, { status: 200 });
     return response;
   } catch (e) {
-    const response = NextResponse.json(
+    response = NextResponse.json(
       { message: "Something went wrong" },
-      { status: 500 }
+      { status: 500 },
     );
-    response.headers.append("Access-Control-Allow-Origin", "*");
-    return response;
   }
+  response.headers.append("Access-Control-Allow-Origin", "*");
+  return response;
 }

@@ -1,5 +1,5 @@
 import connectMongoDB from "@/libs/mongoose";
-import { Anomaly, Alert } from "@/models/suricata";
+import Suricata from "@/models/suricata";
 import { NextResponse } from "next/server";
 // import { getServerSession } from "next-auth/next";
 
@@ -10,11 +10,12 @@ export async function GET() {
   // }
 
   await connectMongoDB();
-  const data = await Anomaly.aggregate([
-    { $match: { event_type: "anomaly" } },
-    { $group: { _id: "$proto", count: { $sum: 1 } } },
+
+  const data = await Suricata.aggregate([
+    { $match: { event_type: "alert" } },
+    { $limit: 1 },
   ]);
-  const response = NextResponse.json(data);
+  const response = NextResponse.json(data[0]);
   response.headers.append("Access-Control-Allow-Origin", "*");
   return response;
 }

@@ -6,13 +6,13 @@ export async function POST(request) {
   const body = await request.json();
   const { email } = body;
 
-  if ( !email ) {
+  if (!email) {
     return null;
   }
 
   await connectMongoDB();
   const user = await User.find({
-    email: `${email}`
+    email: `${email}`,
   });
 
   if (user.length == 1) {

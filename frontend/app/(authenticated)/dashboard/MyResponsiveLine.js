@@ -1,5 +1,5 @@
 import { ResponsiveLine } from "@nivo/line";
-import * as React from 'react';
+import * as React from "react";
 import { Typography } from "@mui/material";
 
 const getTimeData = async (id) => {
@@ -8,7 +8,7 @@ const getTimeData = async (id) => {
       "http://localhost:3000/api/dashboard/MyResponsiveLine?id=" + id,
       {
         cache: "no-store",
-      }
+      },
     );
 
     if (!res.ok) throw new Error("Failed to fetch logs.");
@@ -25,14 +25,13 @@ const MyResponsiveLine = ({ id, time }) => {
   React.useEffect(() => {
     setInterval(() => {
       getTimeData(id).then((data) => {
-        setLogData(data.data);
+        setLogData(data);
       });
     }, 5000);
-
   }, []);
 
   if (!logData) {
-     return (
+    return (
       <Typography variant="body1" color="inherit" textAlign="center">
         Loading...
       </Typography>
@@ -41,7 +40,7 @@ const MyResponsiveLine = ({ id, time }) => {
 
   return (
     <ResponsiveLine
-      data={[{"id": "Suricata", "data": logData}]}
+      data={[{ id: "Suricata", data: logData }]}
       margin={{ top: 30, right: 80, bottom: 80, left: 80 }}
       xScale={{ type: "point" }}
       yScale={{

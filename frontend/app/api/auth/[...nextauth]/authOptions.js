@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import clientPromise from "@/libs/mongodb";
-import { MongoDBAdapter } from "@auth/mongodb-adapter"
+import { MongoDBAdapter } from "@auth/mongodb-adapter";
 
 export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
@@ -34,7 +34,7 @@ export const authOptions = {
         const match = await bcrypt.compare(credentials.password, user.password);
 
         if (match) {
-          return { _id: user._id, email: user.email, name: user.name};
+          return { _id: user._id, email: user.email, name: user.name };
         } else {
           return null;
         }
@@ -48,20 +48,20 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === "development",
   callbacks: {
-    async jwt({token, user, session}) {
+    async jwt({ token, user, session }) {
       if (user) {
-        token.user = { _id: user._id, email: user.email, name: user.name};
+        token.user = { _id: user._id, email: user.email, name: user.name };
       }
       return token;
-  },
-  async session({session, token, user}) {
-    session.user = token.user;
+    },
+    async session({ session, token, user }) {
+      session.user = token.user;
       return session;
+    },
   },
-},
   pages: {
     signIn: "/login",
-  }
+  },
 };
 
 export default NextAuth(authOptions);

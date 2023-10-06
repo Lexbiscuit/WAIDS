@@ -1,5 +1,5 @@
 import { Container, Paper, Grid, Card, Typography } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 const CardComponent = ({ children }) => {
   return (
@@ -42,7 +42,7 @@ export default function EventOverview() {
               All Events
             </Typography>
             <Typography variant="h3" color="inherit">
-              {eventOverview ? eventOverview[0] : "Loading ..."}
+              {eventOverview ? eventOverview[0].count : "Loading ..."}
             </Typography>
           </CardComponent>
         </Grid>
@@ -52,7 +52,7 @@ export default function EventOverview() {
               Critical Events
             </Typography>
             <Typography variant="h3" color="inherit">
-              {eventOverview ? eventOverview[1].length : "Loading ..."}
+              {eventOverview ? eventOverview[1].count : "Loading ..."}
             </Typography>
           </CardComponent>
         </Grid>
@@ -62,7 +62,7 @@ export default function EventOverview() {
               Unique Source IP
             </Typography>
             <Typography variant="h3" color="inherit">
-              {eventOverview ? eventOverview[2] : "Loading ..."}
+              {eventOverview ? eventOverview[2].count : "Loading ..."}
             </Typography>
           </CardComponent>
         </Grid>
