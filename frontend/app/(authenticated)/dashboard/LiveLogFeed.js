@@ -1,4 +1,13 @@
-import { Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography, TableContainer } from "@mui/material";
+import {
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
+  TableContainer,
+} from "@mui/material";
 import { React, useEffect, useState } from "react";
 import Title from "./Title";
 
@@ -19,19 +28,19 @@ const getLogs = async () => {
 const getDateString = (date) => {
   const d = new Date(date);
   return d.toLocaleDateString();
-}
+};
 
 const getTimeString = (date) => {
   const d = new Date(date);
   return d.toLocaleTimeString();
-}
+};
 
 export default function LiveLogFeed() {
   const [Logs, setLogs] = useState(null);
 
   useEffect(() => {
     setInterval(async () => {
-      const { data } = await getLogs();
+      const data = await getLogs();
       setLogs(data);
     }, 5000);
   }, []);
@@ -47,26 +56,30 @@ export default function LiveLogFeed() {
     <Grid item xs={12}>
       <TableContainer maxWidth="xl" p={2}>
         <Title>Recent Logs</Title>
-      <Table stickyHeader size="small">
-        <TableHead>
-          <TableRow >
-            <TableCell>Date</TableCell>
-            <TableCell>Time</TableCell>
-            <TableCell>Description</TableCell>
-            <TableCell>Priority</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {Logs.map((log, index) => (
-            <TableRow key={index}>
-              <TableCell>{getDateString(log.timestamp)}</TableCell>
-              <TableCell>{getTimeString(log.timestamp)}</TableCell>
-              <TableCell>{log.description}</TableCell>
-              <TableCell>{log.priority}</TableCell>
+        <Table stickyHeader size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Date</TableCell>
+              <TableCell>Time</TableCell>
+              <TableCell>Signature</TableCell>
+              <TableCell>Category</TableCell>
+              <TableCell>Severity</TableCell>
+              <TableCell>Protocol</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {Logs.map((log, index) => (
+              <TableRow key={index}>
+                <TableCell>{getDateString(log.timestamp)}</TableCell>
+                <TableCell>{getTimeString(log.timestamp)}</TableCell>
+                <TableCell>{log.alert.signature}</TableCell>
+                <TableCell>{log.alert.category}</TableCell>
+                <TableCell>{log.alert.severity}</TableCell>
+                <TableCell>{log.proto}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </TableContainer>
     </Grid>
   );

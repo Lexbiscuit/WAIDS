@@ -8,7 +8,7 @@ export async function GET(request) {
   if (!session) {
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -16,11 +16,13 @@ export async function GET(request) {
   const limit = request.nextUrl.searchParams.get("limit");
 
   await connectMongoDB();
-  const data = await Suricata.find()
-    .sort({ timestamp: -1 })
-    .skip(parseInt(skip))
-    .limit(parseInt(limit));
-  const response = NextResponse.json({ data });
+  const data = await Suricata.aggregate([
+    { $match: { event_type: "alert" } },
+    { $sort: { timestamp: -1 } },
+    { $skip: parseInt(skip) },
+    { $limit: parseInt(limit) },
+  ]);
+  const response = NextResponse.json(data);
   response.headers.append("Access-Control-Allow-Origin", "*");
   return response;
 }

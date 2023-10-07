@@ -63,7 +63,7 @@ export default function SettingsMenu({
         ))}
       </Menu>
       <Typography variant="body1" color="inherited">
-        HELLO, {session? session.user.name.toUpperCase() : ""}
+        {session ? session.user.name.toUpperCase() : ""}
       </Typography>
     </>
   );

@@ -1,5 +1,5 @@
 "use client";
-import * as React from "react";
+import React, { useState } from "react";
 import { Box, Container, Grid, Typography, Divider } from "@mui/material";
 import ResponsiveAppBar from "@/app/(authenticated)/ResponsiveAppBar";
 import LiveLogFeed from "./LiveLogFeed";
@@ -10,9 +10,10 @@ import MyResponsiveLine from "./MyResponsiveLine";
 import MyResponsiveBar from "./MyResponsiveBar";
 import ViewManager from "./ViewManager";
 import EventOverview from "./EventOverview";
+import MyTabContext from "./MyTabContext";
 
 export default function Dashboard() {
-  const [views, setViews] = React.useState([
+  const [views, setViews] = useState([
     {
       title: "Protocol",
       component: (
@@ -59,26 +60,27 @@ export default function Dashboard() {
       ),
     },
   ]);
-
   return (
     <Box component="main" height="100vh" overflow="auto">
       <ResponsiveAppBar />
       <EventOverview />
-      {/* CHARTS */}
-      <Container maxWidth="xl" sx={{ py: 4 }}>
-        <Grid container spacing={0.5} m={0}>
-          <Grid
-            item
-            xs={12}
-            sx={{ display: "flex", flexDirection: "row-reverse" }}
-          >
-            <ViewManager views={views} setViews={setViews} />
+      <MyTabContext>
+        {/* CHARTS */}
+        <Container maxWidth="xl" sx={{ py: 4 }}>
+          <Grid container spacing={0.5} m={0}>
+            <Grid
+              item
+              xs={12}
+              sx={{ display: "flex", flexDirection: "row-reverse" }}
+            >
+              {/* <ViewManager views={views} setViews={setViews} /> */}
+            </Grid>
+            {views.map((view) => view.component)}
+            {/* LIVE LOG FEED */}
+            <LiveLogFeed />
           </Grid>
-          {views.map((view) => view.component)}
-          {/* LIVE LOG FEED */}
-          <LiveLogFeed />
-        </Grid>
-      </Container>
+        </Container>
+      </MyTabContext>
     </Box>
   );
 }

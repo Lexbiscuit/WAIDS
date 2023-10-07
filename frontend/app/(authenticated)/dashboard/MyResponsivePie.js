@@ -2,7 +2,6 @@
 import { ResponsivePie } from "@nivo/pie";
 import { React, useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
-import { useTheme } from "next-themes";
 
 const getCategories = async (id) => {
   try {
@@ -10,7 +9,7 @@ const getCategories = async (id) => {
       "http://localhost:3000/api/dashboard/MyResponsivePie?id=" + id,
       {
         cache: "no-store",
-      }
+      },
     );
 
     if (!res.ok) throw new Error("Failed to fetch logs.");
@@ -21,22 +20,22 @@ const getCategories = async (id) => {
   }
 };
 
-const MyResponsivePie = ({id}) => {
+const MyResponsivePie = ({ id }) => {
   const [logData, setLogData] = useState(null);
 
   useEffect(() => {
     setInterval(() => {
       getCategories(id).then((data) => {
-        setLogData(data.data);
+        setLogData(data);
       });
     }, 5000);
   }, []);
 
   if (!logData) {
     return (
-        <Typography variant="body1" color="inherit" textAlign="center">
-          Loading...
-        </Typography>
+      <Typography variant="body1" color="inherit" textAlign="center">
+        Loading...
+      </Typography>
     );
   }
 

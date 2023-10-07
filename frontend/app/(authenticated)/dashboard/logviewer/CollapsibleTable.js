@@ -99,7 +99,7 @@ const fetchTableData = async (skip, limit) => {
       `http://localhost:3000/api/logviewer/TableData?skip=${skip}&limit=${limit}`,
       {
         cache: "no-store",
-      }
+      },
     );
 
     if (!res.ok) throw new Error("Failed to fetch logs.");
@@ -144,11 +144,11 @@ export default function CollapsibleTable() {
 
   useEffect(() => {
     fetchTableData(page * rowsPerPage, rowsPerPage).then((data) => {
-      setRows(data.data);
+      setRows(data);
     });
 
     fetchDocumentCount().then((data) => {
-      setCount(data.data[0].count);
+      setCount(data[0].count);
     });
   }, [rowsPerPage, page]);
 
@@ -159,9 +159,10 @@ export default function CollapsibleTable() {
           <TableRow>
             <TableCell />
             <TableCell>Date</TableCell>
-            <TableCell align="left">Description</TableCell>
+            <TableCell align="left">Flow Id</TableCell>
+            <TableCell align="left">Signature</TableCell>
+            <TableCell align="left">Severity</TableCell>
             <TableCell align="left">Protocol</TableCell>
-            <TableCell align="left">Priority</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
