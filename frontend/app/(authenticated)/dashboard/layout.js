@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
-import {redirect} from "next/navigation";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Dashboard",
@@ -10,6 +10,6 @@ export const metadata = {
 
 export default async function DashboardLayout({ children }) {
   const session = await getServerSession(authOptions);
-  if (!session) redirect("/login")
+  if (!session) redirect("/login");
   return <>{children}</>;
 }

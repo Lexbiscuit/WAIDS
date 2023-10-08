@@ -1,7 +1,7 @@
 "use client";
 import { ResponsivePie } from "@nivo/pie";
-import { React, useState, useEffect } from "react";
-import { Box, Typography } from "@mui/material";
+import { useState, useEffect } from "react";
+import { Typography } from "@mui/material";
 
 const getCategories = async (id) => {
   try {
@@ -9,7 +9,7 @@ const getCategories = async (id) => {
       "http://localhost:3000/api/dashboard/MyResponsivePie?id=" + id,
       {
         cache: "no-store",
-      },
+      }
     );
 
     if (!res.ok) throw new Error("Failed to fetch logs.");

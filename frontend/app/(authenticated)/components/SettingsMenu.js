@@ -1,5 +1,3 @@
-import { React, useState } from "react";
-import ThemeChanger from "@/app/components/ThemeChanger";
 import {
   Tooltip,
   IconButton,
@@ -23,9 +21,7 @@ export default function SettingsMenu({
       <IconButton
         disableRipple={true}
         // onClick={}
-      >
-        <ThemeChanger />
-      </IconButton>
+      ></IconButton>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
           <Avatar alt="user avatar" />

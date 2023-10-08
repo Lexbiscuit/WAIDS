@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Container, Grid } from "@mui/material";
 
 const ChartComponent = () => {
@@ -8,7 +8,7 @@ const ChartComponent = () => {
         await Promise.all([fetch(), fetch(), fetch()]);
       }
       fetchData();
-    }, 5000),
+    }, 5000)
   );
 
   <Container maxWidth="xl" sx={{ py: 4 }}>

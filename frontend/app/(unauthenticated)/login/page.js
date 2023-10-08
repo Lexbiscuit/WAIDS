@@ -89,7 +89,6 @@ export default function Login() {
               onBlur={formik.handleBlur}
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
-              autoFocus
             />
             <TextField
               margin="normal"

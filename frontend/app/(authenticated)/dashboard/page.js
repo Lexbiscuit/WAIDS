@@ -1,16 +1,15 @@
 "use client";
-import React, { useState } from "react";
-import { Box, Container, Grid, Typography, Divider } from "@mui/material";
-import ResponsiveAppBar from "@/app/(authenticated)/ResponsiveAppBar";
-import LiveLogFeed from "./LiveLogFeed";
-import MyResponsivePie from "./MyResponsivePie";
-import ChartItem from "./ChartItem";
-import Title from "./Title";
-import MyResponsiveLine from "./MyResponsiveLine";
-import MyResponsiveBar from "./MyResponsiveBar";
-import ViewManager from "./ViewManager";
-import EventOverview from "./EventOverview";
-import MyTabContext from "./MyTabContext";
+import { useState } from "react";
+import { Box, Container, Grid } from "@mui/material";
+import ResponsiveAppBar from "../components/ResponsiveAppBar";
+import LiveLogFeed from "./components/LiveLogFeed";
+import MyResponsivePie from "./components/MyResponsivePie";
+import ChartItem from "./components/ChartItem";
+import Title from "./components/Title";
+import MyResponsiveLine from "./components/MyResponsiveLine";
+import MyResponsiveBar from "./components/MyResponsiveBar";
+import EventOverview from "./components/EventOverview";
+import MyTabContext from "./components/MyTabContext";
 
 export default function Dashboard() {
   const [views, setViews] = useState([
@@ -66,7 +65,7 @@ export default function Dashboard() {
       <EventOverview />
       <MyTabContext>
         {/* CHARTS */}
-        <Container maxWidth="xl" sx={{ py: 4 }}>
+        <Container maxWidth="lg" sx={{ py: 4 }}>
           <Grid container spacing={0.5} m={0}>
             <Grid
               item

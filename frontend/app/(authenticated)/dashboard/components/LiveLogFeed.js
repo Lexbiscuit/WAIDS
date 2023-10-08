@@ -8,7 +8,7 @@ import {
   Typography,
   TableContainer,
 } from "@mui/material";
-import { React, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Title from "./Title";
 
 const getLogs = async () => {
@@ -53,7 +53,7 @@ export default function LiveLogFeed() {
     );
 
   return (
-    <Grid item xs={12}>
+    <Grid item xs={12} mt={4}>
       <TableContainer maxWidth="xl" p={2}>
         <Title>Recent Logs</Title>
         <Table stickyHeader size="small">

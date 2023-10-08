@@ -3,7 +3,6 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Paper from "@mui/material/Paper";
 import Draggable from "react-draggable";
@@ -12,26 +11,20 @@ import EditIcon from "@mui/icons-material/Edit";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Checkbox from "@mui/material/Checkbox";
-import CommentIcon from "@mui/icons-material/Comment";
 import RemoveIcon from "@mui/icons-material/Remove";
-import AddIcon from "@mui/icons-material/Add";
 import { AppBar } from "@mui/material";
 import { Toolbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Typography } from "@mui/material";
 import { Divider } from "@mui/material";
 import Slide from "@mui/material/Slide";
-import { Box } from "@mui/material";
 import { TextField, MenuItem } from "@mui/material";
 import ChartItem from "./ChartItem";
 import Title from "./Title";
 import MyResponsivePie from "./MyResponsivePie";
 import MyResponsiveLine from "./MyResponsiveLine";
 import MyResponsiveBar from "./MyResponsiveBar";
-
 
 function PaperComponent(props) {
   return (
@@ -233,7 +226,7 @@ function FullScreenDialog({
         </Toolbar>
       </AppBar>
       <List>
-      <ListItem>
+        <ListItem>
           <TextField
             id="outlined-title"
             label="Chart Title"
@@ -283,7 +276,9 @@ function FullScreenDialog({
               ].map((item) => item)
             ) : chartType == "line" ? (
               [
-                <MenuItem value="month">Intrusion/month (recent year)</MenuItem>,
+                <MenuItem value="month">
+                  Intrusion/month (recent year)
+                </MenuItem>,
                 <MenuItem value="year">Intrusion/year</MenuItem>,
               ].map((item) => item)
             ) : chartType == "bar" ? (

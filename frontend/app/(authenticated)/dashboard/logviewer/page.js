@@ -1,20 +1,9 @@
 "use client";
-import {
-  Box,
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-  CardActions,
-  Button,
-  TextField,
-  Container,
-  InputAdornment,
-} from "@mui/material";
+import { Box, TextField, Container, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import ResponsiveAppBar from "@/app/(authenticated)/ResponsiveAppBar";
-import CollapsibleTable from "./CollapsibleTable";
-import { React, useState } from "react";
+import ResponsiveAppBar from "@/app/(authenticated)/components/ResponsiveAppBar";
+import CollapsibleTable from "./component/CollapsibleTable";
+import { useState } from "react";
 
 export default function LogView() {
   const [searchTerm, setSearchTerm] = useState("");

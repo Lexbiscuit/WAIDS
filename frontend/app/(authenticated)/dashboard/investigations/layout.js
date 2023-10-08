@@ -3,12 +3,12 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Log Viewer",
+  title: "Investigations",
   //   Description for Login Page
-  description: "View and manage NIDS log data.",
+  description: "Investigations Page for the WAIDS Web Application.",
 };
 
-export default async function LogViewerLayout({ children }) {
+export default async function InvestigationsLayout({ children }) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/login");
   return <>{children}</>;
