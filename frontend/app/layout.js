@@ -1,8 +1,8 @@
 // import { ThemeProvider } from "./components/ThemeProvider";
-import SessionProvider from "@/app/components/SessionProvider";
+import SessionProvider from "@/app/_providers/SessionProvider";
 import React from "react";
 import PropTypes from 'prop-types';
-import "./globals.css";
+import "./_styles/globals.css";
 
 export const metadata = {
   title: "WAIDS Home",

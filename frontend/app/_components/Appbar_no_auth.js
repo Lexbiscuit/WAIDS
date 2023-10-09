@@ -13,11 +13,10 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { usePathname } from "next/navigation";
-import ThemeChanger from "./ThemeChanger";
 
 const pages = ["About Us", "Support", "Get Quote"];
 
-export default function ResponsiveAppBar() {
+export default function Appbar_no_auth() {
   const [state, setState] = React.useState({ left: false });
   const pathname = usePathname();
 
@@ -136,8 +135,6 @@ export default function ResponsiveAppBar() {
 
           {/* Mobile and Desktop: Settings Menu */}
           <Box sx={{ flexGrow: 0 }}>
-<ThemeChanger />
-
             {pathname == "/login" ? null : (
               <Button
                 variant="outlined"

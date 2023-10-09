@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import ResponsiveAppBar from "@/app/components/ResponsiveAppBar";
+import ResponsiveAppBar from "@/app/_components/Appbar_no_auth";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import {

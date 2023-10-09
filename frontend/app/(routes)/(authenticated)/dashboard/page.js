@@ -1,15 +1,16 @@
 "use client";
 import { useState } from "react";
 import { Box, Container, Grid } from "@mui/material";
-import ResponsiveAppBar from "../components/ResponsiveAppBar";
-import LiveLogFeed from "./components/LiveLogFeed";
-import MyResponsivePie from "./components/MyResponsivePie";
-import ChartItem from "./components/ChartItem";
-import Title from "./components/Title";
-import MyResponsiveLine from "./components/MyResponsiveLine";
-import MyResponsiveBar from "./components/MyResponsiveBar";
-import EventOverview from "./components/EventOverview";
-import MyTabContext from "./components/MyTabContext";
+
+import Appbar_auth from "@/app/_components/Appbar_auth";
+import LiveLogFeed from "@/app/_components/_dashboard/LiveLogFeed";
+import MyResponsivePie from "@/app/_components/_dashboard/MyResponsivePie";
+import ChartItem from "@/app/_components/_dashboard/ChartItem";
+import Title from "@/app/_components/_dashboard/Title";
+import MyResponsiveLine from "@/app/_components/_dashboard/MyResponsiveLine";
+import MyResponsiveBar from "@/app/_components/_dashboard/MyResponsiveBar";
+import EventOverview from "@/app/_components/_dashboard/EventOverview";
+import MyTabContext from "@/app/_components/_dashboard/MyTabContext";
 
 export default function Dashboard() {
   const [views, setViews] = useState([
@@ -61,7 +62,7 @@ export default function Dashboard() {
   ]);
   return (
     <Box component="main" height="100vh" overflow="auto">
-      <ResponsiveAppBar />
+      <Appbar_auth />
       <EventOverview />
       <MyTabContext>
         {/* CHARTS */}

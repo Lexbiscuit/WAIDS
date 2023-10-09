@@ -8,19 +8,19 @@ export async function GET(request) {
   if (!session) {
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 
-  const skip = request.nextUrl.searchParams.get("skip");
-  const limit = request.nextUrl.searchParams.get("limit");
+  // const skip = request.nextUrl.searchParams.get("skip");
+  // const limit = request.nextUrl.searchParams.get("limit");
 
   await connectMongoDB();
   const data = await Suricata.aggregate([
     { $match: { event_type: "alert" } },
     { $sort: { timestamp: -1 } },
-    { $skip: parseInt(skip) },
-    { $limit: parseInt(limit) },
+    // { $skip: parseInt(skip) },
+    // { $limit: parseInt(limit) },
   ]);
   const response = NextResponse.json(data);
   response.headers.append("Access-Control-Allow-Origin", "*");

@@ -1,27 +1,25 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
+  Column,
+  Table as ReactTable,
+  PaginationState,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
+  getPaginationRowModel,
+  ColumnDef,
+  OnChangeFn,
   useReactTable,
   createColumnHelper,
 } from "@tanstack/react-table";
 import { Box, Typography, Select, MenuItem } from "@mui/material";
-import "./index.css";
+import "../_styles/tanstack.css";
 
 export default function TanstackTable(props) {
   const [sorting, setSorting] = useState([]);
-  const [data, setData] = useState([...props.data]);
-
-  const columnHelper = createColumnHelper();
-  const columns = props.columns.map((col) =>
-    columnHelper.accessor(`${col.accessor}`, {
-      header: `${col.header}`,
-      cell: (info) => info.getValue(),
-      footer: (info) => info.column.id,
-    })
-  );
+  const data = useMemo(() => [...props.data], [props.data]);
+  const columns = useMemo(() => [...props.columns], []);
 
   const table = useReactTable({
     data,
@@ -31,6 +29,7 @@ export default function TanstackTable(props) {
     },
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     debugTable: true,
   });
@@ -68,18 +67,15 @@ export default function TanstackTable(props) {
           ))}
         </thead>
         <tbody>
-          {table
-            .getRowModel()
-            .rows.slice(0, 10)
-            .map((row) => (
-              <tr key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
+          {table.getRowModel().rows.map((row) => (
+            <tr key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))}
         </tbody>
       </table>
 
@@ -175,7 +171,6 @@ export default function TanstackTable(props) {
           ))}
         </select>
       </Box>
-      {/* <div className="flex items-center gap-2"></div> */}
     </>
   );
 }

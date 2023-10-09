@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Container } from "@mui/material";
-import ResponsiveAppBar from "../../components/ResponsiveAppBar";
-import InvestigationTable from "./components/InvestigationTable";
+import ResponsiveAppBar from "@/app/_components/Appbar_auth";
+import InvestigationTable from "@/app/_components/_investigation/InvestigationTable";
 
 const InvestigationsPage = async () => {
   return (

@@ -23,9 +23,9 @@ const pages = [
   "Alerts",
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
-const BASE_URL = "http://localhost:3000/dashboard/";
+// const BASE_URL = "http://localhost:3000/dashboard/";
 
-export default function ResponsiveAppBar() {
+export default function Appbar_auth() {
   const [state, setState] = useState({ left: false });
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -52,13 +52,13 @@ export default function ResponsiveAppBar() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {pages.map((text) => (
-          <ListItem key={text} disablePadding>
+        {pages.map((page) => (
+          <ListItem key={page} disablePadding>
             <ListItemButton
-              href={`${BASE_URL}${text.replace(" ", "").toLowerCase()}`}
+              href={`/${page.replace(" ", "").toLowerCase()}`}
             >
               <Typography variant="body1" color="inherit">
-                {text}
+                {page}
               </Typography>
             </ListItemButton>
           </ListItem>
@@ -140,7 +140,7 @@ export default function ResponsiveAppBar() {
               <Button
                 key={page}
                 // onClick={handleCloseNavMenu}
-                href={`${BASE_URL}${page.replace(" ", "").toLowerCase()}`}
+                href={`/${page.replace(" ", "").toLowerCase()}`}
                 sx={{ my: 2, mx: 1.5, display: "block" }}
               >
                 <Typography variant="body1" color="black" textTransform="none">
