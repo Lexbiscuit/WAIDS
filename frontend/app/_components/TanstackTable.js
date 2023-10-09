@@ -6,6 +6,12 @@ import {
   PaginationState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFacetedMinMaxValues,
+  sortingFns,
+  FilterFns,
   getSortedRowModel,
   getPaginationRowModel,
   ColumnDef,
@@ -13,29 +19,108 @@ import {
   useReactTable,
   createColumnHelper,
 } from "@tanstack/react-table";
+import { rankItem, compareItems } from "@tanstack/match-sorter-utils";
 import { Box, Typography, Select, MenuItem } from "@mui/material";
 import "../_styles/tanstack.css";
 
+const fuzzyFilter = (row, columnId, value, addMeta) => {
+  // Rank the item
+  const itemRank = rankItem(row.getValue(columnId), value);
+
+  // Store the itemRank info
+  addMeta({
+    itemRank,
+  });
+
+  // Return if the item should be filtered in/out
+  return itemRank.passed;
+};
+
+const fuzzySort = (rowA, rowB, columnId) => {
+  let dir = 0;
+
+  // Only sort by rank if the column has ranking information
+  if (rowA.columnFiltersMeta[columnId]) {
+    dir = compareItems(
+      rowA.columnFiltersMeta[columnId]?.itemRank,
+      rowB.columnFiltersMeta[columnId]?.itemRank
+    );
+  }
+
+  // Provide an alphanumeric fallback for when the item ranks are equal
+  return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
+};
+
 export default function TanstackTable(props) {
   const [sorting, setSorting] = useState([]);
+  const [columnFilters, setColumnFilters] = useState([]);
+  const [globalFilter, setGlobalFilter] = useState("");
   const data = useMemo(() => [...props.data], [props.data]);
   const columns = useMemo(() => [...props.columns], []);
 
   const table = useReactTable({
     data,
     columns,
+    filterFns: {
+      fuzzy: fuzzyFilter,
+    },
     state: {
+      globalFilter,
+      columnFilters,
       sorting,
     },
+    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: fuzzyFilter,
+    getFilteredRowModel: getFilteredRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+    getFacetedMinMaxValues: getFacetedMinMaxValues(),
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     debugTable: true,
+    debugHeaders: true,
+    debugColumns: true,
   });
 
+  function DebouncedInput({
+    value: initialValue,
+    onChange,
+    debounce = 500,
+    ...props
+  }) {
+    const [value, setValue] = useState(initialValue);
+
+    useEffect(() => {
+      setValue(initialValue);
+    }, [initialValue]);
+
+    useEffect(() => {
+      const timeout = setTimeout(() => {
+        onChange(value);
+      }, debounce);
+
+      return () => clearTimeout(timeout);
+    }, [value]);
+
+    return (
+      <input
+        {...props}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+    );
+  }
   return (
     <>
+      <DebouncedInput
+        type="text"
+        value={globalFilter ?? ""}
+        onChange={(value) => setGlobalFilter(String(value))}
+        placeholder="Search all columns"
+      />
       <table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
