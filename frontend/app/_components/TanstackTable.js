@@ -114,14 +114,14 @@ export default function TanstackTable(props) {
     );
   }
   return (
-    <>
+    <div className="w3-container">
       <DebouncedInput
         type="text"
         value={globalFilter ?? ""}
         onChange={(value) => setGlobalFilter(String(value))}
         placeholder="Search all columns"
       />
-      <table>
+      <table className="w3-table-all">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -256,6 +256,6 @@ export default function TanstackTable(props) {
           ))}
         </select>
       </Box>
-    </>
+    </div>
   );
 }

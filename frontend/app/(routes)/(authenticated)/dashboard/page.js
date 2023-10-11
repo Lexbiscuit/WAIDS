@@ -19,16 +19,16 @@ export default function Dashboard() {
       component: (
         <ChartItem>
           <Title>Protocol</Title>
-          <MyResponsivePie id="protocol" />
+          <MyResponsivePie id="proto" />
         </ChartItem>
       ),
     },
     {
-      title: "Priority",
+      title: "Severity",
       component: (
         <ChartItem>
           <Title>Priority</Title>
-          <MyResponsivePie id="priority" />
+          <MyResponsivePie id="alert.severity" />
         </ChartItem>
       ),
     },
@@ -51,11 +51,11 @@ export default function Dashboard() {
       ),
     },
     {
-      title: "Classification count",
+      title: "Category count",
       component: (
         <ChartItem>
-          <Title>Classification count</Title>
-          <MyResponsiveBar id="classification" />
+          <Title>Category count</Title>
+          <MyResponsiveBar id="alert.category" />
         </ChartItem>
       ),
     },

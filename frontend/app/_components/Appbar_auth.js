@@ -15,13 +15,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import SettingsMenu from "./SettingsMenu";
 
-const pages = [
-  "Log Viewer",
-  "IDS Sources",
-  "Investigations",
-  "Users",
-  "Alerts",
-];
+const pages = ["Log Viewer", "IDS Sources", "Investigation", "Users", "Alerts"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 // const BASE_URL = "http://localhost:3000/dashboard/";
 
@@ -54,9 +48,7 @@ export default function Appbar_auth() {
       <List>
         {pages.map((page) => (
           <ListItem key={page} disablePadding>
-            <ListItemButton
-              href={`/${page.replace(" ", "").toLowerCase()}`}
-            >
+            <ListItemButton href={`/${page.replace(" ", "").toLowerCase()}`}>
               <Typography variant="body1" color="inherit">
                 {page}
               </Typography>
