@@ -13,13 +13,10 @@ export async function GET() {
   }
 
   await connectMongoDB();
-  const data = await Suricata.aggregate([
-    { $match: { event_type: "alert" } },
-    { $group: { _id: null, count: { $sum: 1 } } },
-    { $project: { _id: 0 } },
-  ]);
-  const response = NextResponse.json(data[0]);
+  const data = await Suricata.find({ event_type: "alert" })
+    .sort({ timestamp : -1 })
+    .limit(15);
+  const response = NextResponse.json(data);
   response.headers.append("Access-Control-Allow-Origin", "*");
   return response;
 }
-
