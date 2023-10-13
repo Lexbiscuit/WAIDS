@@ -11,28 +11,7 @@ const CardComponent = ({ children }) => {
 
 export default function EventOverview() {
   const [eventOverview, setEventOverview] = React.useState(null);
-
-  // useEffect(() => {
-  //   setInterval(() => {
-  //     async function fetchData() {
-  //       await Promise.all([
-  //         fetch("http://localhost:3000/api/dashboard/EventOverview/Count", {
-  //           cache: "no-store",
-  //         }),
-  //         fetch("http://localhost:3000/api/dashboard/EventOverview/Unique", {
-  //           cache: "no-store",
-  //         }),
-  //         fetch("http://localhost:3000/api/dashboard/EventOverview/Critical", {
-  //           cache: "no-store",
-  //         }),
-  //       ])
-  //         .then((res) => Promise.all(res.map((r) => r.json())))
-  //         .then((res) => setEventOverview(res));
-  //     }
-  //     fetchData();
-  //   }, 5000);
-  // }, []);
-
+  
   useEffect(() => {
     setInterval(() => {
       async function fetchData() {
