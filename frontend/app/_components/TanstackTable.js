@@ -43,7 +43,7 @@ const fuzzySort = (rowA, rowB, columnId) => {
   if (rowA.columnFiltersMeta[columnId]) {
     dir = compareItems(
       rowA.columnFiltersMeta[columnId]?.itemRank,
-      rowB.columnFiltersMeta[columnId]?.itemRank
+      rowB.columnFiltersMeta[columnId]?.itemRank,
     );
   }
 
@@ -138,7 +138,7 @@ export default function TanstackTable(props) {
                     >
                       {flexRender(
                         header.column.columnDef.header,
-                        header.getContext()
+                        header.getContext(),
                       )}
                       {{
                         asc: " ↑",
