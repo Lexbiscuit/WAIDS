@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Box, Container, Typography, Paper, Link } from "@mui/material";
-import ResponsiveAppBar from "./components/ResponsiveAppBar";
+import ResponsiveAppBar from "./_components/Appbar_no_auth";
 import Image from "next/image";
 
 // Import image files

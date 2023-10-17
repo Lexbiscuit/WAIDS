@@ -12,16 +12,9 @@ export async function GET(request) {
     );
   }
 
-  // const skip = request.nextUrl.searchParams.get("skip");
-  // const limit = request.nextUrl.searchParams.get("limit");
-
+  const flow_id = request.nextUrl.searchParams.get("flow_id");
   await connectMongoDB();
-  const data = await Suricata.aggregate([
-    { $match: { event_type: "alert" } },
-    { $sort: { timestamp: -1 } },
-    // { $skip: parseInt(skip) },
-    // { $limit: parseInt(limit) },
-  ]);
+  const data = await Suricata.find({ flow_id: Number(flow_id) });
   const response = NextResponse.json(data);
   response.headers.append("Access-Control-Allow-Origin", "*");
   return response;

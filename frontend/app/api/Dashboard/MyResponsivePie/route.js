@@ -8,7 +8,7 @@ export async function GET(request) {
   if (!session) {
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 
@@ -17,7 +17,7 @@ export async function GET(request) {
   const data = await Suricata.aggregate([
     { $match: { event_type: "alert" } },
     {
-      $group: { _id: `$${id}`, count: { $sum: 1 } },
+      $group: { _id: "$" + id, count: { $sum: 1 } },
     },
     {
       $sort: { count: 1 },
