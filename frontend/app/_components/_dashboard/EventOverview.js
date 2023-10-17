@@ -11,28 +11,45 @@ const CardComponent = ({ children }) => {
 
 export default function EventOverview() {
   const [eventOverview, setEventOverview] = React.useState(null);
-
+  
   useEffect(() => {
     setInterval(() => {
       async function fetchData() {
-        await Promise.all([
-          fetch("http://localhost:3000/api/dashboard/EventOverview/Count", {
-            cache: "no-store",
-          }),
-          fetch("http://localhost:3000/api/dashboard/EventOverview/Unique", {
-            cache: "no-store",
-          }),
-          fetch("http://localhost:3000/api/dashboard/EventOverview/Critical", {
-            cache: "no-store",
-          }),
-        ])
-          .then((res) => Promise.all(res.map((r) => r.json())))
-          .then((res) => setEventOverview(res));
+        try {
+          const responses = await Promise.all([
+            fetch("http://localhost:3000/api/dashboard/EventOverview/Count", {
+              cache: "no-store",
+            }),
+            fetch("http://localhost:3000/api/dashboard/EventOverview/Unique", {
+              cache: "no-store",
+            }),
+            fetch("http://localhost:3000/api/dashboard/EventOverview/Critical", {
+              cache: "no-store",
+            }),
+          ]);
+  
+          const jsonResponses = await Promise.all(
+            responses.map(async (r) => {
+              if (!r.ok) {
+                throw new Error(`Request failed with status ${r.status}`);
+              }
+              const data = await r.json();
+              return data;
+            })
+          );
+  
+          setEventOverview(jsonResponses);
+        } catch (error) {
+          // Handle any errors, e.g., network errors or failed requests
+          console.error("Error fetching data:", error);
+          // Optionally, you can set eventOverview to null or handle the error differently
+          setEventOverview(null);
+        }
       }
       fetchData();
     }, 5000);
   }, []);
-
+  
   return (
     <Container component="div" maxWidth="xl" sx={{ mt: 2 }}>
       <Grid container spacing={1}>
