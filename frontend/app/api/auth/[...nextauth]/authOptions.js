@@ -26,17 +26,18 @@ export const authOptions = {
 
         const data = await res.json();
         const user = data.user[0];
-
+       
         if (!user) {
-          return null;
+          throw new Error("User not found");
         }
 
         const match = await bcrypt.compare(credentials.password, user.password);
 
         if (match) {
-          return { _id: user._id, email: user.email, name: user.name };
+          // console.log(match)
+          return { _id: user._id, email: user.email, name: user.name, role: user.role };
         } else {
-          return null;
+          throw new Error("Invalid password");
         }
       },
     }),
@@ -50,7 +51,7 @@ export const authOptions = {
   callbacks: {
     async jwt({ token, user, session }) {
       if (user) {
-        token.user = { _id: user._id, email: user.email, name: user.name };
+        token.user = { _id: user._id, email: user.email, name: user.name, role: user.role };
       }
       return token;
     },

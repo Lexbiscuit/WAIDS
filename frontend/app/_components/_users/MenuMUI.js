@@ -15,6 +15,7 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Box from "@mui/material/Box";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import EditIcon from "@mui/icons-material/Edit";
@@ -68,6 +69,9 @@ export default function MenuMUI({ row, setChanged }) {
 
   const [openUpdateDialog, setOpenUpdateDialog] = React.useState(false);
   const [openPasswordDialog, setOpenPasswordDialog] = React.useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
+  const [openAddDialog, setOpenAddDialog] = React.useState(false);
+  // const [userStatus, setUserStatus] = useState(row.status);
 
   const toggleUpdateDialog = () => {
     setOpenUpdateDialog(!openUpdateDialog);
@@ -76,6 +80,15 @@ export default function MenuMUI({ row, setChanged }) {
   const togglePasswordDialog = () => {
     setOpenPasswordDialog(!openPasswordDialog);
   };
+
+  const toggleDeleteDialog = () => {
+    setOpenDeleteDialog(!openDeleteDialog);
+  };
+
+  // const handleStatusChange = (event) => {
+  //   const newStatus = event.target.value;
+  //   setUserStatus(newStatus);
+  // };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -88,6 +101,7 @@ export default function MenuMUI({ row, setChanged }) {
 
   return (
     <div>
+
       <UpdateFormDialog
         open={openUpdateDialog}
         toggleDialog={toggleUpdateDialog}
@@ -95,12 +109,19 @@ export default function MenuMUI({ row, setChanged }) {
         setChanged={setChanged}
       />
 
-      {/* <PasswordFormDialog
+      <PasswordFormDialog
         open={openPasswordDialog}
         toggleDialog={togglePasswordDialog}
         row={data}
         setChanged={setChanged}
-      /> */}
+      />
+
+      <DeleteConfirmationDialog
+        open={openDeleteDialog}
+        toggleDialog={toggleDeleteDialog}
+        userId={data._id}
+        setChanged={setChanged}
+      />
 
       <Button
         id="demo-customized-button"
@@ -144,6 +165,7 @@ export default function MenuMUI({ row, setChanged }) {
               /*Change Password*/
             }
             handleClose();
+            togglePasswordDialog();
           }}
           disableRipple
         >
@@ -157,12 +179,21 @@ export default function MenuMUI({ row, setChanged }) {
               /*Suspend Account*/
             }
             handleClose();
+            // handleStatusChange();
           }}
           disableRipple
         >
           <FileCopyIcon />
           Suspend
         </MenuItem>
+        {/* <Menu
+          anchorEl={statusAnchorEl}
+          open={Boolean(statusAnchorEl)}
+          onClose={handleStatusMenuClose}
+        >
+          <MenuItem onClick={() => handleUserStatusChange('Active')}>Active</MenuItem>
+          <MenuItem onClick={() => handleUserStatusChange('Suspend')}>Suspend</MenuItem>
+        </Menu> */}
 
         <MenuItem
           onClick={() => {
@@ -170,10 +201,11 @@ export default function MenuMUI({ row, setChanged }) {
               /*Delete User*/
             }
             handleClose();
+            toggleDeleteDialog(); // Open the delete confirmation dialog
           }}
           disableRipple
         >
-          <FileCopyIcon />
+          <DeleteIcon />
           Delete
         </MenuItem>
       </StyledMenu>
@@ -181,6 +213,7 @@ export default function MenuMUI({ row, setChanged }) {
   );
 }
 
+// For Admin to edit and update the users account
 function UpdateFormDialog(props) {
   const { open, toggleDialog, row } = props;
 
@@ -295,5 +328,231 @@ function UpdateFormDialog(props) {
         </DialogActions>
       </Dialog>
     </div>
+  );
+}
+
+// For Admin to change the user account password
+function PasswordFormDialog(props) {
+  const { open, toggleDialog, row } = props;
+  const [newPassword, setNewPassword] = React.useState("");
+
+  const handleChangePassword = async () => {
+    console.log(row._id)
+    try {
+      const response = await fetch("http://localhost:3000/api/users/UsersData", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          _id: row._id,
+          password: newPassword,
+        }),
+      });
+      console.log(row._id)
+      console.log(newPassword)
+      const data = await response.json();
+      console.log(data)
+      if (data.message === "Update successful.") {
+        alert("Password updated successfully!");
+        toggleDialog();  // Close the dialog
+        location.reload();
+      } else {
+        alert("Error updating password.");
+        location.reload();
+      }
+    } catch (error) {
+      console.error("There was an error:", error);
+      alert("Error updating password.");
+    }
+  };
+
+  return (
+    <Dialog open={open} onClose={toggleDialog}>
+      <DialogTitle>Change Password</DialogTitle>
+      <DialogContent>
+        <TextField
+          margin="dense"
+          id="new-password"
+          label="New Password"
+          type="password"
+          fullWidth
+          variant="outlined"
+          value={newPassword}
+          onChange={(event) => setNewPassword(event.target.value)}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={toggleDialog}>Cancel</Button>
+        <Button onClick={handleChangePassword}>Change Password</Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
+// For Admin to delete account
+function DeleteConfirmationDialog(props) {
+  const { open, toggleDialog, userId, setChanged } = props;
+
+  const handleDelete = async () => {
+    await fetch("http://localhost:3000/api/users/UsersData", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ _id: userId }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message === "Delete successful.") {
+          alert("User deleted successfully.");
+          setChanged(true);
+        } else {
+          alert("Error deleting user.");
+        }
+      })
+      .catch((err) => alert(err));
+
+    toggleDialog();
+  };
+
+  return (
+    <Dialog open={open} onClose={toggleDialog}>
+      <DialogTitle>Confirm Deletion</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Are you sure you want to delete this user?
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={toggleDialog}>Cancel</Button>
+        <Button onClick={handleDelete} color="error">
+          Delete
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
+// For Admin to add new account
+export function AddUserDialog(props) {
+  const { open, toggleDialog } = props;
+
+  const [nameValue, setNameValue] = React.useState("");
+  const [emailValue, setEmailValue] = React.useState("");
+  const [passwordValue, setPasswordValue] = React.useState("");
+  const [roleValue, setRoleValue] = React.useState("");
+
+  const handleRoleChange = (event) => {
+    setRoleValue(event.target.value);
+  };
+
+  const handleAddUser = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/api/users/UsersData", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: nameValue,
+          email: emailValue,
+          password: passwordValue,
+          role: roleValue,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+
+      if (data.message === "User created successfully.") {
+        alert("User added successfully!");
+        toggleDialog();  // Close the dialog
+        location.reload(); // Refresh the page
+      } else {
+        alert("Error adding user.");
+      }
+    } catch (error) {
+      console.error("There was an error:", error);
+      alert("Error adding user.");
+    }
+  };
+
+  return (
+    <Dialog open={open} onClose={toggleDialog}>
+      <DialogTitle>Add New User</DialogTitle>
+      <DialogContent>
+        <DialogContentText>Enter the new user's details</DialogContentText>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: "30rem",
+            gap: "1rem",
+          }}
+        >
+          <TextField
+            margin="dense"
+            id="name"
+            label="Name"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={nameValue}
+            onChange={(event) => setNameValue(event.target.value)}
+          />
+          <TextField
+            margin="dense"
+            id="email"
+            label="Email"
+            type="email"
+            fullWidth
+            variant="outlined"
+            value={emailValue}
+            onChange={(event) => setEmailValue(event.target.value)}
+          />
+          <TextField
+            margin="dense"
+            id="password"
+            label="Password"
+            type="password"
+            fullWidth
+            variant="outlined"
+            value={passwordValue}
+            onChange={(event) => setPasswordValue(event.target.value)}
+          />
+          <FormControl fullWidth sx={{ mt: "5px" }}>
+            <InputLabel id="role-select-label">Role</InputLabel>
+            <Select
+              labelId="role-select-label"
+              id="role"
+              value={roleValue}
+              label="Role"
+              onChange={handleRoleChange}
+            >
+              <MenuItem value={"System Administrator"}>
+                System Administrator
+              </MenuItem>
+              <MenuItem value={"SOC Analyst"}>SOC Analyst</MenuItem>
+              <MenuItem value={"IR Team"}>IR Team</MenuItem>
+              <MenuItem value={"IT Manager"}>IT Manager</MenuItem>
+              <MenuItem value={"Network Administrator"}>
+                Network Administrator
+              </MenuItem>
+              <MenuItem value={"Security Auditor"}>
+                Security Auditor
+              </MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={toggleDialog}>Cancel</Button>
+        <Button onClick={handleAddUser}>Add</Button>
+      </DialogActions>
+    </Dialog>
   );
 }

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ResponsiveAppBar from "@/app/_components/Appbar_no_auth";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -17,26 +17,21 @@ import {
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-const validationSchema = yup.object({
-  email: yup
-    .string("Enter your email")
-    .email("Enter a valid email")
-    .required("Email is required"),
-  password: yup.string("Enter your password").required("Password is required"),
-});
-
 export default function Login() {
   const { data: session, status } = useSession();
+  const router = useRouter();
 
-  if (session) {
-    useRouter().push("/dashboard");
-  }
+  useEffect(() => {
+    if (session) {
+      router.push("/dashboard");
+    }
+  }, [session]);
 
   const [submitting, setSubmitting] = useState(false);
 
   const toggleSubmitting = () => setSubmitting(!submitting);
 
-  const router = useRouter();
+  
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -129,3 +124,11 @@ export default function Login() {
     </Box>
   );
 }
+
+const validationSchema = yup.object({
+  email: yup
+    .string("Enter your email")
+    .email("Enter a valid email")
+    .required("Email is required"),
+  password: yup.string("Enter your password").required("Password is required"),
+});

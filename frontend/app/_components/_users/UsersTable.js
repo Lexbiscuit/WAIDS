@@ -3,10 +3,13 @@ import TanstackTable from "../TanstackTable";
 import MenuMUI from "./MenuMUI";
 import { getData } from "@/app/_utils/getData";
 import { useEffect, useState } from "react";
+import { Button } from "@mui/material";
+import { AddUserDialog } from "./MenuMUI";
 
 export default function UsersTable() {
   const [data, setData] = useState(null);
   const [changed, setChanged] = useState(false);
+  const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false);
 
   const columns = [
     {
@@ -35,6 +38,7 @@ export default function UsersTable() {
         <MenuMUI row={row} changed={changed} setChanged={setChanged} />
       ),
     },
+
   ];
 
   const fetchData = async () => {
@@ -48,7 +52,18 @@ export default function UsersTable() {
   }, [changed]);
 
   if (data) {
-    return <TanstackTable columns={columns} data={data} />;
+    return (
+      <>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '-1.2rem', marginRight: '1rem' }}>
+          <Button variant="contained" color="primary" onClick={() => setIsAddUserDialogOpen(true)}>
+            Add User
+          </Button>
+        </div>
+        <AddUserDialog open={isAddUserDialogOpen} toggleDialog={() => setIsAddUserDialogOpen(!isAddUserDialogOpen)} />
+
+        {data ? <TanstackTable columns={columns} data={data} /> : <>Loading table ...</>}
+      </>
+    );
   } else {
     return <>Loading table ...</>;
   }
