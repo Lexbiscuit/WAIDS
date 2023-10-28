@@ -1,5 +1,5 @@
 import connectMongoDB from "@/libs/mongoose";
-import Suricata from "@/models/logdata";
+import LogData from "@/models/logdata";
 import Investigation from "@/models/investigation";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
@@ -11,14 +11,14 @@ export async function POST(request) {
   if (!session) {
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
   await connectMongoDB();
   const { id, creator, description, investigation_status } =
     await request.json();
-  const temp = await Suricata.findById(id).exec();
+  const temp = await LogData.findById(id).exec();
   const details = {
     creator: creator,
     description: description,
