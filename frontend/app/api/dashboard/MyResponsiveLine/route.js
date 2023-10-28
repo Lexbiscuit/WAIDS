@@ -1,5 +1,5 @@
 import connectMongoDB from "@/libs/mongoose";
-import Suricata from "@/models/suricata";
+import LogData from "@/models/logdata";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 
@@ -17,7 +17,7 @@ export async function GET(request) {
   await connectMongoDB();
 
   if (id == "month") {
-    data = await Suricata.aggregate([
+    data = await LogData.aggregate([
       {
         $match: {
           event_type: "alert",
@@ -35,7 +35,7 @@ export async function GET(request) {
       },
     ]);
   } else {
-    data = await Suricata.aggregate([
+    data = await LogData.aggregate([
       { $match: { event_type: "alert" } },
       {
         $group: { _id: { $year: "$timestamp" }, y: { $sum: 1 } },
