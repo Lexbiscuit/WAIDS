@@ -27,16 +27,14 @@ const validationSchema = yup.object({
 
 export default function Login() {
   const { data: session, status } = useSession();
+  const [submitting, setSubmitting] = useState(false);
 
   if (session) {
     useRouter().push("/dashboard");
   }
 
-  const [submitting, setSubmitting] = useState(false);
-
-  const toggleSubmitting = () => setSubmitting(!submitting);
-
   const router = useRouter();
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -44,7 +42,7 @@ export default function Login() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      toggleSubmitting();
+      setSubmitting(1);
       const result = await signIn("credentials", {
         email: values.email,
         password: values.password,
@@ -52,8 +50,9 @@ export default function Login() {
       });
 
       if (result.error) {
-        alert("Login failed");
-        toggleSubmitting();
+        alert("Login failed over here!");
+        setSubmitting(0);
+        console.log("🚀 ~ file: page.js:55 ~ onSubmit: ~ result:", result);
       } else {
         router.push("/dashboard");
       }

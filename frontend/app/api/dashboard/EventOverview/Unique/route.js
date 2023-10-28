@@ -1,19 +1,19 @@
 import connectMongoDB from "@/libs/mongoose";
-import Suricata from "@/models/suricata";
+import LogData from "@/models/logdata";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 
 export async function GET() {
-  const session = await getServerSession();
-  if (!session) {
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 },
-    );
-  }
+  // const session = await getServerSession();
+  // if (!session) {
+  //   return NextResponse.json(
+  //     { error: "Internal Server Error" },
+  //     { status: 500 }
+  //   );
+  // }
 
   await connectMongoDB();
-  const data = await Suricata.aggregate([
+  const data = await LogData.aggregate([
     { $group: { _id: "$src_addr" } },
     { $count: "count" },
   ]);

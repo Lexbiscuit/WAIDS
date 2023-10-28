@@ -1,5 +1,5 @@
 import connectMongoDB from "@/libs/mongoose";
-import Suricata from "@/models/suricata";
+import Suricata from "@/models/logdata";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 

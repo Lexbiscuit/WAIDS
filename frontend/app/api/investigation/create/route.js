@@ -1,5 +1,5 @@
 import connectMongoDB from "@/libs/mongoose";
-import Suricata from "@/models/suricata";
+import Suricata from "@/models/logdata";
 import Investigation from "@/models/investigation";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
@@ -38,12 +38,12 @@ export async function PUT(request) {
   //   );
   // }
   const { id, value } = await request.json();
-  console.log("🚀 ~ file: route.js:41 ~ PUT ~ value:", value)
-  console.log("🚀 ~ file: route.js:41 ~ PUT ~ id:", id)
+  console.log("🚀 ~ file: route.js:41 ~ PUT ~ value:", value);
+  console.log("🚀 ~ file: route.js:41 ~ PUT ~ id:", id);
   await connectMongoDB();
 
   const filter = { _id: String(id) };
-  const update = { "investigation_status": String(value) };
+  const update = { investigation_status: String(value) };
 
   await Investigation.findOneAndUpdate(filter, update);
 
