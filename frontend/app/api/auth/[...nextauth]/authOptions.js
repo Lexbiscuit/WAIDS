@@ -36,6 +36,15 @@ export const authOptions = {
         }
 
         const match = await bcrypt.compare(credentials.password, user.password);
+        console.log(
+          "🚀 ~ file: authOptions.js:35 ~ authorize ~ user.password:",
+          user.password
+        );
+        console.log(
+          "🚀 ~ file: authOptions.js:36 ~ authorize ~ credentials.password:",
+          credentials.password
+        );
+        console.log("🚀 ~ file: authOptions.js:37 ~ authorize ~ match:", match);
 
         if (match) {
           return { _id: user._id, email: user.email, name: user.name, role: user.role };

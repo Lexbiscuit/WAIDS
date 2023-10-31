@@ -39,7 +39,7 @@ export default function Login() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      toggleSubmitting();
+      setSubmitting(1);
       const result = await signIn("credentials", {
         email: values.email,
         password: values.password,

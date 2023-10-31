@@ -1,17 +1,17 @@
 import mongoose, { Schema } from "mongoose";
 
-const suricataSchema = new Schema(
+const logDataSchema = new Schema(
+  {},
   {
-    timestamp: Date,
-  },
-  { collection: "Suricata" },
+    collection: "Aggregated_collection",
+    strict: false,
+  }
 );
 
-const Suricata =
-  mongoose.models.Suricata || mongoose.model("Suricata", suricataSchema);
+const LogData =
+  mongoose.models.LogData || mongoose.model("LogData", logDataSchema);
 
-export default Suricata;
-
+export default LogData;
 // const alertSchema = new Schema(
 //   {
 //     flow_id: Number,

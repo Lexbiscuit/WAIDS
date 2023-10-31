@@ -1,5 +1,5 @@
 import connectMongoDB from "@/libs/mongoose";
-import Suricata from "@/models/suricata";
+import LogData from "@/models/logdata";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 
@@ -14,7 +14,7 @@ export async function GET(request) {
 
   const id = request.nextUrl.searchParams.get("id");
   await connectMongoDB();
-  const data = await Suricata.aggregate([
+  const data = await LogData.aggregate([
     { $match: { event_type: "alert" } },
     {
       $group: { _id: `$${id}`, value: { $sum: 1 } },
