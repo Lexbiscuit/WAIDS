@@ -1,5 +1,5 @@
 import connectMongoDB from "@/libs/mongoose";
-import Suricata from "@/models/suricata";
+import LogData from "@/models/logdata";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 
@@ -13,7 +13,7 @@ export async function GET() {
   }
 
   await connectMongoDB();
-  const data = await Suricata.find({ event_type: "alert" })
+  const data = await LogData.find({ event_type: "alert" })
     .sort({ timestamp: -1 })
     .limit(10);
   const response = NextResponse.json(data);

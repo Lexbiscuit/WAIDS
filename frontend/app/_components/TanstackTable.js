@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useReducer } from "react";
 import {
   Column,
   Table as ReactTable,
@@ -20,7 +20,7 @@ import {
   createColumnHelper,
 } from "@tanstack/react-table";
 import { rankItem, compareItems } from "@tanstack/match-sorter-utils";
-import { Box, Typography, Select, MenuItem } from "@mui/material";
+import { Box, Typography, Select, MenuItem, Button } from "@mui/material";
 import "../_styles/tanstack.css";
 
 const fuzzyFilter = (row, columnId, value, addMeta) => {
@@ -43,7 +43,7 @@ const fuzzySort = (rowA, rowB, columnId) => {
   if (rowA.columnFiltersMeta[columnId]) {
     dir = compareItems(
       rowA.columnFiltersMeta[columnId]?.itemRank,
-      rowB.columnFiltersMeta[columnId]?.itemRank,
+      rowB.columnFiltersMeta[columnId]?.itemRank
     );
   }
 
@@ -138,7 +138,7 @@ export default function TanstackTable(props) {
                     >
                       {flexRender(
                         header.column.columnDef.header,
-                        header.getContext(),
+                        header.getContext()
                       )}
                       {{
                         asc: " ↑",

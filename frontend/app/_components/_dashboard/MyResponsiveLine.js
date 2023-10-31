@@ -40,7 +40,7 @@ const MyResponsiveLine = ({ id, time }) => {
 
   return (
     <ResponsiveLine
-      data={[{ id: "Suricata", data: logData }]}
+      data={[{ id: "LogData", data: logData }]}
       margin={{ top: 30, right: 80, bottom: 80, left: 80 }}
       xScale={{ type: "point" }}
       yScale={{

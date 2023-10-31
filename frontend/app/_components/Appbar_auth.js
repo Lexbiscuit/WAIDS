@@ -1,4 +1,5 @@
 "use client";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -15,16 +16,38 @@ import ListItemButton from "@mui/material/ListItemButton";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import SettingsMenu from "./SettingsMenu";
 
-const pages = ["Log Viewer", "IDS Sources", "Investigation", "Users", "Alerts"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 // const BASE_URL = "http://localhost:3000/dashboard/";
+
+const pages = ["Log Viewer", "IDS Sources", "Investigation", "Users", "Alerts"];
+
+const roleAccess = {
+  'Network Administrator': ['Main Dashboard', 'IDS Sources', 'Log Viewer'],
+  'SOC Analyst': ['Main Dashboard', 'Log Viewer', 'Investigation'],
+  'IT Manager': ['Main Dashboard', 'Log Viewer', 'Investigation', 'IDS Sources'],
+  'IR Team': ['Main Dashboard', 'Log Viewer', 'Investigation'],
+  'Security Auditor': ['Log Viewer', 'Investigation'],
+  'System Administrator': ['*'] 
+};
 
 export default function Appbar_auth() {
   const [state, setState] = useState({ left: false });
   const [anchorElUser, setAnchorElUser] = useState(null);
 
+  const { data: session, status } = useSession();
+  const userRole = session?.user?.role;
+  console.log(userRole)
+  const allowedPages = roleAccess[userRole];
+  
+  let filteredPages = [];
+  if (allowedPages) {
+    filteredPages = pages.filter(page => allowedPages.includes(page) || allowedPages.includes('*'));
+  }
+
   const handleOpenUserMenu = (event) => setAnchorElUser(event.currentTarget);
   const handleCloseUserMenu = () => setAnchorElUser(null);
+  const settings = ["Profile", "Account", "Dashboard", "Logout"];
+
+
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -46,7 +69,7 @@ export default function Appbar_auth() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {pages.map((page) => (
+        {filteredPages.map((page) => (
           <ListItem key={page} disablePadding>
             <ListItemButton href={`/${page.replace(" ", "").toLowerCase()}`}>
               <Typography variant="body1" color="inherit">
@@ -128,7 +151,7 @@ export default function Appbar_auth() {
 
           {/* Desktop: Navigation Menu */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {filteredPages.map((page) => (
               <Button
                 key={page}
                 // onClick={handleCloseNavMenu}
