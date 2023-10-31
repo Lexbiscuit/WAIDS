@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
-import ResponsiveAppBar from "@/app/_components/Appbar_no_auth";
+import ResponsiveAppBar from "@/app/_components/Appbar_auth";
 import { Box, Container, Slider } from "@mui/material";
 
 const bcImages = [

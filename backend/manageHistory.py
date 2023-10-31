@@ -30,7 +30,7 @@ ip_count = {}
 
 client = MongoClient("localhost", 27017)
 db = client.WAIDS
-Suricata = db.Suricata
+Aggregated_collection = db.Aggregated_collection
 
 app = Flask(__name__)
 CORS(app)
@@ -70,7 +70,7 @@ def serve_zip(zip_filename):
 
 @app.route('/process_data', methods=['POST'])
 def process_data():
-    data = list(Suricata.find({}))
+    data = list(Aggregated_collection.find({}))
     try:
         if not data:
             print("No data found in MongoDB.")
@@ -170,7 +170,7 @@ def process_data():
         past_hour_timestamp = latest_timestamp - timedelta(hours=1)
 
         # Filter your MongoDB data for the past hour
-        cursor = Suricata.find({
+        cursor = Aggregated_collection.find({
             "event_type": "alert",
             "timestamp": {"$gte": past_hour_timestamp, "$lt": latest_timestamp}
         })

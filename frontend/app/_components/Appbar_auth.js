@@ -18,7 +18,7 @@ import SettingsMenu from "./SettingsMenu";
 
 // const BASE_URL = "http://localhost:3000/dashboard/";
 
-const pages = ["Log Viewer", "IDS Sources", "Investigation", "Users", "Alerts"];
+const pages = ["Log Viewer", "IDS Sources", "Investigation", "Users", "Alerts", "History"];
 
 const roleAccess = {
   'Network Administrator': ['Main Dashboard', 'IDS Sources', 'Log Viewer'],
