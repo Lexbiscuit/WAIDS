@@ -9,8 +9,9 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import ResponsiveAppBar from "@/app/_components/Appbar_auth";
 import { useRouter } from "next/navigation";
+import RuleBuilder from "@/app/_components/_idssources/RuleBuilder";
 
-const ModifyRulePage = async ({ params }) => {
+const ModifyRulePage = ({ params }) => {
   const router = useRouter();
   const modifyId = params.modifyId;
   const [rule, setRule] = React.useState("");
@@ -50,6 +51,7 @@ const ModifyRulePage = async ({ params }) => {
     <Box component="main" height="100vh" overflow="auto">
       <ResponsiveAppBar />
       <Container maxWidth="lg" sx={{ py: 4 }}>
+        <h1>Modify Rule</h1>
         <form
           onSubmit={(e) => {
             e.preventDefault();

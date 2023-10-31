@@ -141,6 +141,7 @@ def createRule():
     try:
         rule = request.get_json()['rule']
         enabled = request.get_json()['enabled']
+        print(rule)
         res = manageIDSController.createRule(rule, enabled)
         return res
     except Exception as e:

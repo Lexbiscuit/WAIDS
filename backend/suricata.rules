@@ -1,4 +1,4 @@
-# alert ip any any -> any any (msg:"SURICATA Applayer Mismatch protocol both directions"; flow:established; app-layer-event:applayer_mismatch_protocol_both_directions; flowint:applayer.anomaly.count,+,1; classtype:protocol-command-decode; sid:2260000; rev:1;)
+alert ip any any -> any any (msg:"SURICATA Applayer Mismatch protocol both directions"; flow:established; app-layer-event:applayer_mismatch_protocol_both_directions; flowint:applayer.anomaly.count,+,1; classtype:protocol-command-decode; sid:2260000; rev:1;)
 alert ip any any -> any any (msg:"SURICATA Applayer Wrong direction first Data"; flow:established; app-layer-event:applayer_wrong_direction_first_data; flowint:applayer.anomaly.count,+,1; classtype:protocol-command-decode; sid:2260001; rev:1;)
 alert ip any any -> any any (msg:"SURICATA Applayer Detect protocol only one direction"; flow:established; app-layer-event:applayer_detect_protocol_only_one_direction; flowint:applayer.anomaly.count,+,1; classtype:protocol-command-decode; sid:2260002; rev:1;)
 alert ip any any -> any any (msg:"SURICATA Applayer Protocol detection skipped"; flow:established; app-layer-event:applayer_proto_detection_skipped; flowint:applayer.anomaly.count,+,1; classtype:protocol-command-decode; sid:2260003; rev:1;)
@@ -40,3 +40,4 @@ alert ipv6 any any -> any any (msg:"SURICATA reserved field in Frag Header not z
 alert ipv6 any any -> any any (msg:"SURICATA data after none (59) header"; decode-event:ipv6.data_after_none_header; classtype:protocol-command-decode; sid:2200096; rev:2;)
 alert tcp any any -> any any (sid:1; gid:1; msg:"This is my new message."; classtype:test; content:test; flow:to_server; app-layer-event:applayer-unexpeceted-protocol; flow_int:applayer.anomaly.count,+,2;)
 # alert tcp any any -> any any (sid:1; gid:1; msg:"This is a test."; classtype:test; content:test; flow:to_server; app-layer-event:applayer-unexpeceted-protocol; flow_int:applayer.anomaly.count,+,2;)
+alert tcp 192.168.0.1 80 -> 192.168.0.1 80 (sid: 1; rev: 1; classtype: Unknown-host; priority: 1; msg: 'Unknown host error.';)​

@@ -9,19 +9,21 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import ResponsiveAppBar from "@/app/_components/Appbar_auth";
 import { useRouter } from "next/navigation";
+import RuleBuilder from "@/app/_components/_idssources/RuleBuilder";
 
-const AddRulePage = async () => {
+const AddRulePage = () => {
   const router = useRouter();
   const [enabled, setEnabled] = React.useState(false);
   const ruleRef = React.useRef();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let idx;
-    fetch("http://localhost:5000/rules/create", {
+    await fetch("http://localhost:5000/rules/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      cache: "no-cache",
       body: JSON.stringify({
         rule: ruleRef.current.value,
         enabled: Boolean(enabled),
@@ -38,39 +40,8 @@ const AddRulePage = async () => {
     <Box component="main" height="100vh" overflow="auto">
       <ResponsiveAppBar />
       <Container maxWidth="lg" sx={{ py: 4 }}>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit();
-            router.back();
-          }}
-        >
-          <TextField
-            label="Rule"
-            inputRef={ruleRef}
-            required
-            variant="outlined"
-            multiline
-            fullWidth
-          />
-
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={enabled}
-                  onChange={(e) => setEnabled(e.target.checked)}
-                />
-              }
-              label="Enable?"
-            />
-          </FormGroup>
-
-          <Button onClick={() => router.back()}>Cancel</Button>
-          <Button type="submit" variant="contained">
-            Submit
-          </Button>
-        </form>
+        <h1>Create Rule</h1>
+        <RuleBuilder />
       </Container>
     </Box>
   );
