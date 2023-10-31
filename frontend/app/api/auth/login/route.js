@@ -11,13 +11,10 @@ export async function POST(request) {
   }
 
   await connectMongoDB();
-  console.log(email)
   const user = await User.find({
     email: `${email}`,
   });
-  // const user = User.findOne({ email })
 
-  console.log(user)
   if (user.length == 1) {
     return NextResponse.json({ user });
   } else {

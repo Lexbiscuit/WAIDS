@@ -31,10 +31,13 @@ export const authOptions = {
           throw new Error("User not found");
         }
 
+        if (user.status === "suspended") {
+          throw new Error("This account has been suspended.");
+        }
+
         const match = await bcrypt.compare(credentials.password, user.password);
 
         if (match) {
-          // console.log(match)
           return { _id: user._id, email: user.email, name: user.name, role: user.role };
         } else {
           throw new Error("Invalid password");

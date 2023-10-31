@@ -90,3 +90,15 @@ export async function DELETE(request) {
   return response;
 }
 
+export async function PUT(request) {
+  const { _id, status } = await request.json();
+
+  if (!_id || !status) {
+    return new NextResponse(400, "User ID and status are required");
+  }
+
+  await connectMongoDB();
+  await User.findByIdAndUpdate(_id, { status });
+ 
+  return NextResponse.json({ message: "User status updated successfully." });
+}

@@ -33,10 +33,11 @@ export default function Appbar_auth() {
   const [state, setState] = useState({ left: false });
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const userRole = session?.user?.role;
+  console.log(userRole)
   const allowedPages = roleAccess[userRole];
-
+  
   let filteredPages = [];
   if (allowedPages) {
     filteredPages = pages.filter(page => allowedPages.includes(page) || allowedPages.includes('*'));

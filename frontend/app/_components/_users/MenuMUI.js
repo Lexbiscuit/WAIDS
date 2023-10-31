@@ -66,12 +66,12 @@ const StyledMenu = styled((props) => (
 
 export default function MenuMUI({ row, setChanged }) {
   const data = row.original;
+  const [userStatus, setUserStatus] = React.useState(data.status || "active");
 
   const [openUpdateDialog, setOpenUpdateDialog] = React.useState(false);
   const [openPasswordDialog, setOpenPasswordDialog] = React.useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
-  const [openAddDialog, setOpenAddDialog] = React.useState(false);
-  // const [userStatus, setUserStatus] = useState(row.status);
+  const [openSuspendDialog, setOpenSuspendDialog] = React.useState(false);
 
   const toggleUpdateDialog = () => {
     setOpenUpdateDialog(!openUpdateDialog);
@@ -85,10 +85,9 @@ export default function MenuMUI({ row, setChanged }) {
     setOpenDeleteDialog(!openDeleteDialog);
   };
 
-  // const handleStatusChange = (event) => {
-  //   const newStatus = event.target.value;
-  //   setUserStatus(newStatus);
-  // };
+  const toggleSuspendDialog = () => {
+    setOpenSuspendDialog(!openSuspendDialog);
+  };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -123,6 +122,15 @@ export default function MenuMUI({ row, setChanged }) {
         setChanged={setChanged}
       />
 
+      <SuspendConfirmationDialog
+        open={openSuspendDialog}
+        toggleDialog={toggleSuspendDialog}
+        userId={data._id}
+        setChanged={setChanged}
+        userStatus={userStatus}
+        setUserStatus={setUserStatus} // 
+      />
+
       <Button
         id="demo-customized-button"
         aria-controls={open ? "demo-customized-menu" : undefined}
@@ -148,10 +156,9 @@ export default function MenuMUI({ row, setChanged }) {
         <MenuItem
           onClick={() => {
             {
-              /* Edit Details*/
+              handleClose();
+              toggleUpdateDialog();
             }
-            handleClose();
-            toggleUpdateDialog();
           }}
           disableRipple
         >
@@ -162,10 +169,10 @@ export default function MenuMUI({ row, setChanged }) {
         <MenuItem
           onClick={() => {
             {
-              /*Change Password*/
+              handleClose();
+              togglePasswordDialog();
             }
-            handleClose();
-            togglePasswordDialog();
+
           }}
           disableRipple
         >
@@ -176,15 +183,18 @@ export default function MenuMUI({ row, setChanged }) {
         <MenuItem
           onClick={() => {
             {
-              /*Suspend Account*/
+              handleClose();
+              if (userStatus === "active") {
+                toggleSuspendDialog("suspend");
+              } else {
+                toggleSuspendDialog("active");
+              }
             }
-            handleClose();
-            // handleStatusChange();
           }}
           disableRipple
         >
           <FileCopyIcon />
-          Suspend
+          {userStatus === "active" ? "Suspend" : "Suspend"}
         </MenuItem>
         {/* <Menu
           anchorEl={statusAnchorEl}
@@ -198,10 +208,9 @@ export default function MenuMUI({ row, setChanged }) {
         <MenuItem
           onClick={() => {
             {
-              /*Delete User*/
+              handleClose();
+              toggleDeleteDialog(); // Open the delete confirmation dialog
             }
-            handleClose();
-            toggleDeleteDialog(); // Open the delete confirmation dialog
           }}
           disableRipple
         >
@@ -337,7 +346,6 @@ function PasswordFormDialog(props) {
   const [newPassword, setNewPassword] = React.useState("");
 
   const handleChangePassword = async () => {
-    console.log(row._id)
     try {
       const response = await fetch("http://localhost:3000/api/users/UsersData", {
         method: "POST",
@@ -349,10 +357,9 @@ function PasswordFormDialog(props) {
           password: newPassword,
         }),
       });
-      console.log(row._id)
-      console.log(newPassword)
+
       const data = await response.json();
-      console.log(data)
+
       if (data.message === "Update successful.") {
         alert("Password updated successfully!");
         toggleDialog();  // Close the dialog
@@ -552,6 +559,64 @@ export function AddUserDialog(props) {
       <DialogActions>
         <Button onClick={toggleDialog}>Cancel</Button>
         <Button onClick={handleAddUser}>Add</Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
+// Suspend Confirmation Dialog
+function SuspendConfirmationDialog(props) {
+  const { open, toggleDialog, userId, setChanged, userStatus, setUserStatus } = props;
+
+  const handleStatusChange = async () => {
+    await fetch("http://localhost:3000/api/users/UsersData", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ _id: userId, status: userStatus }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message === "User status updated successfully.") {
+          if (userStatus === "suspended") {
+            alert("User suspended successfully.");
+          } else if (userStatus === "active") {
+            alert("User has been unsuspended successfully.");
+          }
+          setChanged(true);
+        }
+        else {
+          alert("Error updating user status.");
+        }
+      })
+      .catch((err) => alert(err));
+
+    toggleDialog();
+  };
+
+  return (
+    <Dialog open={open} onClose={toggleDialog}>
+      <DialogTitle>Change User Status</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Please select the desired status for this user:
+        </DialogContentText>
+        <FormControl fullWidth>
+          <Select
+            value={userStatus}
+            onChange={(e) => setUserStatus(e.target.value)}
+          >
+            <MenuItem value={"active"}>Active</MenuItem>
+            <MenuItem value={"suspended"}>Suspend</MenuItem>
+          </Select>
+        </FormControl>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={toggleDialog}>Cancel</Button>
+        <Button onClick={handleStatusChange} color="primary">
+          Confirm
+        </Button>
       </DialogActions>
     </Dialog>
   );

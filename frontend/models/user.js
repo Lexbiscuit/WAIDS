@@ -10,6 +10,11 @@ const userSchema = new Schema(
       enum: ['System Administrator', 'Network Administrator', 'SOC Analyst', 'IR Team', 'IT Manager'],
       required: true
     },
+    status: {
+      type: String,
+      enum: ['active', 'suspended'],
+      default: 'active'
+    }
   },
   {
     collection: "Users",

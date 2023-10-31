@@ -33,9 +33,15 @@ export default function UsersTable() {
       cell: ({ getValue }) => getValue(),
     },
     {
+      header: "Status",
+      accessorKey: "status",
+      cell: ({ getValue }) => getValue(),
+    },
+    {
       id: "options",
       cell: ({ row }) => (
         <MenuMUI row={row} changed={changed} setChanged={setChanged} />
+        
       ),
     },
 

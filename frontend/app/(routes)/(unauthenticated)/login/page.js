@@ -45,11 +45,12 @@ export default function Login() {
         password: values.password,
         redirect: false,
       });
-
+      
       if (result.error) {
         alert("Login failed");
         toggleSubmitting();
-      } else {
+      } 
+      else {
         router.push("/dashboard");
       }
     },
