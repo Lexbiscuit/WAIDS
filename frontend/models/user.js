@@ -5,7 +5,16 @@ const userSchema = new Schema(
     name: String,
     email: String,
     password: String,
-    role: String,
+    role: {
+      type: String,
+      enum: ['System Administrator', 'Network Administrator', 'SOC Analyst', 'IR Team', 'IT Manager'],
+      required: true
+    },
+    status: {
+      type: String,
+      enum: ['active', 'suspended'],
+      default: 'active'
+    }
   },
   {
     collection: "Users",
