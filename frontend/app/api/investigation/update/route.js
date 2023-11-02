@@ -15,16 +15,13 @@ export async function PUT(request) {
     );
   }
 
+  const { id, value } = await request.json();
+
   await connectMongoDB();
-  const { id, creator, description, investigation_status } =
-    await request.json();
-  const temp = await LogData.findById(id).exec();
-  const details = {
-    creator: creator,
-    description: description,
-    investigation_status: investigation_status,
-  };
-  const merged = { ...temp, ...details };
-  Mongoose.connection.db.collection("Investigation").insertOne(merged);
+
+  const update = { investigation_status: String(value) };
+
+  await Investigation.findByIdAndUpdate(id, update);
+
   return NextResponse.json({}, { status: 200 });
 }

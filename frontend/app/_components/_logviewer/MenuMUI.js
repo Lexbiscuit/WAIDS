@@ -108,19 +108,17 @@ export default function MenuMUI({ row }) {
           onClick={() => {
             const url = row.original._id;
             const description = prompt("Enter description: ");
-            const res = fetch(
-              "http://localhost:3000/api/investigation/create",
-              {
-                method: "POST",
-                body: JSON.stringify({
-                  id: url,
-                  creator: session.user.name,
-                  description: description,
-                  investigation_status: "pending",
-                }),
-                headers: { "Content-Type": "application/json" },
-              }
-            );
+            fetch("/api/investigation/create", {
+              method: "POST",
+              cache: "no-cache",
+              body: JSON.stringify({
+                id: url,
+                creator: session.user.name,
+                description: description,
+                investigation_status: "pending",
+              }),
+              headers: { "Content-Type": "application/json" },
+            });
             handleClose();
           }}
           disableRipple

@@ -10,7 +10,10 @@ import {
   Box,
   MenuItem,
   InputLabel,
+  Switch,
+  FormControlLabel,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 import Select from "@mui/material/Select";
 
 const GridItem = ({ children, size }) => (
@@ -19,7 +22,7 @@ const GridItem = ({ children, size }) => (
   </Grid>
 );
 
-const RuleTextField = ({ label, field, setField }) => (
+const RuleTextField = ({ label, field, setField, disabled }) => (
   <TextField
     size="small"
     label={label}
@@ -27,10 +30,11 @@ const RuleTextField = ({ label, field, setField }) => (
     value={field}
     onChange={(e) => setField(e.target.value)}
     fullWidth
+    disabled={disabled}
   ></TextField>
 );
 
-const RuleNumberField = ({ label, field, setField }) => (
+const RuleNumberField = ({ label, field, setField, disabled }) => (
   <TextField
     type="number"
     size="small"
@@ -39,10 +43,11 @@ const RuleNumberField = ({ label, field, setField }) => (
     value={field}
     onChange={(e) => setField(e.target.value)}
     fullWidth
+    disabled={disabled}
   ></TextField>
 );
 
-const RuleSelectField = ({ label, values, state, setState }) => {
+const RuleSelectField = ({ label, values, state, setState, disabled }) => {
   const handleChange = (event) => {
     setState(event.target.value);
   };
@@ -56,6 +61,7 @@ const RuleSelectField = ({ label, values, state, setState }) => {
           label={label}
           onChange={handleChange}
           size="small"
+          disabled={disabled}
         >
           {values.map((value) => (
             <MenuItem value={value}>{value}</MenuItem>
@@ -67,6 +73,7 @@ const RuleSelectField = ({ label, values, state, setState }) => {
 };
 
 export default function RuleBuilder() {
+  const [manual, setManual] = React.useState(false);
   const [action, setAction] = React.useState();
   const [protocol, setProtocol] = React.useState();
   const [srcIp, setSrcIp] = React.useState();
@@ -80,26 +87,76 @@ export default function RuleBuilder() {
   const [msg, setMsg] = React.useState();
   const [classtype, setClasstype] = React.useState();
   const [priority, setPriority] = React.useState();
+  const [customRule, setCustomRule] = React.useState();
   const ruleRef = React.useRef();
+  const router = useRouter();
 
-  const handleSubmit = () => {
-    fetch("http://localhost:5000/rules/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      cache: "no-cache",
-      body: JSON.stringify({
-        rule: ruleRef.current.textContent,
-        enabled: true,
-      }),
-    })
-      .then((res) => res.json())
-      .then((res) => alert(res.message));
+  const toggleManual = () => {
+    setManual(!manual);
+  };
+
+  const handleSubmit = (isManual) => {
+    if (!isManual) {
+      if (
+        !action ||
+        !protocol ||
+        !srcIp ||
+        !dstIp ||
+        !srcPort ||
+        !dstPort ||
+        !sid ||
+        !rev ||
+        !msg ||
+        !classtype ||
+        !priority
+      ) {
+        alert("Please fill in all required fields");
+        return;
+      }
+
+      fetch("http://localhost:5000/rules/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-cache",
+        body: JSON.stringify({
+          rule: ruleRef.current.textContent,
+          enabled: true,
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => alert(res.message));
+    } else {
+      if (!customRule) {
+        alert("Please fill in all required fields");
+        return;
+      }
+
+      fetch("http://localhost:5000/rules/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-cache",
+        body: JSON.stringify({
+          rule: customRule,
+          enabled: true,
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => alert(res.message));
+    }
   };
 
   return (
-    <form autoComplete="off" onSubmit={handleSubmit}>
+    <form
+      autoComplete="off"
+      onSubmit={() => {
+        handleSubmit(manual);
+        router.back();
+      }}
+    >
       <Grid container spacing={2}>
         <GridItem size={4}>
           <RuleSelectField
@@ -116,6 +173,7 @@ export default function RuleBuilder() {
             ]}
             state={action}
             setState={setAction}
+            disabled={manual}
           />
         </GridItem>
 
@@ -125,11 +183,17 @@ export default function RuleBuilder() {
             values={["tcp", "udp", "icmp", "ip"]}
             state={protocol}
             setState={setProtocol}
+            disabled={manual}
           />
         </GridItem>
 
         <GridItem size={7}>
-          <RuleTextField label="Source IP" field={srcIp} setField={setSrcIp} />
+          <RuleTextField
+            label="Source IP"
+            field={srcIp}
+            setField={setSrcIp}
+            disabled={manual}
+          />
         </GridItem>
 
         <GridItem size={4}>
@@ -137,6 +201,7 @@ export default function RuleBuilder() {
             label="Source Port"
             field={srcPort}
             setField={setSrcPort}
+            disabled={manual}
           />
         </GridItem>
 
@@ -145,6 +210,7 @@ export default function RuleBuilder() {
             label="Destination IP"
             field={dstIp}
             setField={setDstIp}
+            disabled={manual}
           />
         </GridItem>
 
@@ -153,21 +219,33 @@ export default function RuleBuilder() {
             label="Destination Port"
             field={dstPort}
             setField={setDstPort}
+            disabled={manual}
           />
         </GridItem>
 
         <GridItem size={2}>
-          <RuleNumberField label="SID" field={sid} setField={setSid} />
+          <RuleNumberField
+            label="SID"
+            field={sid}
+            setField={setSid}
+            disabled={manual}
+          />
         </GridItem>
 
         <GridItem size={2}>
-          <RuleNumberField label="REV" field={rev} setField={setRev} />
+          <RuleNumberField
+            label="REV"
+            field={rev}
+            setField={setRev}
+            disabled={manual}
+          />
         </GridItem>
         <GridItem size={4}>
           <RuleTextField
             label="Classtype"
             field={classtype}
             setField={setClasstype}
+            disabled={manual}
           />
         </GridItem>
 
@@ -177,65 +255,59 @@ export default function RuleBuilder() {
             values={["1", "2", "3", "4", "5"]}
             state={priority}
             setState={setPriority}
+            disabled={manual}
           />
         </GridItem>
 
         <GridItem size={12}>
-          <RuleTextField label="MSG" field={msg} setField={setMsg} />
+          <RuleTextField
+            label="MSG"
+            field={msg}
+            setField={setMsg}
+            disabled={manual}
+          />
         </GridItem>
-
-        {/* <GridItem size={2}>
-          <RuleSelectField
-            label="Flow"
-            values={[
-              "stateless",
-              "not_established",
-              "established",
-              "to_server",
-              "to_client",
-              "from_server",
-              "from_client",
-            ]}
-            state={flow}
-            setState={setFlow}
-          />
-        </GridItem> */}
-
-        {/* <GridItem size={6}>
-          <RuleSelectField
-            label="Content"
-            values={[
-              "malware",
-              "SQL injection",
-              "URL",
-              "custom",
-              "credit card",
-              "social security number",
-            ]}
-            state={content}
-            setState={setContent}
-          />
-        </GridItem> */}
       </Grid>
-
       <Box sx={{ my: 2 }}>
-        <TextField
-          multiline
-          minRows={4}
-          variant="outlined"
-          fullWidth
-          ref={ruleRef}
-          value={`${action ? action : ""} ${protocol ? protocol : ""} ${
-            srcIp ? srcIp : ""
-          } ${srcPort ? srcPort : ""} -> ${dstIp ? dstIp : ""} ${
-            dstPort ? dstPort : ""
-          } (${sid ? "sid: " + sid + ";" : ""} ${
-            rev ? "rev: " + rev + ";" : ""
-          } ${classtype ? "classtype: " + classtype + ";" : ""} ${
-            priority ? "priority: " + priority + ";" : ""
-          } ${msg ? "msg: '" + msg + "';" : ""})`}
-          disabled
-        />
+        <FormGroup>
+          <FormControlLabel
+            control={<Switch value={manual} onChange={toggleManual} />}
+            label="
+            Manual Rule"
+          />
+        </FormGroup>
+      </Box>
+      <Box sx={{ my: 2 }}>
+        {!manual && (
+          <TextField
+            multiline
+            minRows={4}
+            variant="outlined"
+            fullWidth
+            ref={ruleRef}
+            value={`${action ? action : ""} ${protocol ? protocol : ""} ${
+              srcIp ? srcIp : ""
+            } ${srcPort ? srcPort : ""} -> ${dstIp ? dstIp : ""} ${
+              dstPort ? dstPort : ""
+            } (${sid ? "sid: " + sid + ";" : ""} ${
+              rev ? "rev: " + rev + ";" : ""
+            } ${classtype ? "classtype: " + classtype + ";" : ""} ${
+              priority ? "priority: " + priority + ";" : ""
+            } ${msg ? "msg: '" + msg + "';" : ""})`}
+            disabled
+          />
+        )}
+        {manual && (
+          <TextField
+            multiline
+            minRows={4}
+            variant="outlined"
+            fullWidth
+            ref={ruleRef}
+            value={customRule}
+            onChange={(e) => setCustomRule(e.target.value)}
+          />
+        )}
       </Box>
       <Box sx={{ my: 2 }}>
         <Button variant="contained" type="submit">

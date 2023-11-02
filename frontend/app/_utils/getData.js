@@ -5,6 +5,7 @@ export const getData = async (url) => {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
+    cache: "no-store",
   });
 
   return await response.json();

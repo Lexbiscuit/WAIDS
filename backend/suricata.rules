@@ -40,4 +40,5 @@ alert ipv6 any any -> any any (msg:"SURICATA reserved field in Frag Header not z
 alert ipv6 any any -> any any (msg:"SURICATA data after none (59) header"; decode-event:ipv6.data_after_none_header; classtype:protocol-command-decode; sid:2200096; rev:2;)
 alert tcp any any -> any any (sid:1; gid:1; msg:"This is my new message."; classtype:test; content:test; flow:to_server; app-layer-event:applayer-unexpeceted-protocol; flow_int:applayer.anomaly.count,+,2;)
 # alert tcp any any -> any any (sid:1; gid:1; msg:"This is a test."; classtype:test; content:test; flow:to_server; app-layer-event:applayer-unexpeceted-protocol; flow_int:applayer.anomaly.count,+,2;)
-alert tcp 192.168.0.1 80 -> 192.168.0.1 80 (sid: 1; rev: 1; classtype: Unknown-host; priority: 1; msg: 'Unknown host error.';)​
+alert ipv6 any any -> any any (msg:"SURICATA RH Type 0"; decode-event:ipv6.rh_type_0; classtype:protocol-command-decode; sid:2200093; rev:2;)
+log tcp 192.168.0.1 80 -> 192.168.0.1 443 (sid: 1; rev: 1; classtype: unknown; priority: 1; msg: 'Hello';)​
