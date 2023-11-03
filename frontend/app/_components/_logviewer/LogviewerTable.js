@@ -22,22 +22,22 @@ export default function LogviewerTable() {
       cell: ({ row, getValue }) => getValue(),
     },
     {
-      header: "Source IP",
+      header: "Src IP",
       accessorKey: "src_ip",
       cell: ({ row, getValue }) => getValue(),
     },
     {
-      header: "Source Port",
+      header: "Src Port",
       accessorKey: "src_port",
       cell: ({ row, getValue }) => getValue(),
     },
     {
-      header: "Destination IP",
+      header: "Dest IP",
       accessorKey: "dest_ip",
       cell: ({ row, getValue }) => getValue(),
     },
     {
-      header: "Destination Port",
+      header: "Dest Port",
       accessorKey: "dest_port",
       cell: ({ row, getValue }) => getValue(),
     },

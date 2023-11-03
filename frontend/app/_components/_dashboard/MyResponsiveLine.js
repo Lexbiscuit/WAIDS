@@ -4,12 +4,9 @@ import { Typography } from "@mui/material";
 
 const getTimeData = async (id) => {
   try {
-    const res = await fetch(
-      "http://localhost:3000/api/dashboard/MyResponsiveLine?id=" + id,
-      {
-        cache: "no-store",
-      },
-    );
+    const res = await fetch("/api/dashboard/MyResponsiveLine?id=" + id, {
+      cache: "no-store",
+    });
 
     if (!res.ok) throw new Error("Failed to fetch logs.");
 

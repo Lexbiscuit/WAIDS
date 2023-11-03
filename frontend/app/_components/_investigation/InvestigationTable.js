@@ -16,12 +16,13 @@ export default function InvestigationTable() {
     const [selectedOption, setSelectedOption] = useState(value);
 
     const updateDb = async () => {
-      const res = await fetch("/api/investigation/create", {
+      const res = await fetch("/api/investigation/update", {
         method: "PUT",
         body: JSON.stringify({
           id: id,
           value: selectedOption,
         }),
+        cache: "no-cache",
       }).catch((err) => console.error(err));
     };
 

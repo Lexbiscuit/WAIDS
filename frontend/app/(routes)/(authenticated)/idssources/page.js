@@ -25,15 +25,6 @@ const IDSSourcesPage = async () => {
   return (
     <Box component="main" height="100vh" overflow="auto">
       <ResponsiveAppBar />
-      <Button
-        variant="contained"
-        href=""
-        sx={{
-          m: 3,
-        }}
-      >
-        Add new IDS
-      </Button>
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Grid container spacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           {data.map((e, i) => (

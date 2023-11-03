@@ -11,23 +11,23 @@ const CardComponent = ({ children }) => {
 
 export default function EventOverview() {
   const [eventOverview, setEventOverview] = React.useState(null);
-  
+
   useEffect(() => {
     setInterval(() => {
       async function fetchData() {
         try {
           const responses = await Promise.all([
-            fetch("http://localhost:3000/api/dashboard/EventOverview/Count", {
+            fetch("/api/dashboard/EventOverview/Count", {
               cache: "no-store",
             }),
-            fetch("http://localhost:3000/api/dashboard/EventOverview/Unique", {
+            fetch("/api/dashboard/EventOverview/Unique", {
               cache: "no-store",
             }),
-            fetch("http://localhost:3000/api/dashboard/EventOverview/Critical", {
+            fetch("/api/dashboard/EventOverview/Critical", {
               cache: "no-store",
             }),
           ]);
-  
+
           const jsonResponses = await Promise.all(
             responses.map(async (r) => {
               if (!r.ok) {
@@ -37,7 +37,7 @@ export default function EventOverview() {
               return data;
             })
           );
-  
+
           setEventOverview(jsonResponses);
         } catch (error) {
           // Handle any errors, e.g., network errors or failed requests
@@ -49,7 +49,7 @@ export default function EventOverview() {
       fetchData();
     }, 5000);
   }, []);
-  
+
   return (
     <Container component="div" maxWidth="xl" sx={{ mt: 2 }}>
       <Grid container spacing={1}>
