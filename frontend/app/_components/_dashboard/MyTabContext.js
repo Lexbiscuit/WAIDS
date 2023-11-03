@@ -46,8 +46,6 @@ export default function MyTabContext(props) {
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
             <Tab label="Alert" value="1" />
-            <Tab label="Anomaly" value="2" />
-            <Tab label="Item Three" value="3" />
           </TabList>
         </Box>
         <TabPanel value="1">
@@ -81,8 +79,6 @@ export default function MyTabContext(props) {
           {children}
         </TabPanel>
         </TabPanel>
-        <TabPanel value="2">{children}</TabPanel>
-        <TabPanel value="3"></TabPanel>
       </TabContext>
     </Box>
   );

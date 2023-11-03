@@ -18,7 +18,7 @@ import SettingsMenu from "./SettingsMenu";
 
 // const BASE_URL = "http://localhost:3000/dashboard/";
 
-const pages = ["Log Viewer", "IDS Sources", "Investigation", "Users", "Alerts", "History"];
+const pages = ["Log Viewer", "IDS Sources", "Investigation", "Users", "History"];
 
 const roleAccess = {
   'Network Administrator': ['Main Dashboard', 'IDS Sources', 'Log Viewer'],
@@ -35,7 +35,6 @@ export default function Appbar_auth() {
 
   const { data: session, status } = useSession();
   const userRole = session?.user?.role;
-  console.log(userRole)
   const allowedPages = roleAccess[userRole];
   
   let filteredPages = [];
