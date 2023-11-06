@@ -1,6 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
+  "proxy": "http://159.223.47.93:5000",
   "private": true,
   "scripts": {
     "dev": "next dev",
