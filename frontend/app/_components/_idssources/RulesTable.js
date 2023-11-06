@@ -44,7 +44,7 @@ export default function RulesTable() {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch("http://127.0.0.1:5000/rules/retrieve");
+      const res = await fetch("http://159.223.47.93:5000/rules/retrieve");
       const data = await res.json();
       setData(data);
     }

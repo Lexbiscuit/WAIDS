@@ -11,9 +11,9 @@ import Switch from "@mui/material/Switch";
 
 function handleSubmit(index, enabled) {
   if (enabled) {
-    fetch(`http://127.0.0.1:5000/rules/enable/${index}`);
+    fetch(`http://159.223.47.93:5000/rules/enable/${index}`);
   } else {
-    fetch(`http://127.0.0.1:5000/rules/disable/${index}`);
+    fetch(`http://159.223.47.93:5000/rules/disable/${index}`);
   }
 }
 
