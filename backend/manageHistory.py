@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, send_file, jsonify
+from flask import Blueprint, Flask, request, render_template, send_file, jsonify
 import pandas as pd
 import json
 import matplotlib.pyplot as plt
@@ -8,8 +8,9 @@ from pymongo import MongoClient
 import os
 from datetime import datetime, timedelta
 import requests
-from flask_cors import CORS
 import zipfile
+
+manageHistory = Blueprint('manageHistory', __name__)
 
 # Determine the latest timestamp and calculate timestamps for the last 5 hours
 latest_timestamp = datetime.strptime("9/10/2023 19:26:02", "%d/%m/%Y %H:%M:%S")
@@ -32,18 +33,14 @@ client = MongoClient("localhost", 27017)
 db = client.WAIDS
 Aggregated_collection = db.Aggregated_collection
 
-app = Flask(__name__)
-CORS(app)
-
-@app.route('/')
-def index():
-    return render_template('page.js')
-
+# Image directory
+image_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend", "public", "database_images"))
+                         
 def flatten_list(lst):
     return ', '.join(map(str, lst))
 
 # Define a route to serve image files
-@app.route('/serve_image/<int:image_index>', methods=['GET'])
+@manageHistory.route('/serve_image/<int:image_index>', methods=['GET'])
 def serve_image(image_index):
     # Make sure 'image_index' is within a valid range
     if image_index < 0 or image_index >= len(world_map_image_files):
@@ -51,7 +48,7 @@ def serve_image(image_index):
 
     # Construct the full path to the image file based on image_index
     script_dir = os.path.abspath(os.path.dirname(__file__))
-    image_dir = os.path.join(script_dir, "..", "frontend", "public", "database_images")
+    #image_dir = os.path.join(script_dir, "..", "frontend", "public", "database_images")
     image_filename = f"world_map_{image_index}.png"  # Adjust the filename format if needed
     image_path = os.path.join(image_dir, image_filename)
 
@@ -60,15 +57,17 @@ def serve_image(image_index):
     except Exception as e:
         return jsonify({'error': str(e)})
     
-@app.route('/serve_zip/<zip_filename>', methods=['GET'])
+@manageHistory.route('/serve_zip/<zip_filename>', methods=['GET'])
 def serve_zip(zip_filename):
+    #image_dir = "frontend/public/database_images"
     script_dir = os.path.abspath(os.path.dirname(__file__))
-    image_dir = os.path.join(script_dir, "..", "frontend", "public", "database_images")
+    #image_dir = os.path.join(script_dir, "..", "frontend", "public", "database_images")
     zip_path = os.path.join(image_dir, zip_filename)
+    
     return send_file(zip_path, as_attachment=True)
 
 
-@app.route('/process_data', methods=['POST'])
+@manageHistory.route('/process_data', methods=['POST'])
 def process_data():
     data = list(Aggregated_collection.find({}))
     try:
@@ -101,7 +100,7 @@ def process_data():
             event_type_counts.plot(kind='bar')
             plt.xlabel('event_type Values')
             plt.ylabel('Count')
-            plt.title(f'Unique event_type Values from {start_time} to {end_time}')
+            plt.title(f'Event_type Values from \n{start_time} to {end_time}')
 
             # Specify the image save directory (one folder up from the script location)
             script_dir = os.path.abspath(os.path.dirname(__file__))
@@ -142,7 +141,7 @@ def process_data():
             plt.pie(severity_counts, labels=severity_counts.index, autopct='%1.1f%%', startangle=140)
 
             # Set a title for the severity distribution pie chart
-            plt.title(f"Severity Distribution for {start_time} to {end_time}")
+            plt.title(f"Alert Severity distribution for \n{start_time} to {end_time}")
 
             # Annotate the pie chart with the total count
             total_severity_count = len(filtered_data)
@@ -254,12 +253,12 @@ def process_data():
                 # Plot all IP addresses for this event type
                 geolocation_df.plot.scatter(x='longitude', y='latitude', s=50, ax=ax, label=f'IP Addresses for {event_type}', color=color_mapping[event_type],alpha=0.5)
 
-            plt.title(f'IP Addresses from Alerts and Anomalies on World Map from {start_time} to {end_time}')
+            plt.title(f'IP Addresses for Alert and Anomalies on World Map from \n{start_time} to {end_time}')
             plt.legend()
 
             # Specify the image save directory (one folder up from the script location)
             script_dir = os.path.abspath(os.path.dirname(__file__))
-            image_dir = os.path.join(script_dir, "..", "frontend", "public", "database_images")
+            #image_dir = os.path.join(script_dir, "..", "frontend", "public", "database_images")
             if not os.path.exists(image_dir):
                 os.makedirs(image_dir)  # Create the directory if it doesn't exist
             
@@ -287,11 +286,8 @@ def process_data():
 
         return json.dumps({
             'message': "Bar charts and world maps created and saved.",
-             'zip_url': f'http://localhost:5000/serve_zip/{zip_filename}'
+             'zip_url': f'http://159.223.47.93:5000/serve_zip/{zip_filename}'
         })
 
     except json.JSONDecodeError as e:
         print(f"JSON decoding error: {e}")
-
-if __name__ == '__main__':
-    app.run(host='localhost', port=5000, debug=True)

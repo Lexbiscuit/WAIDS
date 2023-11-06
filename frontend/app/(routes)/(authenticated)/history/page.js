@@ -128,13 +128,13 @@ const ProcessDataButton = () => {
           <div>{result}</div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: '2px solid #ccc', padding: '10px', borderRadius: '5px', margin: '10px' }}>
               <Image
                 unoptimized
                 src={bcImages[currentBarChartIndex]}
                 alt="Bar Chart"
-                width={400}
-                height={300}
+                width={500}
+                height={375}
               />
               <Slider
                 value={4 - currentBarChartIndex}
@@ -144,13 +144,13 @@ const ProcessDataButton = () => {
                 style={{ width: '80%', margin: '1rem auto' }}
               />
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: '2px solid #ccc', padding: '10px', borderRadius: '5px', margin: '10px' }}>
               <Image
                 unoptimized
                 src={pImages[currentPieChartIndex]}
                 alt="Pie Chart"
-                width={400}
-                height={300}
+                width={500}
+                height={375}
               />
               <Slider
                 value={4 - currentPieChartIndex}
@@ -161,25 +161,22 @@ const ProcessDataButton = () => {
               />
             </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <div style ={{ maxWidth: '1000px', width: ' 100%'}} >
-            <Image
-              unoptimized
-              src={wmImages[currentWorldMapIndex]}
-              alt="World Map"
-              width={1000}
-              height={750}
-            />
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: '2px solid #ccc', padding: '32px', borderRadius: '5px', margin: '10px' }}>
+          <div style={{ maxWidth: '1000px', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Image
+                unoptimized
+                src={wmImages[currentWorldMapIndex]}
+                alt="World Map"
+                width={1000}
+                height={750}
+              />
             </div>
-            <div style={{ width: '80%', margin: '0.1rem auto' }}>
             <Slider
               value={4 - currentWorldMapIndex}
               min={0}
               max={4}
               onChange={(event, newValue) => handleSliderChange(event, 4 - newValue, 'worldMap')}
-              
             />
-            </div>
           </div>
         </div>
         </div>

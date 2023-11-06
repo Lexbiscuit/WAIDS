@@ -14,7 +14,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { usePathname } from "next/navigation";
 
-const pages = ["About Us", "Support", "Get Quote", "Test"];
+const pages = ["About Us", "Support", "Get Quote"];
 
 export default function Appbar_no_auth() {
   const [state, setState] = React.useState({ left: false });
