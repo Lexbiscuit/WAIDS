@@ -27,7 +27,7 @@ export default function MyTabContext(props) {
   useEffect(() => {
     const fetchAlerts = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/dashboard/Alerts', { cache: "no-store" });
+        const response = await fetch('/api/dashboard/Alerts', { cache: "no-store" });
         const data = await response.json();
         data.sort((a, b) => b.alert.severity - a.alert.severity);
         setEvent(data);

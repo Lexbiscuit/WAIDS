@@ -308,7 +308,7 @@ function UpdateFormDialog(props) {
           <Button
             onClick={() => {
               async function sendData() {
-                await fetch("http://localhost:3000/api/users/UsersData", {
+                await fetch("/api/users/UsersData", {
                   method: "POST",
                   mode: "cors",
                   cache: "no-cache",
@@ -347,7 +347,7 @@ function PasswordFormDialog(props) {
 
   const handleChangePassword = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/users/UsersData", {
+      const response = await fetch("/api/users/UsersData", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -402,7 +402,7 @@ function DeleteConfirmationDialog(props) {
   const { open, toggleDialog, userId, setChanged } = props;
 
   const handleDelete = async () => {
-    await fetch("http://localhost:3000/api/users/UsersData", {
+    await fetch("/api/users/UsersData", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -456,7 +456,7 @@ export function AddUserDialog(props) {
 
   const handleAddUser = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/users/UsersData", {
+      const response = await fetch("/api/users/UsersData", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -569,7 +569,7 @@ function SuspendConfirmationDialog(props) {
   const { open, toggleDialog, userId, setChanged, userStatus, setUserStatus } = props;
 
   const handleStatusChange = async () => {
-    await fetch("http://localhost:3000/api/users/UsersData", {
+    await fetch("/api/users/UsersData", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
