@@ -114,7 +114,7 @@ export default function RuleBuilder() {
         return;
       }
 
-      fetch("http://localhost:5000/rules/create", {
+      fetch("http://127.0.0.1:5000/rules/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
