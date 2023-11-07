@@ -1,3 +1,4 @@
+"use client";
 import {
   Tooltip,
   IconButton,
@@ -8,6 +9,7 @@ import {
 } from "@mui/material";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function SettingsMenu({
   handleOpenUserMenu,
@@ -16,6 +18,7 @@ export default function SettingsMenu({
   settings,
 }) {
   const { data: session, status } = useSession();
+  const router = useRouter();
   return (
     <>
       <IconButton
@@ -49,7 +52,9 @@ export default function SettingsMenu({
               textAlign="center"
               onClick={() => {
                 if (setting === "Logout") {
-                  signOut({ callbackUrl: `${window.location.origin}/login` });
+                  signOut({ redirect: false }).then(() =>
+                    router.replace("/login")
+                  );
                 }
               }}
             >

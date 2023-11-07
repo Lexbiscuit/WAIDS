@@ -4,20 +4,22 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 
 export async function PUT(request) {
-  //   const session = await getServerSession();
-  //   if (!session) {
-  //     return NextResponse.json(
-  //       { error: "Internal Server Error" },
-  //       { status: 500 }
-  //     );
-  //   }
+  const session = await getServerSession();
+  if (!session) {
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 
   try {
     const { name, isEnabled } = await request.json();
     await connectMongoDB();
-    await IdsSource.updateOne({ name: name }, { isEnabled: isEnabled });
+    await IdsSource.updateOne(
+      { name: name },
+      { isEnabled: Boolean(isEnabled) }
+    );
   } catch (error) {
-    console.log(error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

@@ -1,36 +1,37 @@
 "use client";
 import React from "react";
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import {
-  Box,
-  Container,
   Grid,
-  Paper,
   Card,
   CardActions,
   CardContent,
   Typography,
   Button,
 } from "@mui/material";
-import CircleIcon from "@mui/icons-material/Circle";
 
 export default function DisplaySources() {
   const { data, status, isFetching } = useQuery({
     queryKey: ["fetchAllSources"],
-    queryFn: () => axios.get("/api/idssources/all"),
+    queryFn: async () => {
+      const { data } = await axios.get("/api/idssources/all");
+      return data;
+    },
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
   });
 
+  if (isFetching) {
+    return <h1>Loading...</h1>;
+  }
+  if (status == "error") {
+    return <h1>Error</h1>;
+  }
   if (status == "success") {
     return (
       <Grid container spacing={2}>
-        {data.data.map((source) => (
+        {data.map((source) => (
           <Grid item xs={12} sm={6} md={4} key={source._id}>
             <Item {...source} />
           </Grid>
@@ -97,7 +98,7 @@ function Item({ name, isEnabled }) {
                 toggleSource.mutate({ name: name, isEnabled: !isEnabled })
               }
             >
-              {isEnabled ? "Disable" : "Enable"}
+              <strong>{isEnabled ? "Disable" : "Enable"}</strong>
             </Button>
           </Grid>
           <Grid item xs={6}>
