@@ -59,7 +59,6 @@ const StyledMenu = styled((props) => (
 }));
 
 export default function MenuMUI({ row }) {
-  const data = row.original;
   const router = useRouter();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -71,9 +70,9 @@ export default function MenuMUI({ row }) {
     setAnchorEl(null);
   };
 
-  const createInvestigation = useMutation({
-    mutationFn: async (data) => {
-      await axios.put("/api/investigation/create", data, {
+  const deleteInvestigation = useMutation({
+    mutationFn: async (id) => {
+      await axios.post("/api/investigation/delete", id, {
         headers: {
           "Content-Type": "application/json",
           "Cache-Control": "no-cache",
@@ -82,7 +81,6 @@ export default function MenuMUI({ row }) {
     },
   });
 
-  const { data: session } = useSession();
   return (
     <div>
       <Button
@@ -108,8 +106,8 @@ export default function MenuMUI({ row }) {
       >
         <MenuItem
           onClick={() => {
-            const url = row.original._id;
-            router.push("/logviewer/" + url);
+            const url = row.original._doc.flow_id;
+            router.push(`/investigation/${url}`);
             handleClose();
           }}
           disableRipple
@@ -120,19 +118,13 @@ export default function MenuMUI({ row }) {
 
         <MenuItem
           onClick={() => {
-            const description = prompt("Enter description: ");
-            createInvestigation.mutate({
-              id: data._id,
-              creator: session.user.name,
-              description: description,
-              investigation_status: "pending",
-            });
+            deleteInvestigation.mutate({ id: row.original._id });
             handleClose();
           }}
           disableRipple
         >
           <FileCopyIcon />
-          Open Investigation
+          Delete
         </MenuItem>
       </StyledMenu>
     </div>

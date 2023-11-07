@@ -1,14 +1,23 @@
 "use client";
 import { useState, useEffect } from "react";
 import TanstackTable from "@/app/_components/TanstackTable";
-import { getData } from "@/app/_utils/getData";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import MenuMUI from "./MenuMUI";
 
 // timestamp, alert.severity, src_ip, src_port, dest_ip, dest_port, event_type
 // custom: action taken, description
 
 export default function LogviewerTable() {
-  const [data, setData] = useState([]);
+  const { data, status, isFetching } = useQuery({
+    queryKey: ["fetchLogviewerTable"],
+    queryFn: async () => {
+      const { data } = await axios.get("/api/logviewer/TableData");
+      return data;
+    },
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+  });
 
   const columns = [
     {
@@ -52,14 +61,9 @@ export default function LogviewerTable() {
     },
   ];
 
-  const fetchData = async () => {
-    const data = await getData("logviewer/TableData");
-    setData(data);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  return <TanstackTable data={data} columns={columns} />;
+  if (isFetching) return <h1>Loading...</h1>;
+  if (status === "error") return <h1>An error occured</h1>;
+  if (status === "success") {
+    return <TanstackTable data={data} columns={columns} />;
+  }
 }

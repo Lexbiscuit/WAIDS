@@ -12,9 +12,9 @@ export async function PUT(request) {
     );
   }
 
-  const { id, value } = await request.json();
+  const { id, status } = await request.json();
   await connectMongoDB();
-  const update = { investigation_status: String(value) };
+  const update = { investigation_status: String(status) };
   await Investigation.findByIdAndUpdate(id, update);
 
   return NextResponse.json({}, { status: 200 });

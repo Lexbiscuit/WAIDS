@@ -1,5 +1,6 @@
 import connectMongoDB from "@/libs/mongoose";
 import LogData from "@/models/logdata";
+import IdsSource from "@/models/idssource";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 
@@ -8,19 +9,17 @@ export async function GET(request) {
   if (!session) {
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 
-  // const skip = request.nextUrl.searchParams.get("skip");
-  // const limit = request.nextUrl.searchParams.get("limit");
-
   await connectMongoDB();
+  const enabledSources = await IdsSource.find({ isEnabled: true });
+  const sources = enabledSources.map((source) => source.name);
+
   const data = await LogData.aggregate([
-    { $match: { event_type: "alert" } },
+    { $match: { ids_name: { $in: sources }, event_type: "alert" } },
     { $sort: { timestamp: -1 } },
-    // { $skip: parseInt(skip) },
-    // { $limit: parseInt(limit) },
   ]);
   const response = NextResponse.json(data);
   response.headers.append("Access-Control-Allow-Origin", "*");

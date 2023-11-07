@@ -9,7 +9,7 @@ export default function InvestigationItem({ params }) {
       <ResponsiveAppBar />
       <Container maxWidth="lg" sx={{ my: 2 }}>
         <Grid container gap={2}>
-          <FullDetailsComponent id={params.id} />
+          <FullDetailsComponent flow_id={params.flow_id} />
         </Grid>
       </Container>
     </Box>

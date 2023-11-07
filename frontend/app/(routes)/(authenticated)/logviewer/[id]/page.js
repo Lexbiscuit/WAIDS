@@ -2,7 +2,7 @@
 import { Box, TextField, Container, InputAdornment, Grid } from "@mui/material";
 import ResponsiveAppBar from "@/app/_components/Appbar_auth";
 import React from "react";
-import FullDetailsComponent from "@/app/_components/_investigation/FullDetailsComponent";
+import FullDetailsComponent from "@/app/_components/_logviewer/FullDetailsComponent";
 
 export default function LogViewItem({ params }) {
   return (
