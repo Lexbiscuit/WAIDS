@@ -1,10 +1,8 @@
 import connectMongoDB from "@/libs/mongoose";
 import LogData from "@/models/logdata";
-import Investigation from "@/models/investigation";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import Mongoose from "mongoose";
-import { ObjectId } from "mongodb";
 
 export async function PUT(request) {
   const session = await getServerSession();
