@@ -49,7 +49,7 @@ export default function SettingsMenu({
               textAlign="center"
               onClick={() => {
                 if (setting === "Logout") {
-                  signOut();
+                  signOut({ callbackUrl: `${window.location.origin}/login` });
                 }
               }}
             >
