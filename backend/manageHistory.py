@@ -75,9 +75,7 @@ def process_data():
             print("No data found in MongoDB.")
             return "No data found in MongoDB."
 
-        # Terminal Visualization
         df = pd.DataFrame(data).fillna('Unknown')
-        print(df)
 
         # Find the latest timestamp in the DataFrame
         latest_timestamp = df['timestamp'].max()
