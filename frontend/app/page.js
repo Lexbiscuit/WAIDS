@@ -1,116 +1,148 @@
 "use client";
-import React from "react";
-import { Box, Container, Typography, Paper, Link } from "@mui/material";
-import ResponsiveAppBar from "./_components/Appbar_no_auth";
+import React, { useState, useEffect } from "react";
+import ResponsiveAppBar from "@/app/_components/Appbar_no_auth";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import {
+  Box,
+  Container,
+  Typography,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Button,
+  Grid,
+  Link,
+  Paper, // You can remove this line if you don't want to use Paper
+} from "@mui/material";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-
-// Import image files
-//import placeholderimage from "@/public/placeholder.png";
-import marketingimage from "@/public/marketing1.png";
-import marketingimage2 from "@/public/marketing2.png";
 import logo from "@/public/WaidsLogo.png";
 
-export default function Home() {
+export default function Login() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session) {
+      router.push("/dashboard");
+    }
+  }, [session]);
+
+  const [submitting, setSubmitting] = useState(false);
+
+  const toggleSubmitting = () => setSubmitting(!submitting);
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      setSubmitting(1);
+      const result = await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirect: false,
+      });
+
+      if (result.error) {
+        alert("Login failed");
+        toggleSubmitting();
+      } else {
+        router.push("/dashboard");
+      }
+    },
+  });
+
   return (
     <Box component="main" height="100vh" overflow="auto">
       <ResponsiveAppBar />
-
-      <Container maxWidth="lg" sx={{ mt: 8 }}>
-        {/* Image 1 */}
-        <Paper
-          elevation={3}
-          style={{
-            padding: "20px",
-            borderRadius: "20px",
+      <Container maxWidth="lg">
+        <Box
+          sx={{
+            marginTop: 2,
             display: "flex",
-            justifyContent: "center",
+            flexDirection: "column",
             alignItems: "center",
           }}
         >
-          <Image
-            src={logo}
-            alt="Your Image"
-            style={{ width: "80%", height: "auto" }}
-          />
-          {/* Content inside the curved rectangle */}
-        </Paper>
-
-        <Typography my={4}>
-          <span style={{ fontSize: "3em", marginRight: "0.2em" }}>What is</span>
-          <span
-            style={{
-              fontSize: "3.5em",
-              fontWeight: "bold",
-              textDecoration: "underline",
-            }}
-          >
-            WAIDS
-          </span>
-          <span style={{ fontSize: "3.5em", marginRight: "0.2em" }}>?</span>
-        </Typography>
-
-        {/* Text 1 */}
-        <Paper
-          elevation={3}
-          sx={{ my: 4 }}
-          style={{ padding: "20px", borderRadius: "20px" }}
-        >
-          {/* Content inside the curved rectangle */}
-          <Typography variant="body1">
-            The Web-based Analysis Intrusion Detection System (WAIDS) helps to
-            assist the network administrator in monitoring the network.
-            <br></br>
-            The WAIDS performs data mining and visualisation techniques on the
-            data captured by the various IDS to obtain valuable information,
-            which is then presented on a virtualized dashboard for the network
-            administrator to view and act upon.
-          </Typography>
-        </Paper>
-
-        {/* Image 2 */}
-        <Paper
-          elevation={3}
-          sx={{ my: 4 }}
-          style={{ padding: "20px", borderRadius: "20px" }}
-        >
-          <Image
-            unoptimized={true}
-            src={marketingimage}
-            alt="Your Image"
-            style={{ width: "100%", height: "auto" }}
-          />
-          {/* Content inside the curved rectangle */}
-        </Paper>
-
-        {/* Text 2 */}
-        <Paper
-          elevation={3}
-          sx={{ my: 4 }}
-          style={{ padding: "20px", borderRadius: "20px" }}
-        >
-          {/* Content inside the curved rectangle */}
-          <Typography variant="body1">
-            WAIDS provides an easy visualisation dashboard in the palm of your
-            hands.
-            <br></br>
-            It also comes with activity logs to track live updates.
-          </Typography>
-        </Paper>
-
-        {/* Image 3 */}
-        <Paper
-          elevation={3}
-          sx={{ my: 4 }}
-          style={{ padding: "20px", borderRadius: "20px" }}
-        >
-          <Image
-            src={marketingimage2}
-            alt="Your Image"
-            style={{ width: "100%", height: "auto" }}
-          />
-          {/* Content inside the curved rectangle */}
-        </Paper>
+          <Box component="form" sx={{ mt: 1 }} onSubmit={formik.handleSubmit}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: "16px", // Adjust margin as needed
+              }}
+            >
+              <Image
+                unoptimized
+                src={logo}
+                alt="WAIDS LOGO"
+                style={{ width: "90%", height: "auto" }}
+              />
+            </div>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
+            />
+            <TextField
+              margin="normal"
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disabled={submitting}
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
       </Container>
     </Box>
   );
 }
+
+const validationSchema = yup.object({
+  email: yup
+    .string("Enter your email")
+    .email("Enter a valid email")
+    .required("Email is required"),
+  password: yup.string("Enter your password").required("Password is required"),
+});

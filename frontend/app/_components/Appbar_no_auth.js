@@ -132,22 +132,7 @@ export default function Appbar_no_auth() {
               </Button>
             ))}
           </Box>
-
-          {/* Mobile and Desktop: Settings Menu */}
-          <Box sx={{ flexGrow: 0 }}>
-            {pathname == "/login" ? null : (
-              <Button
-                variant="outlined"
-                sx={{
-                  color: "inherit",
-                  borderColor: "inherit",
-                }}
-                href="/login"
-              >
-                Login
-              </Button>
-            )}
-          </Box>
+          
         </Toolbar>
       </Container>
     </AppBar>

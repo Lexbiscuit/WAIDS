@@ -299,6 +299,9 @@ function UpdateFormDialog(props) {
                 <MenuItem value={"Network Administrator"}>
                   Network Administrator
                 </MenuItem>
+                <MenuItem value={"Security Auditor"}>
+                  Security Auditor
+                </MenuItem>
               </Select>
             </FormControl>
           </Box>

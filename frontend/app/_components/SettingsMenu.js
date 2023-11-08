@@ -53,7 +53,7 @@ export default function SettingsMenu({
               onClick={() => {
                 if (setting === "Logout") {
                   signOut({ redirect: false }).then(() =>
-                    router.replace("/login")
+                    router.replace("/")
                   );
                 }
               }}

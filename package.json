@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "create-next-app": "^13.4.13",
-    "next-themes": "^0.2.1"
+    "next-themes": "^0.2.1",
+    "react-query": "^3.39.3"
   }
 }
