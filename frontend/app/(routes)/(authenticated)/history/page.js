@@ -4,7 +4,6 @@ import axios from 'axios';
 import Image from 'next/image';
 import ResponsiveAppBar from "@/app/_components/Appbar_auth";
 import { Box, Container, Slider } from "@mui/material";
-import CircularProgress from '@mui/material/CircularProgress';
 
 const bcImages = [
   '/database_images/bar_chart_1.png',
@@ -40,7 +39,6 @@ const ProcessDataButton = () => {
   const processData = () => {
     setIsLoading(true);
     axios
-      //.post('http://localhost:5000/process_data')
       .post('http://159.223.47.93:5000/process_data')
       .then((response) => {
         const responseData = response.data;
@@ -101,6 +99,7 @@ const ProcessDataButton = () => {
   return (
     <Box component="main" height="100vh" overflow="auto">
       <ResponsiveAppBar />
+  
       <Container maxWidth="lg" sx={{ mt: 8 }}>
         <div>
           <br></br>
@@ -115,7 +114,6 @@ const ProcessDataButton = () => {
             >
             {isLoading ? 'Processing...' : 'Fetch most recent data'}
             </button>
-            {isLoading && <CircularProgress color="secondary" />}
             <button
               style={{ width: '250px', height: '50px', fontSize: '1.2rem', marginLeft: '20px' }}
               variant="contained"

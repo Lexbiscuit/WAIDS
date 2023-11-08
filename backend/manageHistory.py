@@ -286,7 +286,6 @@ def process_data():
 
         return json.dumps({
             'message': "Bar charts and world maps created and saved.",
-             #'zip_url': f'http://localhost:5000/serve_zip/{zip_filename}'
              'zip_url': f'http://159.223.47.93:5000/serve_zip/{zip_filename}'
         })
 
