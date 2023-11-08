@@ -69,13 +69,21 @@ def serve_zip(zip_filename):
 
 @manageHistory.route('/process_data', methods=['POST'])
 def process_data():
-    data = list(Aggregated_collection.find({}))
+    # Calculate the timestamp for 5 hours ago from the latest timestamp
+    latest_timestamp = Aggregated_collection.find().sort("timestamp", -1).limit(1)[0].get("timestamp")
+    from_datetime = latest_timestamp - timedelta(hours=5)
+
+    # Retrieve data from MongoDB for the specified time range
+    data = list(Aggregated_collection.find({"timestamp": {"$gte": from_datetime, "$lte": latest_timestamp}}))
+    
     try:
         if not data:
             print("No data found in MongoDB.")
             return "No data found in MongoDB."
 
+        # Terminal Visualization
         df = pd.DataFrame(data).fillna('Unknown')
+        print(df)
 
         # Find the latest timestamp in the DataFrame
         latest_timestamp = df['timestamp'].max()
