@@ -64,7 +64,7 @@ const StyledMenu = styled((props) => (
   },
 }));
 
-export default function MenuMUI({ row, setChanged }) {
+export default function MenuMUI({ row, setChanged, isSystemAdmin }) {
   const data = row.original;
   const [userStatus, setUserStatus] = React.useState(data.status || "active");
 
@@ -180,6 +180,7 @@ export default function MenuMUI({ row, setChanged }) {
           Change Password
         </MenuItem>
 
+        {!isSystemAdmin && (
         <MenuItem
           onClick={() => {
             {
@@ -196,6 +197,8 @@ export default function MenuMUI({ row, setChanged }) {
           <FileCopyIcon />
           {userStatus === "active" ? "Suspend" : "Suspend"}
         </MenuItem>
+        )}
+
         {/* <Menu
           anchorEl={statusAnchorEl}
           open={Boolean(statusAnchorEl)}
@@ -205,6 +208,7 @@ export default function MenuMUI({ row, setChanged }) {
           <MenuItem onClick={() => handleUserStatusChange('Suspend')}>Suspend</MenuItem>
         </Menu> */}
 
+      {!isSystemAdmin && (
         <MenuItem
           onClick={() => {
             {
@@ -217,6 +221,7 @@ export default function MenuMUI({ row, setChanged }) {
           <DeleteIcon />
           Delete
         </MenuItem>
+        )}
       </StyledMenu>
     </div>
   );

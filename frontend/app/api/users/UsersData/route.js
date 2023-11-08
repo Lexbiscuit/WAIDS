@@ -79,6 +79,12 @@ export async function DELETE(request) {
   const { _id } = await request.json();
   let status = {};
 
+  const user = await User.findById(_id);
+  if (user.role === 'System Administrator') {
+    // If the user is a System Administrator, do not delete and return a message
+    return NextResponse.json({ message: "Cannot delete System Administrator account." });
+  }
+
   await User.findByIdAndDelete(_id)
     .then(() => {
       status.message = "Delete successful.";
@@ -98,6 +104,11 @@ export async function PUT(request) {
   }
 
   await connectMongoDB();
+  const user = await User.findById(_id);
+  if (user.role === 'System Administrator' && status === 'suspended') {
+    // If the user is a System Administrator, do not suspend and return a message
+    return NextResponse.json({ message: "Cannot suspend System Administrator account." });
+  }
   await User.findByIdAndUpdate(_id, { status });
  
   return NextResponse.json({ message: "User status updated successfully." });

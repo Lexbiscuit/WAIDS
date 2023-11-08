@@ -39,11 +39,12 @@ export default function UsersTable() {
     },
     {
       id: "options",
-      cell: ({ row }) => (
-        <MenuMUI row={row} changed={changed} setChanged={setChanged} />
-        
-      ),
-    },
+      cell: ({ row }) => {
+         // Check if the user is a System Administrator
+        const isSystemAdmin = row.original.role === 'System Administrator';
+        return <MenuMUI row={row} isSystemAdmin={isSystemAdmin} changed={changed} setChanged={setChanged} />;
+      },
+    }
 
   ];
 
