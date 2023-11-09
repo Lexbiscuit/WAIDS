@@ -4,7 +4,7 @@ import TanstackTable from "@/app/_components/TanstackTable";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import MenuMUI from "@/app/_components/_investigation/MenuMUI";
 // datetime - flow_id - interface - severity - proto
 // who started the investigation, who is doing the investigation
@@ -12,6 +12,7 @@ import MenuMUI from "@/app/_components/_investigation/MenuMUI";
 
 export default function InvestigationTable() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { data, status, isFetching } = useQuery({
     queryKey: ["fetchInvestigationTable"],
     queryFn: async () => {
@@ -27,11 +28,15 @@ export default function InvestigationTable() {
 
     const updateStatus = useMutation({
       mutationFn: async (statusObject) => {
-        await axios.put("/api/investigation/update", statusObject, {
+        return axios.put("/api/investigation/update", statusObject, {
           headers: {
             "Content-Type": "application/json",
-            "Cache-Control": "no-cache",
           },
+        });
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["fetchInvestigationTable"],
         });
       },
     });

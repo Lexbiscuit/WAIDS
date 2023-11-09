@@ -1,28 +1,33 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { Box, Container, Grid } from "@mui/material";
-
 import Appbar_auth from "@/app/_components/Appbar_auth";
 import LiveLogFeed from "@/app/_components/_dashboard/LiveLogFeed";
-import MyResponsivePie from "@/app/_components/_dashboard/MyResponsivePie";
+import ResponsivePie from "@/app/_components/_dashboard/ResponsivePie";
 import ChartItem from "@/app/_components/_dashboard/ChartItem";
 import Title from "@/app/_components/_dashboard/Title";
-import MyResponsiveLine from "@/app/_components/_dashboard/MyResponsiveLine";
-import MyResponsiveBar from "@/app/_components/_dashboard/MyResponsiveBar";
+import ResponsiveLine from "@/app/_components/_dashboard/ResponsiveLine";
+import ResponsiveBar from "@/app/_components/_dashboard/ResponsiveBar";
 import EventOverview from "@/app/_components/_dashboard/EventOverview";
 import MyTabContext from "@/app/_components/_dashboard/MyTabContext";
 
 export default function Dashboard() {
-  const allowedRoles = ['Network Administrator', 'SOC Analyst', 'IT Manager', 'IR Team', 'System Administrator'];
+  const allowedRoles = [
+    "Network Administrator",
+    "SOC Analyst",
+    "IT Manager",
+    "IR Team",
+    "System Administrator",
+  ];
   const [views, setViews] = useState([
     {
       title: "Protocol",
       component: (
         <ChartItem>
           <Title>Protocol</Title>
-          <MyResponsivePie id="proto" />
+          <ResponsivePie id="proto" />
         </ChartItem>
       ),
     },
@@ -31,7 +36,7 @@ export default function Dashboard() {
       component: (
         <ChartItem>
           <Title>Priority</Title>
-          <MyResponsivePie id="alert.severity" />
+          <ResponsivePie id="alert.severity" />
         </ChartItem>
       ),
     },
@@ -40,7 +45,7 @@ export default function Dashboard() {
       component: (
         <ChartItem>
           <Title>Intrusion/month (recent year)</Title>
-          <MyResponsiveLine id="month" time="month" />
+          <ResponsiveLine id="month" time="month" />
         </ChartItem>
       ),
     },
@@ -49,7 +54,7 @@ export default function Dashboard() {
       component: (
         <ChartItem>
           <Title>Intrusion/year</Title>
-          <MyResponsiveLine id="year" time="year" />
+          <ResponsiveLine id="year" time="year" />
         </ChartItem>
       ),
     },
@@ -58,7 +63,7 @@ export default function Dashboard() {
       component: (
         <ChartItem>
           <Title>Category count</Title>
-          <MyResponsiveBar id="alert.category" />
+          <ResponsiveBar id="alert.category" />
         </ChartItem>
       ),
     },
@@ -67,23 +72,22 @@ export default function Dashboard() {
   const { data: session, status } = useSession();
   const router = useRouter();
   useEffect(() => {
-   
-    if (status === 'loading') {
-      return; 
-    }
-   
-    if (!session) {
-      router.push('/login'); 
+    if (status === "loading") {
       return;
     }
 
-    if (session.user.role === 'Security Auditor') {
-      router.push('/logviewer'); 
+    if (!session) {
+      router.push("/login");
       return;
     }
-   
+
+    if (session.user.role === "Security Auditor") {
+      router.push("/logviewer");
+      return;
+    }
+
     if (!allowedRoles.includes(session.user.role)) {
-      router.push('/unauthorized'); 
+      router.push("/unauthorized");
     }
   }, [session, status, router]);
 
@@ -112,5 +116,5 @@ export default function Dashboard() {
       </Box>
     );
   }
-  return null; 
+  return null;
 }

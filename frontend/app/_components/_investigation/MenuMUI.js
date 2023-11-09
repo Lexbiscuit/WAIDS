@@ -12,7 +12,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 const StyledMenu = styled((props) => (
@@ -60,6 +60,7 @@ const StyledMenu = styled((props) => (
 
 export default function MenuMUI({ row }) {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -72,12 +73,15 @@ export default function MenuMUI({ row }) {
 
   const deleteInvestigation = useMutation({
     mutationFn: async (id) => {
-      await axios.post("/api/investigation/delete", id, {
+      return axios.post("/api/investigation/delete", id, {
         headers: {
           "Content-Type": "application/json",
-          "Cache-Control": "no-cache",
         },
       });
+    },
+    onSuccess: (res) => {
+      alert(res.data.message);
+      queryClient.invalidateQueries({ queryKey: ["fetchInvestigationTable"] });
     },
   });
 

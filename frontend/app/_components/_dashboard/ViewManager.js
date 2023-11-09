@@ -22,9 +22,9 @@ import Slide from "@mui/material/Slide";
 import { TextField, MenuItem } from "@mui/material";
 import ChartItem from "./ChartItem";
 import Title from "./Title";
-import MyResponsivePie from "./MyResponsivePie";
-import MyResponsiveLine from "./MyResponsiveLine";
-import MyResponsiveBar from "./MyResponsiveBar";
+import MyResponsivePie from "./ResponsivePie";
+import MyResponsiveLine from "./ResponsiveLine";
+import MyResponsiveBar from "./ResponsiveBar";
 
 function PaperComponent(props) {
   return (

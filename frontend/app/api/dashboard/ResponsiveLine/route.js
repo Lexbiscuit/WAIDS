@@ -1,5 +1,6 @@
 import connectMongoDB from "@/libs/mongoose";
 import LogData from "@/models/logdata";
+import IdsSource from "@/models/idssource";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 
@@ -8,13 +9,15 @@ export async function GET(request) {
   if (!session) {
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 
   const id = request.nextUrl.searchParams.get("id");
   let data = null;
   await connectMongoDB();
+  const enabledSources = await IdsSource.find({ isEnabled: true });
+  const sources = enabledSources.map((source) => source.name);
 
   if (id == "month") {
     data = await LogData.aggregate([
@@ -22,6 +25,7 @@ export async function GET(request) {
         $match: {
           event_type: "alert",
           $expr: { $eq: [{ $year: "$timestamp" }, 2023] },
+          ids_name: { $in: sources },
         },
       },
       {
