@@ -53,7 +53,7 @@ export default function SettingsMenu({
               onClick={() => {
                 if (setting === "Logout") {
                   signOut({ redirect: false }).then(() =>
-                    router.replace("/")
+                    router.replace("http://159.223.47.93/")
                   );
                 }
               }}
