@@ -16,7 +16,7 @@ export default function Users() {
     }
 
     if (!session) {
-      router.push('/login');
+      router.push('/');
       return;
     }
 
