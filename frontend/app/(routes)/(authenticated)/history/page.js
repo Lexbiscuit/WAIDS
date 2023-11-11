@@ -38,7 +38,8 @@ const ProcessDataButton = () => {
   const [currentBarChartIndex, setCurrentBarChartIndex] = useState(0); // Separate state for the bar chart slider
   const [currentPieChartIndex, setCurrentPieChartIndex] = useState(0);
   const [currentWorldMapIndex, setCurrentWorldMapIndex] = useState(0); // State for the world map slider
-  
+  const [isExporting, setIsExporting] = useState(false);
+
   const processData = () => {
     setIsLoading(true);
     axios
@@ -101,6 +102,37 @@ const ProcessDataButton = () => {
       });
   };
   
+  const handleExportCSV = () => {
+    // Replace the following URL with the appropriate endpoint for exporting CSV
+    //const exportCSVURL = 'http://localhost:5000/export_csv';
+    const exportCSVURL = 'http://159.223.47.93:5000/export_csv';
+    setIsExporting(true);
+
+    axios({
+      url: exportCSVURL,
+      method: 'POST',
+      responseType: 'arraybuffer', // Set the response type to 'arraybuffer'
+    })
+      .then((response) => {
+        const blob = new Blob([response.data], { type: 'application/zip' }); // Change MIME type to 'application/zip'
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'exported_data.zip'; // Change the file name to 'exported_data.zip'
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        // Handle the error, e.g., show an error message
+      })
+      .finally(() => {
+        // Set the exporting state to false when the export is finished
+        setIsExporting(false);
+      });
+  };
+
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -126,28 +158,43 @@ const ProcessDataButton = () => {
         <ResponsiveAppBar />
     
         <Container maxWidth="lg" sx={{ mt: 8 }}>
-          <div>
-            <br></br>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              {/* Centered button with increased width and height */}
-              <button
-                onClick={processData}
-                disabled={isLoading}
-                style={{ width: '250px', height: '50px', fontSize: '1.2rem', marginRight: '20px'}} // Adjust width and height as needed
-                variant="contained"
-                color="primary"
-              >
-              {isLoading ? 'Processing...' : 'Fetch most recent data'}
-              </button>
-              <button
-                style={{ width: '250px', height: '50px', fontSize: '1.2rem', marginLeft: '20px' }}
-                variant="contained"
-                color="primary"
-                onClick={() => handleSaveImages(currentWorldMapIndex)}
+        <div>
+          <br />
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-around', // Use 'space-around' to evenly space the buttons
+              alignItems: 'center',
+            }}
+          >
+            {/* Centered button with increased width and height */}
+            <button
+              onClick={processData}
+              disabled={isLoading}
+              style={{ width: '250px', height: '50px', fontSize: '1.2rem' }} // Adjust width and height as needed
+              variant="contained"
+              color="primary"
             >
-                Save Images
+              {isLoading ? 'Processing...' : 'Fetch most recent data'}
             </button>
-            </div>
+            <button
+              style={{ width: '250px', height: '50px', fontSize: '1.2rem' }}
+              variant="contained"
+              color="primary"
+              onClick={() => handleSaveImages(currentWorldMapIndex)}
+            >
+              Save Images
+            </button>
+            <button
+              style={{ width: '250px', height: '50px', fontSize: '1.2rem' }}
+              variant="contained"
+              color="primary"
+              onClick={handleExportCSV}
+              disabled={isExporting}
+            >
+              {isExporting ? 'Exporting...' : 'Export CSV'}
+            </button>
+          </div>
             <br></br>
             <br></br>
             <div>{result}</div>

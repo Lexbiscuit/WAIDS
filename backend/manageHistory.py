@@ -1,3 +1,4 @@
+from io import BytesIO
 from flask import Blueprint, Flask, request, render_template, send_file, jsonify
 import pandas as pd
 import json
@@ -66,6 +67,45 @@ def serve_zip(zip_filename):
     
     return send_file(zip_path, as_attachment=True)
 
+
+@manageHistory.route('/export_csv', methods=['POST'])
+def export_csv():
+    try:
+        # Determine the latest timestamp and calculate timestamps for the last 5 hours
+        latest_timestamp = Aggregated_collection.find().sort("timestamp", -1).limit(1)[0].get("timestamp")
+        from_datetime = latest_timestamp - timedelta(hours=5)
+
+        # Retrieve data from MongoDB for the specified time range
+        data = list(Aggregated_collection.find({"timestamp": {"$gte": from_datetime, "$lte": latest_timestamp}}))
+
+        if not data:
+            return jsonify({'error': 'No data found for exporting CSV'})
+
+        # Create a DataFrame from the retrieved data
+        df = pd.DataFrame(data).fillna('Unknown')
+
+        # Choose event_type to display details
+        chosen_event_types = ['alert', 'anomaly']
+
+        # Create a BytesIO buffer to store the zip file
+        zip_buffer = BytesIO()
+
+        with zipfile.ZipFile(zip_buffer, 'w') as zipf:
+            for chosen_event_type in chosen_event_types:
+                # Filter the DataFrame to select rows with the chosen event_type
+                selected_rows = df[df['event_type'] == chosen_event_type]
+
+                # Export event_type into a csv file
+                csv_filename = f'{chosen_event_type}_data.csv'
+                csv_buffer = BytesIO()
+                selected_rows.to_csv(csv_buffer, index=False)
+                zipf.writestr(csv_filename, csv_buffer.getvalue())
+
+        # Move the cursor to the beginning of the buffer before sending the file
+        zip_buffer.seek(0)
+        return send_file(zip_buffer, as_attachment=True, download_name="exported_data.zip", mimetype="application/zip")
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 @manageHistory.route('/process_data', methods=['POST'])
 def process_data():
