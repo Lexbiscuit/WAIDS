@@ -52,7 +52,7 @@ const ChartItem = ({
   return (
     <Grid item xs={12} lg={6}>
       <Box height={"30rem"} border={"1px solid"} p={1} ref={chartRef}>
-        <Title>{chartCategory ? chartCategory : timeCategory}</Title>
+        <Title>{title}</Title>
         <input
           type="button"
           value="download"
