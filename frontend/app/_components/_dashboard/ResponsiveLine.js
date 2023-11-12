@@ -4,26 +4,12 @@ import { Typography } from "@mui/material";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
-// const getTimeData = async (id) => {
-//   try {
-//     const res = await fetch("/api/dashboard/MyResponsiveLine?id=" + id, {
-//       cache: "no-store",
-//     });
-
-//     if (!res.ok) throw new Error("Failed to fetch logs.");
-
-//     return res.json();
-//   } catch (error) {
-//     console.log("Error getting logs: ", error);
-//   }
-// };
-
-const ResponsiveLine = ({ id, time }) => {
+const ResponsiveLine = ({ timeCategory, matchKey, matchValue }) => {
   const { data, status, isFetching } = useQuery({
-    queryKey: ["fetchLineChartData", id],
+    queryKey: ["fetchLineChartData"],
     queryFn: async () => {
       const { data } = await axios.get(
-        `/api/dashboard/ResponsiveLine?id=${id}`
+        `/api/dashboard/ResponsiveLine?timeCategory=${timeCategory}&matchKey=${matchKey}&matchValue=${matchValue}`
       );
       return data;
     },
@@ -31,24 +17,6 @@ const ResponsiveLine = ({ id, time }) => {
     refetchOnMount: true,
     refetchInterval: 10000,
   });
-
-  // const [logData, setLogData] = React.useState(null);
-
-  // React.useEffect(() => {
-  //   setInterval(() => {
-  //     getTimeData(id).then((data) => {
-  //       setLogData(data);
-  //     });
-  //   }, 5000);
-  // }, []);
-
-  // if (!logData) {
-  //   return (
-  //     <Typography variant="body1" color="inherit" textAlign="center">
-  //       Loading...
-  //     </Typography>
-  //   );
-  // }
 
   if (isFetching) {
     return <Typography>Loading...</Typography>;
@@ -59,8 +27,8 @@ const ResponsiveLine = ({ id, time }) => {
   if (status == "success") {
     return (
       <NivoLine
-        data={[{ id: "LogData", data: data }]}
-        margin={{ top: 30, right: 80, bottom: 80, left: 80 }}
+        data={[{ id: "x", data }]}
+        margin={{ top: 30, right: 80, bottom: 100, left: 80 }}
         xScale={{ type: "point" }}
         yScale={{
           type: "linear",
@@ -76,7 +44,7 @@ const ResponsiveLine = ({ id, time }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: `${time}`,
+          legend: `${timeCategory}`,
           legendOffset: 36,
           legendPosition: "middle",
         }}

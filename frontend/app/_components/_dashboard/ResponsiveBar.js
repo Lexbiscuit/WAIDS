@@ -4,11 +4,13 @@ import { Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const ResponsiveBar = ({ id }) => {
+const ResponsiveBar = ({ timeframe, chartCategory }) => {
   const { data, status, isFetching } = useQuery({
-    queryKey: ["fetchBarChartData", id],
+    queryKey: ["fetchBarChartData"],
     queryFn: async () => {
-      const { data } = await axios.get(`/api/dashboard/ResponsiveBar?id=${id}`);
+      const { data } = await axios.get(
+        `/api/dashboard/ResponsiveBar?timeframe=${timeframe}&chartCategory=${chartCategory}`
+      );
       return data;
     },
     refetchOnWindowFocus: false,

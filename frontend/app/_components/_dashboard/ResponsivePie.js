@@ -4,11 +4,13 @@ import { Typography } from "@mui/material";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
-const ResponsivePie = ({ id }) => {
+const ResponsivePie = ({ timeframe, chartCategory }) => {
   const { data, status, isFetching } = useQuery({
-    queryKey: ["fetchPieChartData", id],
+    queryKey: ["fetchPieChartData"],
     queryFn: async () => {
-      const { data } = await axios.get(`/api/dashboard/ResponsivePie?id=${id}`);
+      const { data } = await axios.get(
+        `/api/dashboard/ResponsivePie?timeframe=${timeframe}&chartCategory=${chartCategory}`
+      );
       return data;
     },
     refetchOnWindowFocus: false,
@@ -21,7 +23,7 @@ const ResponsivePie = ({ id }) => {
   }
 
   if (status == "error") {
-    return <Typography>An error occured...</Typography>;
+    return <Typography>An error occurred...</Typography>;
   }
 
   if (status == "success") {
@@ -29,7 +31,7 @@ const ResponsivePie = ({ id }) => {
       <NivoPie
         data={data}
         colors={{ scheme: "category10" }}
-        margin={{ top: 30, right: 70, bottom: 70, left: 70 }}
+        margin={{ top: 60, right: 70, bottom: 70, left: 70 }}
         innerRadius={0.5}
         padAngle={0.7}
         cornerRadius={3}

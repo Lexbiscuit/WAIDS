@@ -6,33 +6,58 @@ import * as yup from "yup";
 import {
   Box,
   Container,
-  Typography,
   TextField,
   FormControlLabel,
   Checkbox,
   Button,
   Grid,
   Link,
-  Paper, // You can remove this line if you don't want to use Paper
 } from "@mui/material";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logo from "@/public/WaidsLogo.png";
+import { useQuery, useMutation } from "@tanstack/react-query";
 
 export default function Login() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
 
-  useEffect(() => {
-    if (session) {
-      router.push("/dashboard");
-    }
-  }, [session]);
+  const {
+    mutate: signInMutation,
+    status,
+    isPending,
+  } = useMutation({
+    mutationFn: async (values) => {
+      return signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirect: false,
+      });
+    },
+    onSuccess: (res) => {
+      if (res.error) {
+        console.log(res);
+        alert("Invalid username or password.");
+      } else {
+        alert("Login successful.");
+        router.push("/dashboard");
+      }
+    },
+    onError: () => {
+      alert("An error has occurred. Please try again later.");
+    },
+  });
+  //
+  // useEffect(() => {
+  //   if (session) {
+  //     router.push("/dashboard");
+  //   }
+  // }, [session]);
 
-  const [submitting, setSubmitting] = useState(false);
+  // const [submitting, setSubmitting] = useState(false);
 
-  const toggleSubmitting = () => setSubmitting(!submitting);
+  // const toggleSubmitting = () => setSubmitting(!submitting);
 
   const formik = useFormik({
     initialValues: {
@@ -41,26 +66,27 @@ export default function Login() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      setSubmitting(1);
-      const result = await signIn("credentials", {
-        email: values.email,
-        password: values.password,
-        redirect: false,
-      });
-
-      if (result.error) {
-        alert("Login failed");
-        toggleSubmitting();
-      } else {
-        router.push("/dashboard");
-      }
+      signInMutation(values);
+      // setSubmitting(1);
+      // const result = await signIn("credentials", {
+      //   email: values.email,
+      //   password: values.password,
+      //   redirect: false,
+      // });
+      //
+      // if (result.error) {
+      //   alert("Login failed");
+      //   toggleSubmitting();
+      // } else {
+      //   router.push("/dashboard");
+      // }
     },
   });
 
   return (
     <Box component="main" height="100vh" overflow="auto">
       <ResponsiveAppBar />
-      <Container maxWidth="lg">
+      <Container maxWidth="md">
         <Box
           sx={{
             marginTop: 2,
@@ -120,7 +146,7 @@ export default function Login() {
               type="submit"
               fullWidth
               variant="contained"
-              disabled={submitting}
+              disabled={isPending}
               sx={{ mt: 3, mb: 2 }}
             >
               Sign In

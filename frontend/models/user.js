@@ -7,14 +7,23 @@ const userSchema = new Schema(
     password: String,
     role: {
       type: String,
-      enum: ['System Administrator', 'Network Administrator', 'SOC Analyst', 'IR Team', 'IT Manager', 'Security Auditor'],
-      required: true
+      enum: [
+        "System Administrator",
+        "Network Administrator",
+        "SOC Analyst",
+        "IR Team",
+        "IT Manager",
+        "Security Auditor",
+      ],
+      required: true,
     },
     status: {
       type: String,
-      enum: ['active', 'suspended'],
-      default: 'active'
-    }
+      enum: ["active", "suspended"],
+      default: "active",
+    },
+    widgets: [],
+    charts: [],
   },
   {
     collection: "Users",

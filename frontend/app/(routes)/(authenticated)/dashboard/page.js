@@ -7,11 +7,14 @@ import Appbar_auth from "@/app/_components/Appbar_auth";
 import LiveLogFeed from "@/app/_components/_dashboard/LiveLogFeed";
 import ResponsivePie from "@/app/_components/_dashboard/ResponsivePie";
 import ChartItem from "@/app/_components/_dashboard/ChartItem";
+import CreateChart from "@/app/_components/_dashboard/CreateChart";
 import Title from "@/app/_components/_dashboard/Title";
 import ResponsiveLine from "@/app/_components/_dashboard/ResponsiveLine";
 import ResponsiveBar from "@/app/_components/_dashboard/ResponsiveBar";
 import EventOverview from "@/app/_components/_dashboard/EventOverview";
 import MyTabContext from "@/app/_components/_dashboard/MyTabContext";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 export default function Dashboard() {
   const allowedRoles = [
@@ -21,53 +24,20 @@ export default function Dashboard() {
     "IR Team",
     "System Administrator",
   ];
-  const [views, setViews] = useState([
-    {
-      title: "Protocol",
-      component: (
-        <ChartItem>
-          <Title>Protocol</Title>
-          <ResponsivePie id="proto" />
-        </ChartItem>
-      ),
+
+  const {
+    data,
+    status: chartStatus,
+    isFetching: chartIsFetching,
+  } = useQuery({
+    queryKey: ["fetchCharts"],
+    queryFn: async () => {
+      const { data } = await axios.get("/api/dashboard/charts");
+      return data;
     },
-    {
-      title: "Severity",
-      component: (
-        <ChartItem>
-          <Title>Priority</Title>
-          <ResponsivePie id="alert.severity" />
-        </ChartItem>
-      ),
-    },
-    {
-      title: "Intrusion/month (recent year)",
-      component: (
-        <ChartItem>
-          <Title>Intrusion/month (recent year)</Title>
-          <ResponsiveLine id="month" time="month" />
-        </ChartItem>
-      ),
-    },
-    {
-      title: "Intrusion/year",
-      component: (
-        <ChartItem>
-          <Title>Intrusion/year</Title>
-          <ResponsiveLine id="year" time="year" />
-        </ChartItem>
-      ),
-    },
-    {
-      title: "Category count",
-      component: (
-        <ChartItem>
-          <Title>Category count</Title>
-          <ResponsiveBar id="alert.category" />
-        </ChartItem>
-      ),
-    },
-  ]);
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+  });
 
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -100,14 +70,16 @@ export default function Dashboard() {
           {/* CHARTS */}
           <Container maxWidth="lg" sx={{ py: 4 }}>
             <Grid container spacing={0.5} m={0}>
+              <CreateChart />
               <Grid
                 item
                 xs={12}
                 sx={{ display: "flex", flexDirection: "row-reverse" }}
-              >
-                {/* <ViewManager views={views} setViews={setViews} /> */}
-              </Grid>
-              {views.map((view) => view.component)}
+              ></Grid>
+              {chartStatus == "success" &&
+                data.charts.map((params, idx) => {
+                  return <ChartItem {...params} key={idx} idx={idx} />;
+                })}
               {/* LIVE LOG FEED */}
               <LiveLogFeed />
             </Grid>
