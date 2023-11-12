@@ -14,7 +14,7 @@ export async function GET(request) {
   }
 
   const chartCategory = request.nextUrl.searchParams.get("chartCategory");
-  const timeframe = parseInt(request.nextUrl.searchParams.get("timeframe"));
+  const timeframe = request.nextUrl.searchParams.get("timeframe");
 
   await connectMongoDB();
   const enabledSources = await IdsSource.find({ isEnabled: true });
@@ -31,26 +31,16 @@ export async function GET(request) {
   } else if (timeframe == "week") {
     timeframeInMs = 1000 * 60 * 60 * 24 * 7;
   } else if (timeframe == "month") {
-    timeframeInMs = 1000 * 60 * 60 * 24 * 7 * 30;
+    timeframeInMs = 1000 * 60 * 60 * 24 * 7 * 4;
   } else if (timeframe == "halfyear") {
-    timeframeInMs = 1000 * 60 * 60 * 24 * 7 * 30 * 6;
+    timeframeInMs = 1000 * 60 * 60 * 24 * 7 * 4 * 6;
   } else if (timeframe == "year") {
-    timeframeInMs = 1000 * 60 * 60 * 24 * 7 * 30 * 12;
+    timeframeInMs = 1000 * 60 * 60 * 24 * 7 * 4 * 12;
   }
-
-  const projectionObj = {
-    $project: {
-      _id: 0,
-      id: `$_id.${chartCategory}`,
-      label: `$_id.${chartCategory}`,
-      value: "$count",
-    },
-  };
 
   const data = await LogData.aggregate([
     {
       $match: {
-        event_type: { $in: ["alert", "anomaly"] },
         timestamp: {
           $gte: new Date(new Date() - timeframeInMs),
         },
@@ -63,7 +53,14 @@ export async function GET(request) {
         count: { $sum: 1 },
       },
     },
-    projectionObj,
+    {
+      $project: {
+        _id: 0,
+        id: `$_id.${chartCategory}`,
+        label: `$_id.${chartCategory}`,
+        value: "$count",
+      },
+    },
   ]);
 
   const response = NextResponse.json(data);

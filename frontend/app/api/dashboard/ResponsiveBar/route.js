@@ -32,18 +32,17 @@ export async function GET(request) {
   } else if (timeframe == "week") {
     timeframeInMs = 1000 * 60 * 60 * 24 * 7;
   } else if (timeframe == "month") {
-    timeframeInMs = 1000 * 60 * 60 * 24 * 7 * 30;
+    timeframeInMs = 1000 * 60 * 60 * 24 * 30;
   } else if (timeframe == "halfyear") {
-    timeframeInMs = 1000 * 60 * 60 * 24 * 7 * 30 * 6;
+    timeframeInMs = 1000 * 60 * 60 * 24 * 30 * 6;
   } else if (timeframe == "year") {
-    timeframeInMs = 1000 * 60 * 60 * 24 * 7 * 30 * 12;
+    timeframeInMs = 1000 * 60 * 60 * 24 * 30 * 12;
   }
 
   try {
     data = await LogData.aggregate([
       {
         $match: {
-          event_type: { $in: ["alert", "anomaly"] },
           timestamp: {
             $gte: new Date(new Date() - timeframeInMs),
           },

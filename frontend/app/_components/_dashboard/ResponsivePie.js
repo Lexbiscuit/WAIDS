@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const ResponsivePie = ({ timeframe, chartCategory }) => {
   const { data, status, isFetching } = useQuery({
-    queryKey: ["fetchPieChartData"],
+    queryKey: ["fetchPieChartData", chartCategory, timeframe],
     queryFn: async () => {
       const { data } = await axios.get(
         `/api/dashboard/ResponsivePie?timeframe=${timeframe}&chartCategory=${chartCategory}`

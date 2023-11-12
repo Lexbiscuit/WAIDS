@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const ResponsiveLine = ({ timeCategory, chartCategory, matchValue }) => {
   const { data, status, isFetching } = useQuery({
-    queryKey: ["fetchLineChartData"],
+    queryKey: ["fetchLineChartData", timeCategory, chartCategory, matchValue],
     queryFn: async () => {
       const { data } = await axios.get(
         `/api/dashboard/ResponsiveLine?timeCategory=${timeCategory}&chartCategory=${chartCategory}&matchValue=${matchValue}`

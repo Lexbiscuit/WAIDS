@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 
 export async function POST(request) {
-  const { timeframe, chartCategory, timeCategory, matchQuery, chartType } =
+  const { timeframe, chartCategory, timeCategory, matchValue, chartType } =
     await request.json();
   const session = await getServerSession();
   if (!session) {
@@ -23,20 +23,14 @@ export async function POST(request) {
       },
       { _id: 1, charts: 1 }
     );
-    console.log(
-      "🚀 ~ file: route.js:26 ~ POST ~ currentCharts:",
-      currentCharts
-    );
 
     const insertChart = {
       timeframe,
       chartType,
       chartCategory,
       timeCategory,
-      matchQuery,
+      matchValue,
     };
-
-    console.log("🚀 ~ file: route.js:34 ~ POST ~ insertChart:", insertChart);
 
     currentCharts.push(insertChart);
 

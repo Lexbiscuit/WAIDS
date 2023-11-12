@@ -6,7 +6,7 @@ import axios from "axios";
 
 const ResponsiveBar = ({ timeframe, chartCategory }) => {
   const { data, status, isFetching } = useQuery({
-    queryKey: ["fetchBarChartData"],
+    queryKey: ["fetchBarChartData", chartCategory, timeframe],
     queryFn: async () => {
       const { data } = await axios.get(
         `/api/dashboard/ResponsiveBar?timeframe=${timeframe}&chartCategory=${chartCategory}`

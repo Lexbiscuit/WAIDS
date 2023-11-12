@@ -14,6 +14,7 @@ export async function GET(request) {
   }
   const chartCategory = request.nextUrl.searchParams.get("chartCategory");
   const matchValue = request.nextUrl.searchParams.get("matchValue");
+
   const matchObj = {};
   matchObj[`${chartCategory}`] = matchValue;
 
@@ -47,9 +48,9 @@ export async function GET(request) {
   } else if (timeCategory == "WeekOfMonth") {
     timeframeInMs = 1000 * 60 * 60 * 24 * 7 * 4;
   } else if (timeCategory == "monthOfYear") {
-    timeframeInMs = 1000 * 60 * 60 * 24 * 7 * 30;
+    timeframeInMs = 1000 * 60 * 60 * 24 * 30 * 12;
   } else if (timeCategory == "year") {
-    timeframeInMs = 1000 * 60 * 60 * 24 * 7 * 30 * 12 * 5;
+    timeframeInMs = 1000 * 60 * 60 * 24 * 30 * 12 * 5;
   }
 
   data = await LogData.aggregate([
