@@ -47,7 +47,7 @@ const ChartItem = ({
   if (chartType == "pie" || chartType == "bar") {
     title = `${chartCategory} - ${timeframe}`;
   } else {
-    title = `${timeCategory} - ${matchKey} - ${matchValue}`;
+    title = `${timeCategory} - ${chartCategory} - ${matchValue}`;
   }
   return (
     <Grid item xs={12} lg={6}>
