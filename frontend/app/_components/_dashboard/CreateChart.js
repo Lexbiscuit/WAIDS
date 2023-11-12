@@ -16,7 +16,7 @@ import axios from "axios";
 export default function CreateChart() {
   const [open, setOpen] = React.useState(false);
   const [chartType, setChartType] = React.useState(null);
-  const [matchQuery, setMatchQuery] = React.useState(null);
+  const [matchValue, setMatchValue] = React.useState(null);
   const [chartCategory, setChartCategory] = React.useState(null);
   const [timeframe, setTimeframe] = React.useState(null);
   const [timeCategory, setTimeCategory] = React.useState(null);
@@ -28,10 +28,16 @@ export default function CreateChart() {
         chartCategory,
         timeframe,
         timeCategory,
-        matchQuery,
+        matchValue,
       });
     },
-    onSuccess: () => queryClient.invalidateQueries(["fetchCharts"]),
+    onSuccess: () => {
+      alert("Chart successfully created");
+      queryClient.invalidateQueries(["fetchCharts"]);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
   });
 
   const handleClickOpen = () => {
@@ -54,7 +60,6 @@ export default function CreateChart() {
             component="form"
             id="createChartForm"
             onSubmit={() => {
-              alert("Hello");
               createChart.mutate();
               handleClose();
             }}
@@ -100,8 +105,8 @@ export default function CreateChart() {
               <TextField
                 sx={{ my: 3 }}
                 label="Category Query"
-                value={matchQuery}
-                onChange={(event) => setMatchQuery(event.target.value)}
+                value={matchValue}
+                onChange={(event) => setMatchValue(event.target.value)}
               />
             )}
 
