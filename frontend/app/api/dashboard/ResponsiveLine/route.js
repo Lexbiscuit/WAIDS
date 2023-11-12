@@ -12,10 +12,10 @@ export async function GET(request) {
       { status: 500 }
     );
   }
-  const matchKey = request.nextUrl.searchParams.get("matchKey");
+  const chartCategory = request.nextUrl.searchParams.get("chartCategory");
   const matchValue = request.nextUrl.searchParams.get("matchValue");
   const matchObj = {};
-  matchObj[matchKey] = matchValue;
+  matchObj[`${chartCategory}`] = matchValue;
 
   const timeCategory = request.nextUrl.searchParams.get("timeCategory");
 

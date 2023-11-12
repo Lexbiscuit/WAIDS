@@ -13,7 +13,6 @@ const ChartItem = ({
   timeframe,
   chartType,
   chartCategory,
-  matchKey,
   matchValue,
   idx,
 }) => {
@@ -40,11 +39,16 @@ const ChartItem = ({
     Chart = (
       <ResponsiveLine
         timeCategory={timeCategory}
-        matchKey={matchKey}
+        chartCategory={chartCategory}
         matchValue={matchValue}
       />
     );
-
+  let title;
+  if (chartType == "pie" || chartType == "bar") {
+    title = `${chartCategory} - ${timeframe}`;
+  } else {
+    title = `${timeCategory} - ${matchKey} - ${matchValue}`;
+  }
   return (
     <Grid item xs={12} lg={6}>
       <Box height={"30rem"} border={"1px solid"} p={1} ref={chartRef}>

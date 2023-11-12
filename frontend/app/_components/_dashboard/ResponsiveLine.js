@@ -4,12 +4,12 @@ import { Typography } from "@mui/material";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
-const ResponsiveLine = ({ timeCategory, matchKey, matchValue }) => {
+const ResponsiveLine = ({ timeCategory, chartCategory, matchValue }) => {
   const { data, status, isFetching } = useQuery({
     queryKey: ["fetchLineChartData"],
     queryFn: async () => {
       const { data } = await axios.get(
-        `/api/dashboard/ResponsiveLine?timeCategory=${timeCategory}&matchKey=${matchKey}&matchValue=${matchValue}`
+        `/api/dashboard/ResponsiveLine?timeCategory=${timeCategory}&chartCategory=${chartCategory}&matchValue=${matchValue}`
       );
       return data;
     },
