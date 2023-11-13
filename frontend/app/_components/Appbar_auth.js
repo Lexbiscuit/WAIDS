@@ -74,7 +74,7 @@ export default function Appbar_auth() {
     setShowProfile(false);
   };
 
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
+  const settings = ["Profile", "Dashboard", "Logout"];
 
   const list = (anchor) => (
     <Box
