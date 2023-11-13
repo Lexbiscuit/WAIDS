@@ -71,22 +71,8 @@ export default function SettingsMenu({
         onClose={handleCloseUserMenu}
       >
         {settings.map((setting) => (
-<<<<<<< Updated upstream
-          <MenuItem key={setting} onClick={handleCloseUserMenu}>
-            <Typography
-              textAlign="center"
-              onClick={() => {
-                if (setting === "Logout") {
-                  signOut({ redirect: false }).then(() =>
-                    router.replace("http://159.223.47.93")
-                  );
-                }
-              }}
-            >
-=======
           <MenuItem key={setting} onClick={() => handleMenuItemClick(setting)}>
             <Typography textAlign="center">
->>>>>>> Stashed changes
               {setting}
             </Typography>
           </MenuItem>
