@@ -11,11 +11,14 @@ import {
     Box,
     IconButton,
     Tooltip,
-    Collapse
+    Collapse,
+    InputAdornment
 } from '@mui/material';
 import PasswordStrengthBar from 'react-password-strength-bar';
 import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useSession } from "next-auth/react";
 
 
@@ -33,6 +36,7 @@ const UserProfile = ({ open, onClose }) => {
     const [message, setMessage] = useState("")
     const passwordRequirementMessage = "Password must be at least 8 characters long and must contain at least one uppercase letter, symbol, and number. Eg: Password@2";
     const [showChangePassword, setShowChangePassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const toggleChangePassword = () => {
         setShowChangePassword(!showChangePassword);
@@ -50,6 +54,14 @@ const UserProfile = ({ open, onClose }) => {
         if (onClose) {
             onClose();
         }
+    };
+
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword);
+      };
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
     };
 
     // Function to fetch user details
@@ -194,11 +206,25 @@ const UserProfile = ({ open, onClose }) => {
                                                 <TextField
                                                     fullWidth
                                                     label="New Password"
-                                                    type="password"
+                                                    type={showPassword ? 'text' : 'password'}
                                                     id="newPassword"
                                                     value={newPassword}
                                                     onChange={(e) => setNewPassword(e.target.value)}
                                                     sx={{ mb: 2 }}
+                                                    InputProps={{
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <IconButton
+                                                                    aria-label="toggle password visibility"
+                                                                    onClick={handleClickShowPassword}
+                                                                    onMouseDown={handleMouseDownPassword}
+                                                                    edge="end"
+                                                                >
+                                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                                </IconButton>
+                                                            </InputAdornment>
+                                                        ),
+                                                    }}
                                                 />
                                                 <Box sx={{ height: '10px', '& .react-password-strength-bar': { height: '100%' } }}>
                                                     <PasswordStrengthBar password={newPassword} />
