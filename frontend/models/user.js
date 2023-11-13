@@ -5,6 +5,11 @@ const userSchema = new Schema(
     name: String,
     email: String,
     password: String,
+    // password: { type: String, required: true },
+    // passwordHistory: [{
+    //   password: String,
+    //   setAt: { type: Date, default: Date.now }
+    // }],
     role: {
       type: String,
       enum: [

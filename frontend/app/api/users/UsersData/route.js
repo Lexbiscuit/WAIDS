@@ -4,6 +4,15 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import bcrypt from 'bcrypt';
 
+// Password validation function
+function validatePassword(password) {
+  const minLength = 8;
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+  return password.length >= minLength && hasUpperCase && hasSymbol;
+}
+
 export async function GET(request) {
   // const session = await getServerSession();
   // if (!session) {
@@ -23,6 +32,7 @@ export async function GET(request) {
   const response = NextResponse.json(data);
   response.headers.append("Access-Control-Allow-Origin", "*");
   return response;
+
 }
 
 export async function POST(request) {
@@ -44,9 +54,8 @@ export async function POST(request) {
     await newUser.save();
     return NextResponse.json({ message: "User created successfully." });
   }
-
+  
   // If the request is for updating an existing user
-  // Check if newPassword exists in the request
   if (_id) {
     if (password) {
       const saltRounds = 10;
@@ -60,7 +69,6 @@ export async function POST(request) {
       response.headers.append("Access-Control-Allow-Origin", "*");
       return response;
     }
-
     if (!password) {
       await User.findByIdAndUpdate(_id, details)
         .then(() => {
@@ -97,19 +105,38 @@ export async function DELETE(request) {
 }
 
 export async function PUT(request) {
-  const { _id, status } = await request.json();
+  const { _id, status, newPassword } = await request.json();
 
-  if (!_id || !status) {
-    return new NextResponse(400, "User ID and status are required");
+  if (!_id) {
+    return NextResponse.json({ error: "User ID is required" }, { status: 400 });
   }
 
   await connectMongoDB();
-  const user = await User.findById(_id);
-  if (user.role === 'System Administrator' && status === 'suspended') {
-    // If the user is a System Administrator, do not suspend and return a message
-    return NextResponse.json({ message: "Cannot suspend System Administrator account." });
+
+  // Handle password change
+  if (newPassword) {
+    if (!validatePassword(newPassword)) {
+      return NextResponse.json({ error: "Password does not meet the policy requirements." }, { status: 400 });
+    }
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+    await User.findByIdAndUpdate(_id, { password: hashedPassword });
+
+    return NextResponse.json({ message: "Password updated successfully." });
   }
-  await User.findByIdAndUpdate(_id, { status });
- 
-  return NextResponse.json({ message: "User status updated successfully." });
+
+  // Handle status update
+  if (status) {
+    const user = await User.findById(_id);
+    if (user.role === 'System Administrator' && status === 'suspended') {
+      // If the user is a System Administrator, do not suspend and return a message
+      return NextResponse.json({ message: "Cannot suspend System Administrator account." });
+    }
+    await User.findByIdAndUpdate(_id, { status });
+
+    return NextResponse.json({ message: "User status updated successfully." });
+  }
+
+  return NextResponse.json({ error: "No action performed" }, { status: 400 });
 }
+

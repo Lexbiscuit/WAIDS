@@ -1,6 +1,6 @@
 "use client";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -15,6 +15,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import SettingsMenu from "./SettingsMenu";
+import UserProfile from './_users/UserProfile';
 
 // const BASE_URL = "http://localhost:3000/dashboard/";
 
@@ -26,27 +27,31 @@ const roleAccess = {
   'IT Manager': ['Main Dashboard', 'Log Viewer', 'Investigation', 'IDS Sources'],
   'IR Team': ['Main Dashboard', 'Log Viewer', 'Investigation'],
   'Security Auditor': ['Log Viewer', 'Investigation', 'History'],
-  'System Administrator': ['*'] 
+  'System Administrator': ['*']
 };
 
 export default function Appbar_auth() {
   const [state, setState] = useState({ left: false });
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [showProfile, setShowProfile] = useState(false);
 
   const { data: session, status } = useSession();
   const userRole = session?.user?.role;
   const allowedPages = roleAccess[userRole];
-  
+
   let filteredPages = [];
   if (allowedPages) {
     filteredPages = pages.filter(page => allowedPages.includes(page) || allowedPages.includes('*'));
   }
 
-  const handleOpenUserMenu = (event) => setAnchorElUser(event.currentTarget);
-  const handleCloseUserMenu = () => setAnchorElUser(null);
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
-
-
+  useEffect(() => {
+    // Fetch users data from your API
+    fetch('/api/auth/[...nextauth]') // Adjust the API endpoint as needed
+      .then(response => response.json())
+      .then(data => setUsers(data))
+      .catch(error => console.error('Error fetching users:', error));
+  }, []);
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -57,6 +62,19 @@ export default function Appbar_auth() {
     }
     setState({ ...state, [anchor]: open });
   };
+
+  const handleOpenUserMenu = (event) => setAnchorElUser(event.currentTarget);
+  const handleCloseUserMenu = () => setAnchorElUser(null);
+
+  const handleProfileOpen = () => {
+    setShowProfile(true);
+  };
+
+  const handleProfileClose  = () => {
+    setShowProfile(false);
+  };
+
+  const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
   const list = (anchor) => (
     <Box
@@ -82,6 +100,7 @@ export default function Appbar_auth() {
   );
 
   return (
+    <div>
     <AppBar position="sticky" color="default">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -171,10 +190,17 @@ export default function Appbar_auth() {
               anchorElUser={anchorElUser}
               handleCloseUserMenu={handleCloseUserMenu}
               settings={settings}
+              users={users}
+              currentUser={session?.user}
+              onProfileClick={handleProfileOpen}
             />
           </Box>
         </Toolbar>
       </Container>
     </AppBar>
+     {/* UserProfile Popup */}
+     {/* <UserProfile open={showProfile} onClose={handleProfileClose } /> */}
+     <UserProfile open={showProfile} onClose={() => setShowProfile(false)} />
+    </div>
   );
 }

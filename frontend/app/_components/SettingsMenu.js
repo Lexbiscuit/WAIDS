@@ -7,18 +7,42 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import { signOut } from "next-auth/react";
-import { useSession } from "next-auth/react";
+import React, { useState, useEffect  } from 'react';
+import { signOut, useSession } from "next-auth/react";
+// import { useState, useEffect  } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function SettingsMenu({
   handleOpenUserMenu,
   handleCloseUserMenu,
   anchorElUser,
-  settings,
+  settings, 
+  onProfileClick,
 }) {
   const { data: session, status } = useSession();
+  const [currentUser, setCurrentUser] = useState(null);
   const router = useRouter();
+  // console.log("Current Session",session)
+  // console.log("Current User:", currentUser);
+
+  useEffect(() => {
+    if (session && session.user) {
+      setCurrentUser(session.user);
+    }
+  }, [session]);
+
+  const handleMenuItemClick = (setting) => {
+    if (setting === "Logout") {
+      signOut({ redirect: false }).then(() =>
+        router.replace("http://159.223.47.93/")
+      );
+    } else if (setting === "Profile") {
+      onProfileClick();
+      console.log("Profile clicked");
+    }
+    handleCloseUserMenu();
+  };
+
   return (
     <>
       <IconButton
@@ -47,6 +71,7 @@ export default function SettingsMenu({
         onClose={handleCloseUserMenu}
       >
         {settings.map((setting) => (
+<<<<<<< Updated upstream
           <MenuItem key={setting} onClick={handleCloseUserMenu}>
             <Typography
               textAlign="center"
@@ -58,11 +83,16 @@ export default function SettingsMenu({
                 }
               }}
             >
+=======
+          <MenuItem key={setting} onClick={() => handleMenuItemClick(setting)}>
+            <Typography textAlign="center">
+>>>>>>> Stashed changes
               {setting}
             </Typography>
           </MenuItem>
         ))}
       </Menu>
+      
       <Typography variant="body1" color="inherited">
         {session ? session.user.name.toUpperCase() : ""}
       </Typography>
