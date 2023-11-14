@@ -32,7 +32,7 @@ const pImages = [
 ]
 
 const ProcessDataButton = () => {
-  const allowedRoles = ['SOC Analyst', 'Security Auditor', 'System Administrator']; 
+  const allowedRoles = ['SOC Analyst', 'Security Auditor', 'System Administrator','IT Manager']; 
   const [result, setResult] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentBarChartIndex, setCurrentBarChartIndex] = useState(0); // Separate state for the bar chart slider
