@@ -24,7 +24,7 @@ const pages = ["Log Viewer", "IDS Sources", "Investigation", "Users", "History"]
 const roleAccess = {
   'Network Administrator': ['Main Dashboard', 'IDS Sources', 'Log Viewer'],
   'SOC Analyst': ['Main Dashboard', 'Log Viewer', 'Investigation', 'History'],
-  'IT Manager': ['Main Dashboard', 'Log Viewer', 'Investigation', 'IDS Sources'],
+  'IT Manager': ['Main Dashboard', 'Log Viewer', 'Investigation', 'IDS Sources', 'History'],
   'IR Team': ['Main Dashboard', 'Log Viewer', 'Investigation'],
   'Security Auditor': ['Log Viewer', 'Investigation', 'History'],
   'System Administrator': ['*']
