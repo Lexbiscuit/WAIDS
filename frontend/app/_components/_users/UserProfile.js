@@ -12,7 +12,8 @@ import {
     IconButton,
     Tooltip,
     Collapse,
-    InputAdornment
+    InputAdornment,
+    Alert
 } from '@mui/material';
 import PasswordStrengthBar from 'react-password-strength-bar';
 import CloseIcon from '@mui/icons-material/Close';
@@ -55,6 +56,16 @@ const UserProfile = ({ open, onClose }) => {
             onClose();
         }
     };
+
+    const ErrorMessage = ({ message }) => {
+        return (
+          <Collapse in={!!message}>
+            <Alert severity="error" sx={{ mb: 2, mt: 2 }}>
+              {message}
+            </Alert>
+          </Collapse>
+        );
+      };
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -248,7 +259,7 @@ const UserProfile = ({ open, onClose }) => {
                                             </Button>
                                         </Grid>
                                     </Grid>
-                                    {message && <Typography color="error">{message}</Typography>}
+                                    {message && <ErrorMessage message={message} />}
                                 </form>
                             </Collapse>
                         </Box>

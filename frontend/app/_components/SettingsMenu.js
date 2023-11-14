@@ -7,7 +7,7 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import React, { useState, useEffect  } from 'react';
+import React, { useState, useEffect } from 'react';
 import { signOut, useSession } from "next-auth/react";
 // import { useState, useEffect  } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -16,14 +16,16 @@ export default function SettingsMenu({
   handleOpenUserMenu,
   handleCloseUserMenu,
   anchorElUser,
-  settings, 
+  settings,
   onProfileClick,
 }) {
   const { data: session, status } = useSession();
   const [currentUser, setCurrentUser] = useState(null);
   const router = useRouter();
-  // console.log("Current Session",session)
-  // console.log("Current User:", currentUser);
+
+  const navigateToDashboard = () => {
+    router.push('/dashboard'); 
+  };
 
   useEffect(() => {
     if (session && session.user) {
@@ -36,9 +38,11 @@ export default function SettingsMenu({
       signOut({ redirect: false }).then(() =>
         router.replace("http://159.223.47.93/")
       );
-    } else if (setting === "Profile") {
+    } else if (setting === "Dashboard") {
+      navigateToDashboard();
+    }
+    else if (setting === "Profile") {
       onProfileClick();
-      console.log("Profile clicked");
     }
     handleCloseUserMenu();
   };
@@ -47,7 +51,7 @@ export default function SettingsMenu({
     <>
       <IconButton
         disableRipple={true}
-        // onClick={}
+      // onClick={}
       ></IconButton>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -78,7 +82,7 @@ export default function SettingsMenu({
           </MenuItem>
         ))}
       </Menu>
-      
+
       <Typography variant="body1" color="inherited">
         {session ? session.user.name.toUpperCase() : ""}
       </Typography>

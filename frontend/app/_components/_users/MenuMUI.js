@@ -295,9 +295,9 @@ function UpdateFormDialog(props) {
                 label="Role"
                 onChange={handleRoleChange}
               >
-                <MenuItem value={"System Administrator"}>
+                {/* <MenuItem value={"System Administrator"}>
                   System Administrator
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem value={"SOC Analyst"}>SOC Analyst</MenuItem>
                 <MenuItem value={"IR Team"}>IR Team</MenuItem>
                 <MenuItem value={"IT Manager"}>IT Manager</MenuItem>
@@ -548,9 +548,9 @@ export function AddUserDialog(props) {
               label="Role"
               onChange={handleRoleChange}
             >
-              <MenuItem value={"System Administrator"}>
+              {/* <MenuItem value={"System Administrator"}>
                 System Administrator
-              </MenuItem>
+              </MenuItem> */}
               <MenuItem value={"SOC Analyst"}>SOC Analyst</MenuItem>
               <MenuItem value={"IR Team"}>IR Team</MenuItem>
               <MenuItem value={"IT Manager"}>IT Manager</MenuItem>
