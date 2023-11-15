@@ -46,8 +46,7 @@ export default function Appbar_auth() {
   }
 
   useEffect(() => {
-    // Fetch users data from your API
-    fetch('/api/auth/[...nextauth]') // Adjust the API endpoint as needed
+    fetch('/api/auth/[...nextauth]')
       .then(response => response.json())
       .then(data => setUsers(data))
       .catch(error => console.error('Error fetching users:', error));

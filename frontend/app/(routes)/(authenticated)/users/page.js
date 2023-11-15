@@ -23,7 +23,7 @@ export default function Users() {
     }
 
     if (session.user.role !== 'System Administrator') {
-      router.push('/unauthorized');
+      router.push('/dashboard');
     }
   }, [session, status, router]);
 

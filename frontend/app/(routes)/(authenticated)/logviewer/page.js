@@ -24,7 +24,7 @@ export default function LogView() {
     }
     
     if (!allowedRoles.includes(session.user.role)) {
-      router.push('/unauthorized'); 
+      router.push('/dashboard'); 
     }
   }, [session, status, router]);
 
