@@ -1,15 +1,4 @@
-import React from "react";
-import {
-  Box,
-  Container,
-  Grid,
-  Paper,
-  Card,
-  CardActions,
-  CardContent,
-  Typography,
-  Button,
-} from "@mui/material";
+import { Box, Container } from "@mui/material";
 import RulesTable from "@/app/_components/_idssources/RulesTable";
 import ResponsiveAppBar from "@/app/_components/Appbar_auth";
 
