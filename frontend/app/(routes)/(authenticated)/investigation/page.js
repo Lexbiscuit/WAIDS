@@ -19,7 +19,8 @@ const InvestigationsPage = () => {
     }
  
     if (!session) {
-      router.push('/login'); 
+      //router.push('/login'); 
+      router.push('/');
       return;
     }
 

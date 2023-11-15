@@ -18,7 +18,8 @@ const IDSSourcesPage = () => {
     }
    
     if (!session) {
-      router.push('/login'); 
+      //router.push('/login'); 
+      router.push('/'); 
       return;
     }
    

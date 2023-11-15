@@ -47,7 +47,8 @@ export default function Dashboard() {
     }
 
     if (!session) {
-      router.push("/login");
+     // router.push("/login");
+      router.push("/");
       return;
     }
 

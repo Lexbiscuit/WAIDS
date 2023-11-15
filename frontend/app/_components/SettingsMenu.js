@@ -36,7 +36,8 @@ export default function SettingsMenu({
   const handleMenuItemClick = (setting) => {
     if (setting === "Logout") {
       signOut({ redirect: false }).then(() =>
-        router.replace("http://159.223.47.93/")
+        //router.replace("http://159.223.47.93/")
+        router.push('/')
       );
     } else if (setting === "Dashboard") {
       navigateToDashboard();

@@ -10,6 +10,7 @@ export const metadata = {
 
 export default async function IDSSourcesLayout({ children }) {
   const session = await getServerSession(authOptions);
-  if (!session) redirect("/login");
+  //if (!session) redirect("/login");
+  if (!session) redirect("/");
   return <>{children}</>;
 }

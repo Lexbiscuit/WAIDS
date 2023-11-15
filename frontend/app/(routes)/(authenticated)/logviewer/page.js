@@ -18,7 +18,8 @@ export default function LogView() {
     }
   
     if (!session) {
-      router.push('/login'); 
+      //router.push('/login'); 
+      router.push('/'); 
       return;
     }
     
