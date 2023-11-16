@@ -20,11 +20,11 @@ const ModifyRulePage = ({ params }) => {
 
   const handleSubmit = () => {
     if (enabled) {
-      fetch(`http://localhost:5000/rules/enable/${modifyId}`);
+      fetch(`http://159.223.47.93:5000/rules/enable/${modifyId}`);
     } else {
-      fetch(`http://localhost:5000/rules/disable/${modifyId}`);
+      fetch(`http://159.223.47.93:5000/rules/disable/${modifyId}`);
     }
-    fetch(`http://localhost:5000/rules/modify/${modifyId}`, {
+    fetch(`http://159.223.47.93:5000/rules/modify/${modifyId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -36,7 +36,7 @@ const ModifyRulePage = ({ params }) => {
 
   React.useEffect(() => {
     function fetchData() {
-      fetch(`http://localhost:5000/rules/retrieve/${modifyId}`)
+      fetch(`http://159.223.47.93:5000/rules/retrieve/${modifyId}`)
         .then((res) => res.json())
         .then((res) => {
           setEnabled(res.enabled);
@@ -89,7 +89,7 @@ const ModifyRulePage = ({ params }) => {
           </Button>
           <Button
             onClick={() => {
-              fetch(`http://localhost:5000/rules/delete/${modifyId}`)
+              fetch(`http://159.223.47.93:5000/rules/delete/${modifyId}`)
                 .then((res) => res.json())
                 .then((res) => alert(res.message));
 

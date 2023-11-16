@@ -18,7 +18,7 @@ const AddRulePage = () => {
 
   const handleSubmit = async () => {
     let idx;
-    await fetch("http://localhost:5000/rules/create", {
+    await fetch("http://159.223.47.93:5000/rules/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
