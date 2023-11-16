@@ -146,11 +146,7 @@ def process_data():
             event_type_counts.plot(kind='bar')
             plt.xlabel('event_type Values')
             plt.ylabel('Count')
-            #plt.title(f'Event_type Values from \n{start_time} to {end_time}')
-
-            formatted_start_time = start_time.strftime('%m/%d/%Y, %I:%M:%S %p')
-            formatted_end_time = end_time.strftime('%m/%d/%Y, %I:%M:%S %p')
-            plt.title(f'Event_type Values from \n{formatted_start_time} to {formatted_end_time}')
+            plt.title(f'Event_type Values from \n{start_time} to {end_time}')
 
             # Specify the image save directory (one folder up from the script location)
             script_dir = os.path.abspath(os.path.dirname(__file__))
@@ -191,9 +187,7 @@ def process_data():
             plt.pie(severity_counts, labels=severity_counts.index, autopct='%1.1f%%', startangle=140)
 
             # Set a title for the severity distribution pie chart
-            formatted_start_time = start_time.strftime('%m/%d/%Y, %I:%M:%S %p')
-            formatted_end_time = end_time.strftime('%m/%d/%Y, %I:%M:%S %p')
-            plt.title(f'Alert Severity distribution for \n{formatted_start_time} to {formatted_end_time}')
+            plt.title(f"Alert Severity distribution for \n{start_time} to {end_time}")
 
             # Annotate the pie chart with the total count
             total_severity_count = len(filtered_data)
@@ -305,9 +299,7 @@ def process_data():
                 # Plot all IP addresses for this event type
                 geolocation_df.plot.scatter(x='longitude', y='latitude', s=50, ax=ax, label=f'IP Addresses for {event_type}', color=color_mapping[event_type],alpha=0.5)
 
-            formatted_start_time = start_time.strftime('%m/%d/%Y, %I:%M:%S %p')
-            formatted_end_time = end_time.strftime('%m/%d/%Y, %I:%M:%S %p')
-            plt.title(f'IP Addresses for Alert and Anomalies on World Map from \n{formatted_start_time} to {formatted_end_time}')
+            plt.title(f'IP Addresses for Alert and Anomalies on World Map from \n{start_time} to {end_time}')
             plt.legend()
 
             # Specify the image save directory (one folder up from the script location)
@@ -340,7 +332,9 @@ def process_data():
 
         return json.dumps({
             'message': "Bar charts and world maps created and saved.",
-             'zip_url': f'http://159.223.47.93:5000/serve_zip/{zip_filename}'
+            #'zip_url': f'http://localhost:5000/serve_zip/{zip_filename}'
+
+            'zip_url': f'http://159.223.47.93:5000/serve_zip/{zip_filename}'
         })
 
     except json.JSONDecodeError as e:

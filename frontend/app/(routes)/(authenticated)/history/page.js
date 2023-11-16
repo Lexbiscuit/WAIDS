@@ -43,8 +43,8 @@ const ProcessDataButton = () => {
   const processData = () => {
     setIsLoading(true);
     axios
-      //.post('http://localhost:5000/process_data')
-      .post('http://159.223.47.93:5000/process_data')
+      .post('http://localhost:5000/process_data')
+      //.post('http://159.223.47.93:5000/process_data')
       .then((response) => {
         const responseData = response.data;
         setResult(responseData.message || responseData.error);
