@@ -1,36 +1,53 @@
 "use client";
 import { useState, useEffect } from "react";
 import TanstackTable from "@/app/_components/TanstackTable";
-import { getData } from "@/app/_utils/getData";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import MenuMUI from "@/app/_components/_investigation/MenuMUI";
 // datetime - flow_id - interface - severity - proto
 // who started the investigation, who is doing the investigation
 // status of investigation - pending (red), ongoing (yellow), completed (green), cancelled (grey)
 
 export default function InvestigationTable() {
-  const [data, setData] = useState([]);
   const router = useRouter();
+  const queryClient = useQueryClient();
+  const { data, status, isFetching } = useQuery({
+    queryKey: ["fetchInvestigationTable"],
+    queryFn: async () => {
+      const { data } = await axios.get("/api/investigation/fetchData");
+      return data;
+    },
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+  });
 
-  const Status = ({ id, value }) => {
-    const [selectedOption, setSelectedOption] = useState(value);
+  const Status = (statusObject) => {
+    const [selectedOption, setSelectedOption] = useState(statusObject.value);
 
-    const updateDb = async () => {
-      const res = await fetch("/api/investigation/create", {
-        method: "PUT",
-        body: JSON.stringify({
-          id: id,
-          value: selectedOption,
-        }),
-      }).catch((err) => console.error(err));
-    };
+    const updateStatus = useMutation({
+      mutationFn: async (statusObject) => {
+        return axios.put("/api/investigation/update", statusObject, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["fetchInvestigationTable"],
+        });
+      },
+    });
 
     return (
       <select
         value={selectedOption}
         onChange={(e) => {
           setSelectedOption(e.target.value);
-          updateDb();
+          console.log(e.target.value);
+          updateStatus.mutate({ id: statusObject.id, status: e.target.value });
         }}
       >
         {["pending", "ongoing", "completed"].map((opt) => (
@@ -49,9 +66,9 @@ export default function InvestigationTable() {
       cell: ({ row, getValue }) => new Date(getValue()).toLocaleString(),
     },
     {
-      header: "Flow ID",
-      accessorKey: "_doc.flow_id",
-      cell: ({ row, getValue }) => getValue(),
+      header: "ID",
+      accessorKey: "_doc._id",
+      cell: ({ row, getValue }) => <div>{getValue()}</div>,
     },
     {
       header: "Interface",
@@ -76,47 +93,20 @@ export default function InvestigationTable() {
       ),
     },
     {
-      header: "Comment",
+      header: "Description",
       accessorKey: "description",
-      cell: ({ row, getValue }) => (
-        <Button
-          variant="contained"
-          onClick={() => {
-            alert(getValue());
-          }}
-        >
-          Description
-        </Button>
-      ),
+      cell: ({ row, getValue }) => <div>{getValue()}</div>,
     },
     {
-      id: "details",
-      cell: ({ row, getValue }) => (
-        <Button
-          variant="contained"
-          onClick={() => {
-            const url = row.original._doc._id;
-            router.push("/investigation/" + url);
-          }}
-        >
-          Details
-        </Button>
-      ),
+      id: "options",
+      cell: ({ row, getValue }) => <MenuMUI row={row} />,
     },
   ];
 
-  const fetchData = async () => {
-    const data = await getData("investigation/fetchData");
-    setData(data);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  return (
-    <>
-      <TanstackTable data={data} columns={columns} />
-    </>
-  );
+  if (isFetching) return <h1>Loading...</h1>;
+  if (status === "error") return <h1>Error</h1>;
+  if (status === "success" && data.length === 0) return <h1>No data</h1>;
+  if (status === "success" && data.length > 0) {
+    return <TanstackTable data={data} columns={columns} />;
+  }
 }

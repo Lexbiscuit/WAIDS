@@ -6,7 +6,7 @@ manageIDS = Blueprint('manageIDS', __name__)
 localRules = "./suricata.rules"
 
 
-def readRulesFile(filename: str) -> list:
+def readRulesFile(filename: str):
     with open(filename, 'r') as file:
         rules = file.read()
         return rules
@@ -30,7 +30,7 @@ class ManageIDSController:
             # Throw exception
             raise Exception(f"File not found at path '{self.path}'")
 
-    def getRules(self) -> list:
+    def getRules(self):
         rules = []
         try:
             if self.checkRulesFile():
@@ -141,6 +141,7 @@ def createRule():
     try:
         rule = request.get_json()['rule']
         enabled = request.get_json()['enabled']
+        print(rule)
         res = manageIDSController.createRule(rule, enabled)
         return res
     except Exception as e:

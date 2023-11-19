@@ -9,8 +9,9 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import ResponsiveAppBar from "@/app/_components/Appbar_auth";
 import { useRouter } from "next/navigation";
+import RuleBuilder from "@/app/_components/_idssources/RuleBuilder";
 
-const ModifyRulePage = async ({ params }) => {
+const ModifyRulePage = ({ params }) => {
   const router = useRouter();
   const modifyId = params.modifyId;
   const [rule, setRule] = React.useState("");
@@ -19,11 +20,11 @@ const ModifyRulePage = async ({ params }) => {
 
   const handleSubmit = () => {
     if (enabled) {
-      fetch(`http://localhost:5000/rules/enable/${modifyId}`);
+      fetch(`http://159.223.47.93:5000/rules/enable/${modifyId}`);
     } else {
-      fetch(`http://localhost:5000/rules/disable/${modifyId}`);
+      fetch(`http://159.223.47.93:5000/rules/disable/${modifyId}`);
     }
-    fetch(`http://localhost:5000/rules/modify/${modifyId}`, {
+    fetch(`http://159.223.47.93:5000/rules/modify/${modifyId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,7 +36,7 @@ const ModifyRulePage = async ({ params }) => {
 
   React.useEffect(() => {
     function fetchData() {
-      fetch(`http://localhost:5000/rules/retrieve/${modifyId}`)
+      fetch(`http://159.223.47.93:5000/rules/retrieve/${modifyId}`)
         .then((res) => res.json())
         .then((res) => {
           setEnabled(res.enabled);
@@ -50,6 +51,7 @@ const ModifyRulePage = async ({ params }) => {
     <Box component="main" height="100vh" overflow="auto">
       <ResponsiveAppBar />
       <Container maxWidth="lg" sx={{ py: 4 }}>
+        <h1>Modify Rule</h1>
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -87,7 +89,7 @@ const ModifyRulePage = async ({ params }) => {
           </Button>
           <Button
             onClick={() => {
-              fetch(`http://localhost:5000/rules/delete/${modifyId}`)
+              fetch(`http://159.223.47.93:5000/rules/delete/${modifyId}`)
                 .then((res) => res.json())
                 .then((res) => alert(res.message));
 

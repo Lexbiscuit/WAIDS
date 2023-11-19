@@ -14,7 +14,9 @@ import ListItemButton from "@mui/material/ListItemButton";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { usePathname } from "next/navigation";
 
-const pages = ["About Us", "Support", "Get Quote"];
+//const pages = ["About Us", "Support", "Get Quote"];
+
+const pages = [];
 
 export default function Appbar_no_auth() {
   const [state, setState] = React.useState({ left: false });
@@ -132,22 +134,7 @@ export default function Appbar_no_auth() {
               </Button>
             ))}
           </Box>
-
-          {/* Mobile and Desktop: Settings Menu */}
-          <Box sx={{ flexGrow: 0 }}>
-            {pathname == "/login" ? null : (
-              <Button
-                variant="outlined"
-                sx={{
-                  color: "inherit",
-                  borderColor: "inherit",
-                }}
-                href="/login"
-              >
-                Login
-              </Button>
-            )}
-          </Box>
+          
         </Toolbar>
       </Container>
     </AppBar>

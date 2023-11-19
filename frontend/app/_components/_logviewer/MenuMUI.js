@@ -12,6 +12,8 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -69,7 +71,18 @@ export default function MenuMUI({ row }) {
     setAnchorEl(null);
   };
 
-  const { data: session, status } = useSession();
+  const createInvestigation = useMutation({
+    mutationFn: async (data) => {
+      await axios.put("/api/investigation/create", data, {
+        headers: {
+          "Content-Type": "application/json",
+          "Cache-Control": "no-cache",
+        },
+      });
+    },
+  });
+
+  const { data: session } = useSession();
   return (
     <div>
       <Button
@@ -104,23 +117,16 @@ export default function MenuMUI({ row }) {
           <EditIcon />
           View Full Details
         </MenuItem>
+
         <MenuItem
           onClick={() => {
-            const url = row.original._id;
             const description = prompt("Enter description: ");
-            const res = fetch(
-              "http://localhost:3000/api/investigation/create",
-              {
-                method: "POST",
-                body: JSON.stringify({
-                  id: url,
-                  creator: session.user.name,
-                  description: description,
-                  investigation_status: "pending",
-                }),
-                headers: { "Content-Type": "application/json" },
-              }
-            );
+            createInvestigation.mutate({
+              id: data._id,
+              creator: session.user.name,
+              description: description,
+              investigation_status: "pending",
+            });
             handleClose();
           }}
           disableRipple
@@ -128,15 +134,6 @@ export default function MenuMUI({ row }) {
           <FileCopyIcon />
           Open Investigation
         </MenuItem>
-        {/* <Divider sx={{ my: 0.5 }} />
-        <MenuItem onClick={handleClose} disableRipple>
-          <ArchiveIcon />
-          Archive
-        </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple>
-          <MoreHorizIcon />
-          More
-        </MenuItem> */}
       </StyledMenu>
     </div>
   );

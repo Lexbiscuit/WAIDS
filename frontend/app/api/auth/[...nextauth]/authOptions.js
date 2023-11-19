@@ -8,15 +8,6 @@ export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
   providers: [
     CredentialsProvider({
-      // name: "credentials",
-      // credentials: {
-      //   email: {
-      //     label: "Email",
-      //     type: "email",
-      //     placeholder: "example@email.com",
-      //   },
-      //   password: { label: "Password", type: "password" },
-      // },
       async authorize(credentials) {
         const res = await fetch("http://localhost:3000/api/auth/login", {
           method: "POST",
@@ -27,25 +18,25 @@ export const authOptions = {
         const data = await res.json();
         const user = data.user[0];
 
-        if (user == undefined) {
-          return null;
+        if (!user) {
+          throw new Error("User not found");
+        }
+
+        if (user.status === "suspended") {
+          throw new Error("This account has been suspended.");
         }
 
         const match = await bcrypt.compare(credentials.password, user.password);
-        console.log(
-          "🚀 ~ file: authOptions.js:35 ~ authorize ~ user.password:",
-          user.password
-        );
-        console.log(
-          "🚀 ~ file: authOptions.js:36 ~ authorize ~ credentials.password:",
-          credentials.password
-        );
-        console.log("🚀 ~ file: authOptions.js:37 ~ authorize ~ match:", match);
 
         if (match) {
-          return { _id: user._id, email: user.email, name: user.name };
+          return {
+            _id: user._id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+          };
         } else {
-          return null;
+          throw new Error("Invalid password");
         }
       },
     }),
@@ -59,7 +50,12 @@ export const authOptions = {
   callbacks: {
     async jwt({ token, user, session }) {
       if (user) {
-        token.user = { _id: user._id, email: user.email, name: user.name };
+        token.user = {
+          _id: user._id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+        };
       }
       return token;
     },
@@ -69,7 +65,7 @@ export const authOptions = {
     },
   },
   pages: {
-    signIn: "/login",
+    signIn: "/",
   },
 };
 
